@@ -1,7 +1,7 @@
 {
     "shared": "Shared",
     "Server": "Server",
-    "client": "Client",
+    "Client": "Client",
     "config": "Config",
     "events": "Events",
     "playerdata": "PlayerData"
