@@ -1,2 +1,52 @@
+import { ArgumentsTable, OutputTable } from 'components/table';
+
 # esx_menu_dialog
 A menu used to get inputs from the player.
+
+### ESX.UI.Menu.Open
+Open a menu that can be used to input a value
+
+```lua
+ESX.UI.Menu.Open(type, namespace, name, data, confirm, cancel )
+```
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'type', type: 'string', description: 'the menu to open `dialog` in this case' }, 
+    { arg: 'namespace', type: 'string', description: 'The namespace of the menu, usually ```GetResourceName()```is used' },
+    { arg: 'name', type: 'string', description: 'The name of the menu' },
+    { arg: 'data', type: 'table', description: 'The table with the elements to show in the menu' },
+    { arg: 'confirm', type: 'function', description: 'Function that gets ran when an element is selected.'},
+    { arg: 'cancel', type: 'function', description: 'Function that gets ran when the menu gets closed'},
+    
+]} /> 
+
+**Data table**
+- title: title of the menu
+
+
+**confirm**
+
+Function triggered when the confirm button is pressed, returns `data` and `menu`, `data.value` is used to get the current vlue inserted
+
+**cancel**
+
+This function is triggered when the cancel button is pressed or the menu is closed, returns `data` and `menu`
+
+
+### Menu Example
+```lua
+  ESX.UI.Menu.Open("dialog", GetCurrentResourceName(), "Example_Menu", {
+    title = "Example Menu", -- The Name of Menu to show to users,
+  }, function(data,menu) -- confirm function  
+      local value = data.value
+      print(value)
+      menu.close()
+    end, 
+    function(data, menu) -- Cancel Function
+      print("Closing Menu")
+      menu.close() -- close menu
+  end)
+```
+**Result**
+<img src = "https://i.gyazo.com/ab9c45aa64a9e1133e66cecd21d8fab4.png"></img>
