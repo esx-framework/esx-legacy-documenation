@@ -207,6 +207,26 @@ end, function()
 end)  
 ```
 
+## TriggerServerCallback
+
+This function trigger a previously registered server callback
+
+*See [RegisterServerCallback]("../Server/functions/#registerservercallback")*
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", description: "The server callback's name." },
+    { arg: "cb", type: "function", description: "The callback function passed from the server." },
+    { arg: "...", type: "arguments", description: "The callback's argument." },
+]} />
+
+
+```lua
+ESX.TriggerServerCallback('myScript:getMeme', function(cb)
+  print(cb) --output: "Meme data string"
+end)
+```
+
 ## Game
 Functions that modify the client some way or another.
 
