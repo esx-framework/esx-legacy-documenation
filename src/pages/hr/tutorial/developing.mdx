@@ -1,13 +1,13 @@
 import { FileTree } from 'nextra/components'
 
-# Developing a ESX Script
+# Kodiranje ESX skripte
 
-## VSCode Extensions
-There are a few helpful tools to create scripts for ESX.
+## VSCode proširenja
+Ima par korisnih proširenja za visual studio code da bih vam olakšali kreiranje skripte.
 
 ### [sumneko.lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)
-Made by sumenko which adds a Lua language server used by `ESX VSCode` and `CfxLua`.
-Recommended settings:
+Napravljeno od strane sumneka, ovo je lua programski server koji sadrži `ESX VSCode` i `CfxLua` proširenja.
+Preporučene postavke:
 ```json
 "Lua.diagnostics.disable": [
   "undefined-global",
@@ -18,19 +18,19 @@ Recommended settings:
 
 
 ### [CfxLua](https://marketplace.visualstudio.com/items?itemName=overextended.cfxlua-vscode)
-A vscode extension adding all natives and functions that are available in FiveM. 
-Made by overextended.
+Proširenje koje ukljućuje sve native i funkcije FiveM-a. 
+Napravljeno od strane overextended-a.
 
 ### [ESX VSCode](https://marketplace.visualstudio.com/items?itemName=Knoblauchbrot.esx-vscode)
-A vscode extension that adds linting for the diverse ESX Functions and variables and also Snippets.
-Made by Knoblauchbrot *(definitely not from the person who wrote this 😗)*.
+Proširenje koje ukljućuje ESX funkcije i varijable.
+Napravljeno od strane Knoblauchbrot.
 
-## Creating your first script
-A fivem script using ESX required a few files and configurations.
+## Kreiranje prve ESX skripte
+Osnovna FiveM skripta sadrži par foldera i fileova.
 
-### A basic folder structure
+### Osnovna struktura skripte
 <FileTree>
-  <FileTree.Folder name='MyScript' defaultOpen>
+  <FileTree.Folder name='MojaSkripta' defaultOpen>
     <FileTree.File name="client.lua" />
     <FileTree.File name="server.lua" />
     <FileTree.File name="config.lua" />
@@ -38,53 +38,53 @@ A fivem script using ESX required a few files and configurations.
   </FileTree.Folder>
 </FileTree>
 
-### Example of `client.lua`
+### Primjer `client.lua`
 ```lua
--- Using the native from fivem since ESX.RegisterCommand doesn't exist on the clientside
--- This command won't exist on the serverside, so you won't be able to use it in the console.
+-- Koristimo native RegisterCommand od FiveM-a jer ESX-ov ESX.RegisterCommand ne postoji na client strani
+-- Ova komanda ne postoji na server strani tako da je nećeš moći koristiti iz konzole.
 RegisterCommand('clientTest', function ()
   print(Config.cool)
   if ESX.IsPlayerLoaded() then
-    print("Player has already loaded")
+    print("Igrać je već učitan")
   else
-    print("Player is not loaded")
+    print("Igrać nije učitan")
   end
 end, false)
 ```
 
-### Example of `server.lua`
+### Primjer `server.lua`
 ```lua
--- Command introduced by ESX to register commands more easily
--- For more information see the accoring docs for ESX.RegisterCommand
+-- Funkcija od ESX-a koja je napravljena da bih olakšala kreiranje komandi
+-- Za više informacija o njoj idi na docs stranicu o ESX.RegisterCommand funkciji
 ESX.RegisterCommand('test', 'user', function(xPlayer, args, showError)
-  print(xPlayer.getName() .. " has the job " .. xPlayer.job.label)
+  print(xPlayer.getName() .. " ima posao " .. xPlayer.job.label)
   print(Config.cool)
-end, true, {help = 'My cool test command!'})
+end, true, {help = 'Koji posao ima igrać'})
 ```
 
-### Example of `config.lua`
+### Primjer `config.lua`
 ```lua
 Config = {
-    cool = "This is very cool"
+    cool = "Ovo je neka varijabla u konfigu"
 }
 ```
 
-Example of `fxmanifest.lua`
+Primjer `fxmanifest.lua`
 ```lua
--- This file is always required for a fivem script
+-- Ovaj file je potreban u svakoj FiveM skripti
 
 fx_version 'cerulean'
 game 'gta5'
 
-description 'My really cool script'
-author 'My name'
+description 'Moja zanimljiva skripta'
+author 'Tvoje ime'
 
-lua54 'yes' -- Not always needed, needed for functions that require Lua 5.4
+lua54 'yes' -- Nije uvijek potrebno, ali je dobro staviti
 
--- Files that should be loaded on both server and client.
--- DO NOT LOAD CONFIGS/FILES CONTAINING SENSITIVE DATA LIKE API KEYS AND WEBHOOKS HERE.
+-- Fileovi koji su potrebni i na server i na client strani
+-- NE STAVLJAJ WEBHOOKOVE I API KEYEVE U TE FILEOVE.
 shared_scripts {
-    'config.lua' -- Not needed but suggested to not hardcode everything.
+    'config.lua' -- Nije potrebno ali je dobro da ne hardcodeaš sve.
 }
 
 client_scripts {
@@ -96,11 +96,11 @@ server_scripts {
 }
 
 shared_scripts {
-  '@es_extended/imports.lua', -- Import ESX functions and PlayerData
-  '@es_extended/locale.lua', -- Import the Locale system
+  '@es_extended/imports.lua', -- Importa ESX objekt i PlayerData objekt
+  '@es_extended/locale.lua', -- Importa prijevode
 }
 
 dependencies {
-  'es_extended' -- Ensure the script starts after es_extended so that the functions work.
+  'es_extended' -- Stavljaš da osiguraš da se skripta starta nakon es_extended.
 }
 ```

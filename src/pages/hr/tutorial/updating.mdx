@@ -1,25 +1,25 @@
 import { Tabs } from 'nextra/components'
 
-# Updating your Scripts
-Between older versions of esx and the newer releases there have been introduced some breaking changes, including but not limited to:
-- The change of the inventory limit system to weight system
-- The change from the `esx:getSharedObject` event to the `getSharedObject` export or import in the fxmanifest.
+# Update-aj svoje skripte
+Među starim verzijama ESX-a i novim verzijama, ubaćene su velike promjene ukljućujući:
+- Promjena inventory sistema sa limit sistema na weight sistem
+- Promjena `esx:getSharedObject` eventa u `getSharedObject` export ili import u fxmanifest-u.
 
 
-## Updating getSharedObject
-For the new methods to work you need to remove the old method from the script you want to update.
-And then implement either the Export or Import method to get the ESX Object.
+## Updateanje getSharedObject-a
+Da bih napravio da nova metoda radi, moraš izbrisati staru.
+I onda ubaciti import ili export da bih povukao ESX objekt
 
-Also make sure the script starts **after** es_extended and other core resources.
+Provjeri da ti se skripta starta **nakon** es_extended-a i drugih core skripti.
 
-### Removing outdated method
-There is a difference between the outdated method on clientside and serverside.
-Below are example's how the outdated code could look like. 
-If you recognized it remove it and replace it with one of the below methods of getting the ESX Object.
+### Brisanje stare metode
+Postoji razlika između stare metode u client strani i u server strani.
+Ispod su primjeri starih metoda. 
+Ako primjetiš ovaj kod negdje obriši ga i zamjeni sa metodama ispod.
 
-Make sure you remove every `ESX = nil`
+Obriši svaki `ESX = nil`
 
-#### Clientside
+#### Client strana
 ```lua
 ESX = nil
 
@@ -31,33 +31,33 @@ Citizen.CreateThread(function()
 end)
 ```
 
-#### Serverside
+#### Server strana
 ```lua
 ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 ```
 
-### Export method
-This is perfect if you just need the ESX Object.
+### Export metoda
+Ova metoda je perfektna ako trebaš samo ESX objekt.
 
-To use the export method you simply get it by using the export and the getSharedObject function from it:
+Da bih je iskoristio samo napraviš ovo:
 ```lua
 ESX = exports['es_extended']:getSharedObject()
 ```
 
-#### Example
+#### Primjer
 <img src= "https://i.gyazo.com/b9f7213a75deeb6db3fd97d38b64e1cc.gif"></img>
 
-### Import method
-This is basically the same as the export method but it also adds a event listener and a function that makes sure the ESX.PlayerData is up to date.
+### Import metoda
+Ova metoda je ista kao export metoda ali dodaje event listener i funkciju koja provjerava jel ESX.PlayerData updatean.
 
-To use the import method you just add the line below to the fxmanifest, either into the client, server or shared scripts:
+Da iskoristiš ovu metodu samo ubaci ovo u client ili server stranu u fxmanifestu:
 ```lua
 '@es_extended/imports.lua'
 ```
 
-#### Example
+#### Primjer
 <Tabs items={["fxmanifest.lua", "client.lua"]}>
     <Tabs.Tab>
     ```lua
@@ -80,7 +80,7 @@ To use the import method you just add the line below to the fxmanifest, either i
     </Tabs.Tab>
     <Tabs.Tab>
     ```lua
-    OnPlayerData = function(key, val, last) -- Not needed but can be used with the Import method. Only on clientside of course!
+    OnPlayerData = function(key, val, last) -- Nije potrebno ali se može koristiti sa import metodom (samo client side)
         print(("The data %s has been changed from %s to %s"):format(key, last, val))
     end
 
