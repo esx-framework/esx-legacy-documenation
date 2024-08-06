@@ -1,0 +1,56 @@
+import { ArgumentsTable } from 'src/components/table';
+import { Callout } from 'nextra/components';
+
+
+# esx_textui
+The text ui (hud) system used by `es_extended`
+**Only available on clientside**
+
+### TextUI
+This function will show a text ui pop up.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'message', type: 'string', description: 'The TextUI message.' }, 
+    { arg: 'type', type:'string', defaultValue: 'info', optional: true, description: 'The TextUI type'}
+]} />
+
+**TextUI types**
+- success 
+- error 
+- info
+
+**ESX Example** 
+```lua
+ESX.TextUI('Press [E] to use', 'error')
+```
+
+**Export Example** 
+```lua
+exports['esx_textui']:TextUI('Press [E] to use', 'error')
+```
+
+### HideUI 
+This function will hide the TextUI.
+
+<Callout type='warning'>
+    This will close any TextUI that is currently open.
+</Callout>
+
+**Example** 
+```lua
+local interactCoords = vector3(0, 0, 0)
+CreateThread(function()
+    local TextUI
+    while true do
+        local coords = GetEntityCoords(PlayerPedId())
+        local inDist = #(coords - interactCoords) < 2.0
+        if inDist and not TextUI then 
+            ESX.TextUI('Press [E] to interact')
+        elseif inDist and TextUI then 
+            ESX.HideUI() 
+        end
+        Wait(500)
+    end 
+end) 
+```

@@ -1,0 +1,148 @@
+import { Callout } from 'nextra/components';
+
+# Best Coding Practices
+This section will cover the best coding practices for Fivem and the **ESX Legacy** Framework.
+
+## Programming style
+It is important to follow a consistent programming style when writing code. This makes it easier for you and others to read and understand your code. This section displays some general guidelines you should follow when writing code.
+
+### Naming conventions
+There are different naming conventions for different programming languages and for Lua `camelCase` is used. This means that the first letter of the first word is lowercase and the first letter of each subsequent word is uppercase. For example, `myVariableName`. 
+But this changes slightly with global functions and global variables which will additionally will start with a uppercase. For example, `MyGlobalVariableName`. 
+
+### Constants
+Use constants to highlight things that should not be modified / Constants are variables that are not supposed to change while the script is running.
+
+Constants should be written in uppercase and separated by underscores. For example, `MY_CONSTANT`.
+If you have [Lua 5.4 enabled](https://docs.fivem.net/docs/scripting-reference/resource-manifest/resource-manifest/#lua54) you can also use the `const` keyword to define constants.
+Example:
+```lua
+local MY_CONSTANT <const> = 42
+MY_CONSTANT = 43 -- This will throw an error
+```
+
+### Indentation
+Indentation is important for readability. It is recommended to use 2 spaces for indentation.
+
+## DRY
+DRY stands for "Don't Repeat Yourself". It is a software development principle that states that you should avoid duplicating code. Instead, you should write reusable code that can be used in multiple places.
+
+## Comments
+Comments are important for explaining what your code does. It is recommended to use comments to explain what your code does and why you wrote it that way.
+
+For more information check the [Annotations](/en/tutorial/coding_practices/annotations) section.
+
+## Globalization and Localization
+```lua
+MyGlobalVariable = 42 -- This is a global variable
+local myLocalVariable = 42 -- This is a local variable
+```
+
+### Globals
+**Minimize** the use of global variables and functions. They can be accessed throughout your entire script, leading to unpredictable behavior, increased memory usage, and access overhead. Favor local variables for their scope limitation.
+
+### Local
+Use local variables and functions **whenever possible**. Local variables are faster to access than global variables and are only accessible within the scope/file they are defined in.
+
+## Loops
+When using loops, it is important to use the correct loop for the task at hand. For example, use a `for` loop when you know the number of iterations you need, and use a `while` loop when you need to loop until a condition is met.
+
+<Callout type="warning">
+    When using a while loop make sure it has a `Wait` in it. Otherwise, it will crash the server.
+</Callout>
+
+### Infinite loops
+Make sure to avoid infinite loops. Infinite loops can cause your script to use more resources and lag your server and players. If possible make sure to have a condition that will eventually be false.
+
+**Example for don't do**
+```lua
+CreateThread(function()
+    while true do
+        Wait(0)
+        if ESX.PlayerData.job.name == 'police' then
+            if IsControlJustPressed(0, 38) then
+                -- Do something
+            end
+        end
+    end
+end)
+```
+
+**Example for do**
+```lua
+AddEventHandler('esx:setJob', function(job)
+    if job.name == 'police' then
+        startPoliceThread()
+    end
+end)
+
+local function startPoliceThread()
+    CreateThread(function()
+        while ESX.PlayerData.job.name == 'police' do
+            Wait(0)
+            if IsControlJustPressed(0, 38) then
+                -- Do something
+            end
+        end
+    end)
+end
+
+if ESX.PlayerData.job.name == 'police' then
+    startPoliceThread()
+end
+```
+
+### Wait times
+When using loops, it is important to have a Wait time. It is necessery to have atleast a `Wait(0)` or the server/client will crash. The `Wait` function is used to pause the execution of the script for a specified amount of time.
+
+So when you are using a loop think about how often you need your thread to run and adjust the `Wait` time accordingly.
+
+## Caches
+Caching is a technique used to store data that is frequently accessed. This can help improve performance by reducing the number of times data needs to be fetched from the database, calculated or get using ressource intensive natives.
+
+<Callout type="warning">
+    Make sure to only cache what you need and how much you need.
+</Callout>
+
+### Example
+```lua
+local localPlayerId = PlayerId()
+local serverId = GetPlayerServerId(localPlayerId)
+local ped = PlayerPedId() -- Important to listen to if the player ped changes.
+
+AddEventHandler('esx:playerPedChanged', function(newPed)
+    ped = newPed
+end)
+```
+
+## General Optimization
+Optimization is important for performance. It is important to optimize your code to make it run as fast as possible. This section will cover some general optimization techniques you can use to improve the performance of your scripts.
+
+### Avoid unnecessary or reconcurrent calculations
+Avoid unnecessary or reconcurrent calculations. If you have a calculation that is done multiple times, consider caching the result and reusing it.
+
+### Tables
+Tables are a powerful data structure in Lua, but it is resource intensive. It is important to use tables wisely and avoid creating unnecessary tables.
+And only have the data you still need in the table. Once data is not needed anymore remove it from the table.
+
+### Use newest methods
+Lua, FiveM and ESX are constantly being updated with new features and improvements and new more efficient ways are often found. 
+Make sure to keep up to date with the latest changes and use the newest methods available.
+
+**Popular outdated or replaced functions**
+- `GetPlayerPedId(-1)` -> `PlayerPedId()` Getting the player Ped.
+- `GetDistanceBetweenCoords(x1, y1, z1, x2, y2, z2, true)` -> `#(vector3(x1, y1, z1) - vector3(x2, y2, z2))` Getting the distance between two points.
+- `GetHashKey('adder')` -> `joaat('adder')` Getting the hash of a string/model.
+- `table.insert(table, value)` -> `table[#table + 1] = value` Inserting a value into a table.
+- `table.remove(table, index)` -> `table[index] = nil` Removing a value from a table.
+
+## Lua 5.4
+Lua 5.4 is the latest version of Lua and it comes with some new features and improvements. If you have [Lua 5.4 enabled](https://docs.fivem.net/docs/scripting-reference/resource-manifest/resource-manifest/#lua54) you can also use it's features in your fivem script.
+
+### Features
+- `const` & `close` keyword for defining constants and making sure memory is freed safely.
+- `goto` statement.
+- Generational GC (Garbage Collector).
+- Overall faster 
+- Compound assignment operators (+=, -=, *=, /=, %=, ^=, ..=, &=, |=, \<\<=, >>=, >>>=).
+- And much more.

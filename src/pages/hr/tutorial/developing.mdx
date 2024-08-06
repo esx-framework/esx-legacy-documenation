@@ -1,0 +1,106 @@
+import { FileTree } from 'nextra/components'
+
+# Developing a ESX Script
+
+## VSCode Extensions
+There are a few helpful tools to create scripts for ESX.
+
+### [sumneko.lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)
+Made by sumenko which adds a Lua language server used by `ESX VSCode` and `CfxLua`.
+Recommended settings:
+```json
+"Lua.diagnostics.disable": [
+  "undefined-global",
+  "err-nonstandard-symbol",
+  "unknown-symbol"
+]
+```
+
+
+### [CfxLua](https://marketplace.visualstudio.com/items?itemName=overextended.cfxlua-vscode)
+A vscode extension adding all natives and functions that are available in FiveM. 
+Made by overextended.
+
+### [ESX VSCode](https://marketplace.visualstudio.com/items?itemName=Knoblauchbrot.esx-vscode)
+A vscode extension that adds linting for the diverse ESX Functions and variables and also Snippets.
+Made by Knoblauchbrot *(definitely not from the person who wrote this 😗)*.
+
+## Creating your first script
+A fivem script using ESX required a few files and configurations.
+
+### A basic folder structure
+<FileTree>
+  <FileTree.Folder name='MyScript' defaultOpen>
+    <FileTree.File name="client.lua" />
+    <FileTree.File name="server.lua" />
+    <FileTree.File name="config.lua" />
+    <FileTree.File name="fxmanifest.lua" />
+  </FileTree.Folder>
+</FileTree>
+
+### Example of `client.lua`
+```lua
+-- Using the native from fivem since ESX.RegisterCommand doesn't exist on the clientside
+-- This command won't exist on the serverside, so you won't be able to use it in the console.
+RegisterCommand('clientTest', function ()
+  print(Config.cool)
+  if ESX.IsPlayerLoaded() then
+    print("Player has already loaded")
+  else
+    print("Player is not loaded")
+  end
+end, false)
+```
+
+### Example of `server.lua`
+```lua
+-- Command introduced by ESX to register commands more easily
+-- For more information see the accoring docs for ESX.RegisterCommand
+ESX.RegisterCommand('test', 'user', function(xPlayer, args, showError)
+  print(xPlayer.getName() .. " has the job " .. xPlayer.job.label)
+  print(Config.cool)
+end, true, {help = 'My cool test command!'})
+```
+
+### Example of `config.lua`
+```lua
+Config = {
+    cool = "This is very cool"
+}
+```
+
+Example of `fxmanifest.lua`
+```lua
+-- This file is always required for a fivem script
+
+fx_version 'cerulean'
+game 'gta5'
+
+description 'My really cool script'
+author 'My name'
+
+lua54 'yes' -- Not always needed, needed for functions that require Lua 5.4
+
+-- Files that should be loaded on both server and client.
+-- DO NOT LOAD CONFIGS/FILES CONTAINING SENSITIVE DATA LIKE API KEYS AND WEBHOOKS HERE.
+shared_scripts {
+    'config.lua' -- Not needed but suggested to not hardcode everything.
+}
+
+client_scripts {
+  'client.lua',
+}
+
+server_scripts {
+  'server.lua',
+}
+
+shared_scripts {
+  '@es_extended/imports.lua', -- Import ESX functions and PlayerData
+  '@es_extended/locale.lua', -- Import the Locale system
+}
+
+dependencies {
+  'es_extended' -- Ensure the script starts after es_extended so that the functions work.
+}
+```

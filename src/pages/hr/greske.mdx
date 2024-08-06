@@ -1,0 +1,50 @@
+import { DsButton } from 'src/components/button';
+
+<div style = {{ fontSize: '40px', fontWeight: 'bold', textAlign: 'center' }}>Greške</div>
+
+Ova stranica pokriva sve najčešće greške koje se mogu dogoditi dok koristite ESX
+
+
+<details>
+  <summary>Native XXXXXXXX is not supported</summary>
+  <br/>
+  <p>Primjer:</p>
+  <img src = "https://i.gyazo.com/483dfe7f779d5d85e908a61cd6505b5e.png"></img>
+
+  Ovo se može dogoditi jer ste skinuli "recommended version" server artifakta.
+
+  Da rješiš ovaj problem skini najnovije artifakte kao na ovoj slici:
+
+  <img src= "https://i.gyazo.com/b221b628cfb26581d2848aefdd318c72.png"></img>
+</details>
+
+<details>
+  <summary>ESX Multicharacter couldn't connect to the database</summary>
+  <br/>
+  <p>Primjer:</p>
+  <img src = "https://i.gyazo.com/ed571574e704017b41b7234321624319.png"></img>
+
+  Ova greška se pojavljuje jer ste stavili krivi MySQL string u `server.cfg` i/ili se vaš fivem server ne može povezati na vašu MySQL databazu.
+
+  Sljedeći koraci će vam pomoći popraviti tu grešku:
+  - Provjeri je li tvoj MySQL string u `server.cfg` točan i dobro formatiran: provjeri [OxMySQL dokumentaciju](https://overextended.dev/oxmysql#installation) za više instrukcija.
+  - Provjeri je li tvoja databaza uključena, koristi [Upute instalacije](/hr/tutorial/install) da provjeriš je li tvoja databaza uključena
+</details>
+
+<details>
+  <summary>Error ESX = nil</summary>
+  <br/>
+  <p>Primjer:</p>
+  <img src = "https://i.gyazo.com/thumb/1200/6ebb0adb3c4ddd26d902a5cfc3eceede-png.jpg"></img>
+
+  Ova greška je možda uzrokovana neispravnim ažuriranjem metoda ESX objekta.
+
+  Ako grešku izbacuje [Službena ESX skripta](https://github.com/esx-framework) onda ju ažuriraj na najnoviju verziju.
+
+  Ako grešku izbacuje skripta koja nije napravljena od strane ESX-a onda:
+  - Traži ```ESX = nil ``` u tvojim skriptama i obriši to ako pronađeš 
+  - Prati [Tutorial za ažuriranje](/hr/tutorial/updating) za daljnje instrukcije.
+</details>
+
+Ako se tvoj problem nastavlja ili ne možeš pronaći šta si tražio, uđi u naš discord server i potraži pomoć tamo.
+<div style = {{textAlign: 'center'}}><DsButton></DsButton></div>

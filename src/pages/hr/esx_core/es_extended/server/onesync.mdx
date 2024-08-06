@@ -1,0 +1,270 @@
+import { Callout } from 'nextra/components';
+import { ArgumentsTable, OutputTable } from "src/components/table";
+
+# Serverside OneSync Functions
+Functions used to get data that normally is available on the client. And functions to spawn synced entities.
+
+## GetPlayersInArea
+This function gets all players in the given radius. 
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "playerId", type: "number", optional: false, description: "The id from the player you want the near players from" },
+    { arg: "radius", type: "number", optional: true, defaultValue: '100', description: "The radius to search for players" },
+    { arg: "ignore", type: "table", optional: true, description: "A table with server id's that should be ignored" },
+]} />
+
+**Returns**
+
+This function will return a **`table`** with data or an empty **`table`** if no player was found. 
+<OutputTable isTable={true} rows={[
+    { arg: "id", type: "number", description: "The id from the player" },
+    { arg: "ped", type: "string", description: "The ped handle of the player" },
+    { arg: "coords", type: "vector3", description: "The coordinates of the player" },
+    { arg: "dist", type: "number", description: "The distance to the player" }
+]}/>
+
+**Example**
+```lua
+local playersInArea = ESX.OneSync.GetPlayersInArea(1, 10.0, {
+    [1] = true -- filter out player with the source 1
+})
+    
+for i=1, #playersInArea do
+    local player = playersInArea[i] 
+end 
+```
+
+## GetClosestPlayer
+This function returns the closest player from the given player. 
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "playerId", type: "number", optional: false, description: "The id from the player you want the nearest player from" },
+    { arg: "radius", type: "number", optional: true, defaultValue: '100', description: "The radius to search for the nearest player" },
+    { arg: "ignore", type: "table", optional: true, description: "A table with server id's as keys that should be ignored" },
+]} />
+
+**Returns**
+
+This function will return a **`table`** with data or an empty **`table`** if no player was found.
+<OutputTable isTable={true} rows={[
+    { arg: "id", type: "number", description: "The id from the player" },
+    { arg: "ped", type: "string", description: "The ped handle of the player" },
+    { arg: "coords", type: "vector3", description: "The coordinates of the player" },
+    { arg: "dist", type: "number", description: "The distance to the player" }
+]}/>
+
+**Example**
+```lua
+local player = ESX.OneSync.GetClosestPlayer(1, 10.0, {
+    [2] = true -- filter out player with source 2
+})
+```
+
+## SpawnVehicle 
+This function will spawn a vehicle with the vehicle server setter, which means 
+the vehicle will belong to the server and won't be removed when no clients are active.
+
+<Callout type="warning">
+    When there is no player in a radius of 300 from the coords, the vehicle will NOT spawn. 
+    also vehicle deformation will not be synced anymore once no player is in it's scope.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "model", type: "string", optional: false, description: "The model that you want to spawn" },
+    { arg: "coords", type: "number", optional: false, description: "The coords where you want the vehicle to spawn" },
+    { arg: "heading", type: "number", optional: false, description: "The heading you want the vehicle to spawn with" },
+    { arg: "properties", type: "table", optional: false, description: "The vehicle properties"}, 
+    { arg: "cb", type: "function", optional: false, description: "The callback function"}
+]} />
+
+**Example**
+```lua
+ESX.OneSync.SpawnVehicle('blista', vector3(0, 0, 0), 0, {}, function(networkId)     
+    local vehicle = NetworkGetEntityFromNetworkId(networkId)
+end)  
+```
+
+## SpawnObject 
+This function will spawn an object from the Serverside. 
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "model", type: "number | string", optional: false, description: "The model that you want to spawn" },
+    { arg: "coords", type: "vector3 | table", optional: false, description: "The coords where you want the object to spawn" },
+    { arg: "heading", type: "number", optional: false, description: "The heading you want the object to spawn with" },
+    { arg: "cb", type: "function", optional: false, description: "The callback function"}
+]} />
+
+**Example**
+```lua
+ESX.OneSync.SpawnObject('prop_rub_boxpile_04', vector3(0,0,0), 0.0, function(networkId) 
+    local obj = NetworkGetEntityFromNetworkId(networkId) 
+end) 
+``` 
+
+## SpawnPed 
+This function will spawn a ped.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "model", type: "string", optional: false, description: "The model that you want to spawn" },
+    { arg: "coords", type: "number", optional: false, description: "The coords where you want the ped to spawn" },
+    { arg: "heading", type: "number", optional: false, description: "The heading you want the ped to spawn with" },
+    { arg: "cb", type: "function", optional: false, description: "The callback function"}
+]} />
+
+**Example**
+```lua
+ESX.OneSync.SpawnPed('a_f_m_beach_01', vector3(0,0,0), 0.0, function(networkId) 
+    local ped = NetworkGetEntityFromNetworkId(networkId) 
+end) 
+``` 
+
+## SpawnPedInVehicle 
+This function will spawn a ped inside a vehicle.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "model", type: "string", optional: false, description: "The model that you want to spawn" },
+    { arg: "vehicle", type: "number", optional: false, description: "The vehicle handle the ped should to be spawned in" },
+    { arg: "seat", type: "number", optional: false, description: "The seat where the ped should be seated in" },
+    { arg: "cb", type: "function", optional: false, description: "The callback function"}
+]} />
+
+**Example**
+```lua
+local vehicles = GetAllVehicles()
+
+if #vehicles < 1 then return end 
+ESX.OneSync.SpawnPedInVehicle('a_f_m_beach_01', vehicles[math.random(1, #vehicles)], -1, function(networkId)
+    local ped = NetworkGetEntityFromNetworkId(networkId) 
+end)
+```
+
+## GetPedsInArea 
+This function will get all peds in given area.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3", optional: false, description: "The coords of the area" },
+    { arg: "radius", type: "number", optional: false, description: "The radius to search for the peds" },
+    { arg: "modelFilter", type: "table", optional: false, description: "A table with model's that should be ignored" },
+]} />
+
+**Returns**
+
+This function will return a **`table`** with the network id's from the found peds.
+
+
+**Example**
+```lua
+local peds = ESX.OneSync.GetPedsInArea(vector3(0,0,0), 30.0, {
+    [joaat('a_f_m_beach_01')] = true -- joaat is a function of lua v5.4 that returns a hash
+})
+
+for i=1, #peds do 
+    local ped = NetworkGetEntityFromNetworkId[peds[i]] 
+end 
+```
+
+## GetObjectsInArea 
+This function will get all objects in given area.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3", optional: false, description: "The coords of the area" },
+    { arg: "radius", type: "number", optional: false, description: "The radius to search for the objects" },
+    { arg: "modelFilter", type: "table", optional: false, description: "A table with model's that should be ignored" },
+]} />
+
+**Returns**
+
+This function will return a table with the network id's from the found objects
+
+**Example**
+```lua
+local objects = ESX.OneSync.GetObjectsInArea(vector3(0,0,0), 30.0, {
+    [joaat('prop_rub_boxpile_04')] = true -- joaat is a function of lua v5.4 that returns a hash
+})
+
+for i=1, #objects do 
+    local object = NetworkGetEntityFromNetworkId[objects[i]]   
+end 
+```
+
+## GetVehiclesInArea 
+This function will get all vehicles in given area.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3", optional: false, description: "The coords of the area" },
+    { arg: "radius", type: "number", optional: false, description: "The radius to search for the vehicles" },
+    { arg: "modelFilter", type: "table", optional: false, description: "A table with model's that should be ignored" },
+]} />
+
+**Returns**
+
+This function will return a table with the network id's from the found objects
+
+**Example**
+```lua
+local vehicles = ESX.OneSync.GetVehiclesInArea(vector3(0,0,0), 30.0, {
+    [joaat('zentorno')] = true -- joaat is a function of lua v5.4 that returns a hash
+})
+
+for i=1, #vehicles do 
+    local vehicle = NetworkGetEntityFromNetworkId[vehicles[i]]   
+end 
+```
+
+## GetClosestPed 
+This function will return the closest object to given coords.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3", optional: false, description: "The coords of the area" },
+    { arg: "modelFilter", type: "table", optional: false, description: "A table with model's that should be ignored" },
+]} />
+
+
+**Example**
+```lua
+local networkId, distance, closestCoords = ESX.OneSync.GetClosestPed(vector3(0,0,0), {
+    [joaat('mp_m_freemode_01')] = true -- joaat is a function of lua v5.4 that returns a hash
+})
+```
+
+## GetClosestObject 
+This function will return the closest object to given coords.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3", optional: false, description: "The coords of the area" },
+    { arg: "modelFilter", type: "table", optional: false, description: "A table with model's that should be ignored" },
+]} />
+
+**Example**
+```lua
+local networkId, distance, closestCoords = ESX.OneSync.GetClosestObject(vector3(0,0,0), {
+    [joaat('prop_rub_boxpile_04')] = true -- joaat is a function of lua v5.4 that returns a hash
+})
+```
+
+## GetClosestVehicle
+This function will return the closest vehicle to given coords
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3", optional: false, description: "The coords of the area" },
+    { arg: "modelFilter", type: "table", optional: false, description: "A table with model's that should be ignored" },
+]} />
+
+**Example**
+```lua
+local networkId, distance, closestCoords = ESX.OneSync.GetClosestVehicle(vector3(0,0,0), {
+    [joaat('zentorno')] = true -- joaat is a function of lua v5.4 that returns a hash
+})
+```

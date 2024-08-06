@@ -1,0 +1,91 @@
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# skinchanger
+A script to get and set player clothing, accessoires and model used by `es_extended`
+**Only available on clientside**
+
+### Load the default model
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'isMale', type: 'boolean', description: 'Should the player be set to a male ped?' }, 
+]} /> 
+
+***Example**
+```lua
+--- Set the player to the default male ped (mp_m_freemode_01)
+TriggerEvent('skinchanger:loadDefaultModel', true)
+```
+
+### Load a skin
+Used to set a skin of the local player, you can also only set specific components.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'skin', type: 'table', description: 'A table containing all skin details.' }, 
+]} /> 
+
+***Example**
+```lua
+TriggerEvent('skinchanger:loadSkin', {
+    sex          = 1,
+    face         = 0,
+    skin         = 0,
+    beard_1      = 0,
+    beard_2      = 0,
+    beard_3      = 0,
+    beard_4      = 0,
+    hair_1       = 0,
+    hair_2       = 0,
+    hair_color_1 = 0,
+    hair_color_2 = 0,
+    tshirt_1     = 0,
+    tshirt_2     = 0,
+    torso_1      = 0,
+    torso_2      = 0,
+    decals_1     = 0,
+    decals_2     = 0,
+    arms         = 0,
+    pants_1      = 0,
+    pants_2      = 0,
+    shoes_1      = 0,
+    shoes_2      = 0,
+    mask_1       = 0,
+    mask_2       = 0,
+    bproof_1     = 0,
+    bproof_2     = 0,
+    chain_1      = 0,
+    chain_2      = 0,
+    helmet_1     = 0,
+    helmet_2     = 0,
+    glasses_1    = 0,
+    glasses_2    = 0,
+})
+```
+
+### Get list of existing components
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'callback', type: 'function', description: 'Callback function that will return the data' }, 
+]} /> 
+
+***Example**
+```lua
+TriggerEvent('skinchanger:getData', function(components, maxVals)
+    print(('Components => %s'):format(json.encode(components)))
+    print(('MaxVals => %s'):format(json.encode(maxVals)))
+end)
+```
+
+### Get list of existing components
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'callback', type: 'function', description: 'Callback function that will return the data' }, 
+]} /> 
+
+***Example**
+```lua
+TriggerEvent('skinchanger:getSkin', function(skin)
+    print(('%s'):format(json.encode(skin)))
+end)
+```
+

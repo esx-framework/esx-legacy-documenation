@@ -1,0 +1,250 @@
+import { Callout } from 'nextra/components';
+import { OutputTable } from "src/components/table";
+
+# Serversided Events
+This page is dedicated to the server events introduced by the es_extended script.
+
+## Event Triggers
+<Callout type="info">
+    These events can be triggered by any scripts. 
+</Callout>
+
+
+
+## Event Handlers
+<Callout type="warning">
+    These events can only be listened to and should **not** be triggered. If done eitherway **will** break scripts.
+</Callout>
+
+### esx:playerLoaded
+This event gets triggered when the player has successfully loaded / the character was chosen and loaded.
+
+**Arguments**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "The player's player id." },
+    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." },
+    { arg: "isNew", type: "boolean", description: "Is the player's character new." }
+]}/>
+
+**Example**
+```lua
+AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
+    if isNew then
+        print("The new character " .. xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+    else
+        print(xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+    end
+end)
+```
+
+### esx:playerLogout
+This event gets triggered when the player has logged out. This happens when a player used `/logout`
+
+**Arguments**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "The player's player id." }
+]}/>
+
+**Example**
+```lua
+AddEventHandler('esx:playerLogout', function (playerId)
+    print(string.format("Player %s logged out.", playerId))
+end)
+```
+
+### esx:playerDropped
+This event gets triggered when the player disconnected.
+
+**Arguments**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "The player's player id." }
+]}/>
+
+**Example**
+```lua
+AddEventHandler('esx:playerDropped', function (playerId)
+    print(string.format("Player %s disconnected out.", playerId))
+end)
+```
+
+### esx:playerLoaded
+This event gets triggered when the player has successfully loaded / the character was chosen and loaded.
+
+**Returns**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "The player's player id." },
+    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." },
+    { arg: "isNew", type: "boolean", description: "Is the player's character new." }
+]}/>
+
+```lua
+AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
+    if isNew then
+        print("The new character " .. xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+    else
+        print(xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+    end
+end)
+```
+
+### esx:playerJumping
+This event gets triggered when the player jumps. *This is a client triggered event*
+
+**Example**
+```lua 
+RegisterNetEvent('esx:playerJumping', function()
+    print("Player " .. source .. " is jumping")
+end)
+```
+
+### esx:enteringVehicle
+This event gets triggered when the player is entering a vehicle. *This is a client triggered event*
+
+**Returns**
+<OutputTable rows={[
+    { arg: "plate", type: "string", description: "The vehicle's plate." },
+    { arg: "seat", type: "number", description: "The seat the player is entering." },
+    { arg: "netId", type: "number", description: "The vehicle's net id." }
+]}/>
+
+**Example**
+```lua 
+RegisterNetEvent('esx:enteringVehicle', function(plate, seat, netId)
+    print("Player " .. source .. " is entering a vehicle with the plate: " .. plate)
+end)
+```
+
+### esx:enteringVehicleAborted
+This event gets triggered when the player has stopped entering a vehicle. *This is a client triggered event*
+
+**Example**
+```lua 
+RegisterNetEvent('esx:enteringVehicleAborted', function()
+    print("Player " .. source .. " has stopped entering vehicle")
+end)
+```
+
+### esx:enteredVehicle
+This event gets triggered when the player has succesfully entered a vehicle. *This is a client triggered event*
+
+**Returns**
+<OutputTable rows={[
+    { arg: "plate", type: "string", description: "The vehicle's plate." },
+    { arg: "seat", type: "number", description: "The seat the player has entered." },
+    { arg: "displayName", type: "string", description: "The vehicle's display name." },
+    { arg: "netId", type: "number", description: "The vehicle's net id." }
+]}/>
+
+**Example**
+```lua 
+RegisterNetEvent('esx:enteredVehicle', function(plate, seat, displayName, netId)
+    print("Player " .. source .. " has entered an " .. displayName)
+end)
+```
+
+### esx:exitedVehicle
+This event gets triggered when the player has exited a vehicle. *This is a client triggered event*
+
+**Returns**
+<OutputTable rows={[
+    { arg: "plate", type: "string", description: "The vehicle's plate." },
+    { arg: "seat", type: "number", description: "The seat the player has exited out of." },
+    { arg: "displayName", type: "string", description: "The vehicle's display name." },
+    { arg: "netId", type: "number", description: "The vehicle's net id." }
+]}/>
+
+**Example**
+```lua 
+RegisterNetEvent('esx:exitedVehicle', function(plate, seat, displayName, netId)
+    print("Player " .. source .. " has exited an " .. displayName .. " from the seat with the index: " .. seat)
+end)
+```
+
+### esx:updateWeaponAmmo
+Can be used to update weapon ammo or listen to ammo updates. *This is a client triggered event*
+
+**Returns**
+<OutputTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "ammoCount", type: "number", description: "The new weapon's ammo count." }
+]}/>
+
+**Example**
+```lua 
+RegisterNetEvent('esx:updateWeaponAmmo', function(weaponName, ammoCount)
+    print("Player " .. source .. "'s " .. weaponName .. " new ammo count is: " .. ammoCount)
+end)
+```
+
+### esx:onAddInventoryItem
+Gets triggered when an inventory item gets added.
+
+**Returns**
+<OutputTable rows={[
+    { arg: "source", type: "number", description: "The player's player id." },
+    { arg: "itemName", type: "string", description: "The item that got added." },
+    { arg: "itemCount", type: "number", description: "The amount the player now has." }
+]}/>
+
+**Example**
+```lua 
+AddEventHandler('esx:onAddInventoryItem', function(source, itemName, itemCount)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    print(xPlayer.getName() .. " received " .. itemName .. " and now has " .. itemCount)
+end)
+```
+
+### esx:onRemoveInventoryItem
+Gets triggered when an inventory item gets removed.
+
+**Returns**
+<OutputTable rows={[
+    { arg: "source", type: "number", description: "The player's player id." },
+    { arg: "itemName", type: "string", description: "The item that got removed." },
+    { arg: "itemCount", type: "number", description: "The amount the player now has." }
+]}/>
+
+**Example**
+```lua 
+AddEventHandler('esx:onRemoveInventoryItem', function(source, itemName, itemCount)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    print(xPlayer.getName() .. " lost some " .. itemName .. " and now has " .. itemCount)
+end)
+```
+
+### esx:playerSaved
+Gets triggered when a single player was saved.
+
+**Returns**
+<OutputTable rows={[
+    { arg: "source", type: "number", description: "The player's player id." },
+    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." }
+]}/>
+
+**Example**
+```lua 
+AddEventHandler('esx:playerSaved', function(source, xPlayer)
+    print(xPlayer.getName() .. " was saved.")
+end)
+```
+
+### esx:onPlayerDeath
+This event gets triggered when the player hdies
+
+**Data**
+<OutputTable isTable={true} rows={[
+    { arg: "victimCoords", type: "vector3", description: "The coords of the victim." },
+    { arg: "killerCoords", type: "vector3", description: "The coords of the killer." },
+    { arg: "distance", type: "number", description: "The distance between the victim and the killer." },
+    { arg: "killedByPlayer", type: "boolean", description: "Is the killer a player." },
+    { arg: "deathCause", type: "string", description: "The death cause." },
+    { arg: "killerServerId", type: "number", description: "The killer's server id." },
+    { arg: "killerClientId", type: "string", description: "The killer's local id." },
+]}/>
+
+**Example**
+```lua
+RegisterNetEvent('esx:onPlayerDeath', function (data)
+    print(string.format("%s was killed by %s from %s meters away.", source, data.killerServerId, data.distance))
+end)
+```

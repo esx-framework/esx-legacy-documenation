@@ -1,0 +1,92 @@
+import { Tabs } from 'nextra/components'
+
+# Updating your Scripts
+Between older versions of esx and the newer releases there have been introduced some breaking changes, including but not limited to:
+- The change of the inventory limit system to weight system
+- The change from the `esx:getSharedObject` event to the `getSharedObject` export or import in the fxmanifest.
+
+
+## Updating getSharedObject
+For the new methods to work you need to remove the old method from the script you want to update.
+And then implement either the Export or Import method to get the ESX Object.
+
+Also make sure the script starts **after** es_extended and other core resources.
+
+### Removing outdated method
+There is a difference between the outdated method on clientside and serverside.
+Below are example's how the outdated code could look like. 
+If you recognized it remove it and replace it with one of the below methods of getting the ESX Object.
+
+Make sure you remove every `ESX = nil`
+
+#### Clientside
+```lua
+ESX = nil
+
+Citizen.CreateThread(function()
+    while ESX == nil do
+        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+        Citizen.Wait(0)
+    end
+end)
+```
+
+#### Serverside
+```lua
+ESX = nil
+
+TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+```
+
+### Export method
+This is perfect if you just need the ESX Object.
+
+To use the export method you simply get it by using the export and the getSharedObject function from it:
+```lua
+ESX = exports['es_extended']:getSharedObject()
+```
+
+#### Example
+<img src= "https://i.gyazo.com/b9f7213a75deeb6db3fd97d38b64e1cc.gif"></img>
+
+### Import method
+This is basically the same as the export method but it also adds a event listener and a function that makes sure the ESX.PlayerData is up to date.
+
+To use the import method you just add the line below to the fxmanifest, either into the client, server or shared scripts:
+```lua
+'@es_extended/imports.lua'
+```
+
+#### Example
+<Tabs items={["fxmanifest.lua", "client.lua"]}>
+    <Tabs.Tab>
+    ```lua
+    fx_version 'cerulean'
+    game 'gta5'
+
+    description 'My favourite script'
+
+    shared_scripts {
+        '@es_extended/imports.lua'
+    }
+
+    server_script 'server.lua'
+    client_script 'client.lua'
+
+    dependencies {
+        'es_extended'
+    }
+    ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+    ```lua
+    OnPlayerData = function(key, val, last) -- Not needed but can be used with the Import method. Only on clientside of course!
+        print(("The data %s has been changed from %s to %s"):format(key, last, val))
+    end
+
+    RegisterCommand('test', function()
+        print(("Name: %s | Job: %s (%s)"):format(ESX.PlayerData.name, ESX.PlayerData.job.label, ESX.PlayerData.job.grade_label))
+    end, false)
+    ```
+    </Tabs.Tab>
+</Tabs>

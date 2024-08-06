@@ -1,0 +1,26 @@
+# Weapon
+All configs related to weapons as an item.
+
+### DefaultWeaponTints
+The specifies the label for the default wepaon tints for non mk2 weapons.
+
+### Weapons
+This specifies the weapons available, the label and components. This follows a specific format:
+```lua
+{
+    name = 'WEAPON_APPISTOL',
+    label = "AP Pistol",
+    ammo = {
+        label = 'round(s)',
+        hash = `AMMO_PISTOL`
+    },
+    tints = Config.DefaultWeaponTints,
+    components = {
+        { name = 'clip_default',  label = 'default Magazine',     hash = `COMPONENT_APPISTOL_CLIP_01` },
+		{ name = 'clip_extended', label = 'extended Magazine',    hash = `COMPONENT_APPISTOL_CLIP_02` },
+		{ name = 'flashlight',    label = 'flashlight',           hash = `COMPONENT_AT_PI_FLSH` },
+		{ name = 'suppressor',    label = 'suppressor',           hash = `COMPONENT_AT_PI_SUPP` },
+		{ name = 'luxary_finish', label = 'luxary Weapon Finish', hash = `COMPONENT_APPISTOL_VARMOD_LUXE` }
+    }
+}
+```

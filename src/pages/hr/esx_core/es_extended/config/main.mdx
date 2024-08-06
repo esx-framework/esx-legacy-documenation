@@ -1,0 +1,208 @@
+# Main Config
+The main config of es_extended
+
+## Functions
+### ESX.GetConfig
+```lua
+ESX.GetConfig()
+```
+This function returns the config table
+
+## Properties
+
+### Locale
+This config property should not be changed. If you want to change the locale you should set the convar `esx:locale` in your server.cfg using:
+```properties
+setr esx:locale "en" # For english
+```
+
+### Accounts
+With this config property you can specify what money accounts the player has. New accounts can be added in this format:
+```lua
+    bitcoin = {
+        label = "Bitcoin", -- The label that can be used to display it in a hud.
+        round = true -- Should it be rounded up to full numbers?
+    }
+```
+
+### StartingAccountMoney
+With this config property you can specify how much money each account should have after the player created his character.
+
+**Example**
+```lua
+StartingAccountMoney = {
+    bank = 50000, -- Give the player 50 Thousand on his bank account
+    money = 1500, -- Give the player 1500 cash.
+    black_money = 500, -- Give the player 500 Black money,
+
+    -- This can also be done with custom accounts:
+    bitcoin = 3 -- Give the player 3 bitcoins
+}
+```
+
+### StartingInventoryItems
+With this config property you can specify what items the player should have after the player created his character.
+This can be `false` if you don't want the player to receive anything. Or a table with the items and the count he should receive.
+
+**Example**
+```lua
+StartingInventoryItems = {
+    bread = 2, -- Give the player 2 bread buns
+    water = 4 -- Give the player 4 water bottles
+}
+```
+
+### DefaultSpawns
+With this config property you can specify the spawn locations the player can spawn at after creating a character. The Spawn will be picked randomly by esx.
+You can specify one spawn or multiple.
+
+**Example**
+```lua
+DefaultSpawns = { 
+	{x = 222.2027, y = -864.0162, z = 30.2922, heading = 1.0},
+	{x = 224.9865, y = -865.0871, z = 30.2922, heading = 1.0},
+	{x = 227.8436, y = -866.0400, z = 30.2922, heading = 1.0},
+	{x = 230.6051, y = -867.1450, z = 30.2922, heading = 1.0},
+	{x = 233.5459, y = -868.2626, z = 30.2922, heading = 1.0}
+}
+```
+
+### AdminGroups
+With this config property you can specify the groups that should be considered an "admin" by esx. This is used to give the player admin if he has one of the roles when creating a character.
+You can also use this by using the callback `esx:isUserAdmin`.
+
+**Example**
+```lua
+AdminGroups = {
+	['owner'] = true,
+	['sradmin'] = true,
+    ['admin'] = true,
+}
+```
+
+### EnablePaycheck
+With this config property you can specify if the player's should receive their paychecks. Set to `true` if you want to enable it and `false` to disable.
+
+### LogPaycheck
+With this config property you can specify if the paycheck's should be logged to discord through the `Paycheck` webhook. Set to `true` if you want to enable it and `false` to disable.
+
+### EnableSocietyPayouts
+With this config property you can specify if the society of the player's job should payout the paycheck. Set to `true` if you want to enable it and `false` to disable.
+
+### MaxWeight
+With this config property you can specify the Max Weight of the player without having a backpack on.
+
+### PaycheckInterval
+With this config property you can specify the interval in milliseconds the paycheck should be payed out.
+
+### EnableDebug
+With this config property you can specify if Debug Information should be logged to the console. Set to `true` if you want to enable it and `false` to disable. This should be set to `false` on a normal production server.
+
+### EnalbeDefaultInventory
+With this config property you can specify if the default build-in inventory of es_extended should be enabled. This should be set to `false` if you are using a different inventory. Set to `true` if you want to enable it and `false` to disable.
+
+### EnableWantedLevel
+With this config property you can specify if the GTA wanted level should be enabled. Set to `true` if you want to enable it and `false` to disable.
+
+### EnablePVP
+With this config property you can specify if Player vs. Player combat should be enabled on the server. Set to `true` if you want to enable it and `false` to disable.
+
+### Multichar
+This config property should normally not be touched if you are not using a multicharacter system or are using esx_multicharacter.
+If you are using a third-party multicharacter and they advise you to change this set to `true` if you want to enable it and `false` to disable.
+
+### Identity
+This config property specifies if the player's identity should be loaded(firstname, lastname, dateofbirth, sex, height). This will be also true if `Multichar` is enabled.
+Do not touch this if you don't know what you are doing.
+
+### DistanceGive
+This config property specifies what the max distance is for a player to give something to another player.
+
+### AdminLogging
+This config property specifies if certain admin commands should be logged to discord using the `UserActions` webhook. 
+Set to `true` if you want to enable it and `false` to disable.
+
+### DisableHealthRegeneration
+This config property specifies if the player should regenerate health. 
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableVehicleRewards
+This config property specifies if the player should receive weapons from being in specific vehicles(weapon in cop cars, parachute in helicopter).
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableNPCDrops
+This config property specifies if peds/npcs should drop weapons/ammo after dying.
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableDispatchServices
+This config property specifies if dispatch services(Police, Ambulance, Firetruck) should spawn after an event(Someone dying, car on fire, e.g) happens.
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableScenarios
+This config property specifies if npc scenarios should happen(Random Ambulance driving around, Helicopters, Workers at the Construction, e.g.)
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableWeaponWheel
+This config property specifies if the player's weaponwheel should be disabled.
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableAimAssist
+This config property specifies if Aim assist should be disabled (mainly for controllers).
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableVehicleSeatShuff
+This config property specifies if it should be disable for the front passenger shuffing into the driver seat if it's free.
+Set to `true` if you want to disable it and `false` to enable.
+
+### DisableDisplayAmmo
+This config property specifies if it should disable the ammunition display on the top right by GTA.
+Set to `true` if you want to disable it and `false` to enable.
+
+### RemoveHudComponents
+This config property specifies if it should disable certain parts of the player's hud.
+Set to `true` if you want to disable it and `false` to enable.
+```lua
+RemoveHudComponents       = {
+	[1] = false,  -- The player's wanted starts,
+	[2] = false,  -- The weapon icon of the current weapon.
+	[3] = false,  -- The player's cash (This is not used by ESX)
+	[4] = false,  -- The player's cash (This is not used by ESX)
+	[5] = false,  -- Gta5 default notification/message.
+	[6] = false,  -- The display on the bottom right showing the vehicles label briefly.
+	[7] = false,  -- The display showing the current area label briefly.
+	[8] = false,  -- The display on the bottom right showing the vehicles class label briefly.
+	[9] = false,  -- The display showing the current strett name briefly.
+	[10] = false, -- The help text.
+	[11] = false, -- Floating help text 1
+	[12] = false, -- Flaoting help text 2
+	[13] = false, -- Popup when money has changed (This is not used by ESX)
+	[14] = false, -- Crosshair
+	[15] = false, -- SUBTITLE_TEXT
+	[16] = false, -- Radio station menu in the car
+	[17] = false, -- Saving game icon,
+	[18] = false, -- GAME_STREAM
+	[19] = false, -- Weapon Wheel
+	[20] = false, -- The weapon stats in the weapon wheel
+	[21] = false, -- HUD_COMPONENTS
+	[22] = false, -- HUD_WEAPONS
+}
+```
+
+### SpawnVehMaxUpgrades
+This config property specifies if vehicles spawned by the admin command /car should have max upgrades.
+Set to `true` if you want to enable it and `false` to disable.
+
+### CustomAIPlates
+This config property specifies the plate pattern naturally spawned npc vehicles should have.
+- Using `1` will lead to a random number from 0-9
+- Using `A` will lead to a random letter from A-z
+- Using `.` will lead to a random letter o number.
+- Using `^1` will lead to a literal 1 being emitted.
+- Using `^A` will lead to a literal A being emitted.
+- Any other characters will lead to said character being emitted.
+- A String shorter than 8 characters will be padded on the right.
+
+**Example**
+```lua
+CustomAIPlates = "ESX-^11EA" -- Example outcome: ESX-15EG
+```

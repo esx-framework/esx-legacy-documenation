@@ -1,0 +1,493 @@
+import { Callout } from 'nextra/components';
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# PlayerData
+Different types of Player Data introduced by esx which contain information about the player and his current character.
+
+## How to get playerdata
+
+### Server
+You can get the playerdata by indexing the xPlayer object as it also contains everything(excluding client only data).
+
+### Client
+If you want to use PlayerData in your script you should use the import method to get the ESX object. 
+It automatically gets the ESX object for you and refreshes your locally saved PlayerData object.
+Read [Import method Tutorial](/en/tutorial/updating/#import-method) for further details.
+
+And can then accessed via ESX.PlayerData
+
+**Visualized example what is contained, not actual data**
+```lua
+    PlayerData = {
+        coords = vector3(0, 0, 0),
+        ped = PlayerPedId(),
+        group = "user",
+        identifier = "char1:1ee4f3096a4051f782385478ddd133f883114876",
+        inventory = {},
+        job = {},
+        loadout = {},
+        name = "Knoblauchbrot",
+        playerId = 1,
+        source = 1,
+        variables = {},
+        weight = 12,
+        maxWeight = 24,
+        metadata = {},
+        admin = false,
+        license = "license:1ee4f3096a4051f782385478ddd133f883114876",
+        dateofbirth = "01/01/2000",
+        height = 181,
+        dead = false,
+        firstName = "John",
+        lastName = "Doe",
+        sex = 0,
+        money = 187,
+        accounts = {}
+    }
+```
+
+## PlayerLoaded
+This variable returns a `bool` if the player's character has finished loading.
+
+<Callout type="warning">
+    This function only exists on the **Clientside**!
+</Callout>
+
+**Example**
+```lua 
+CreateThread(function()
+    while not ESX.PlayerLoaded do
+        Wait(1000)
+        print("Player has not loaded")
+    end
+end)
+```
+
+## PlayerData 
+
+### coords
+The player's last known coords and heading.
+
+<OutputTable isTable={true} rows={[
+    { arg: "x", type: "number", description: "The players coords on the x axis." },
+    { arg: "y", type: "number", description: "The players coords on the y axis." },
+    { arg: "z", type: "number", description: "The players coords on the z axis." },
+    { arg: "heading", type: "number", description: "The players heading." },
+]}/>
+
+**Server Example**
+```lua 
+local xPlayer = ESX.GetPlayerFromId(source)
+
+local pos = vector3(xPlayer.coords.x, xPlayer.coords.y, xPlayer.coords.z)
+if #(pos - vector3(124, 152, 26)) < 5 then
+    print("Player is in the range of 5 meters!")
+end
+```
+
+**Client Example**
+```lua 
+local pos = vector3(ESX.PlayerData.coords.x, ESX.PlayerData.coords.y, ESX.PlayerData.coords.z)
+if #(pos - vector3(124, 152, 26)) < 5 then
+    print("Player is in the range of 5 meters!")
+end
+```
+
+### ped
+The player's ped handle.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+local playerHealth = GetEntityHealth(xPlayer.ped) 
+print("player has " .. playerHealth .. " hp")
+```
+
+**Client Example**
+```lua
+local playerHealth = GetEntityHealth(ESX.PlayerData.ped) 
+print("player has " .. playerHealth .. " hp")
+```
+
+### group
+The player's group. (e.g. admin, user, vip)
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+if xPlayer.group == "admin" then
+    print("Player is an admin")
+end
+```
+
+**Client Example**
+```lua 
+if ESX.PlayerData.group == "admin" then
+    print("Player is an admin")
+end
+```
+
+### identifier
+The player's rockstar identifier with charid.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The player's identifier is: " .. xPlayer.identifier)
+```
+
+**Client Example**
+```lua 
+print("The player's identifier is: " .. ESX.PlayerData.identifier)
+```
+
+### inventory
+The player's inventory `table`. This also includes items the player doesn't have but the item count will be 0, so make sure to always check for the count.
+
+**Values**
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The item name" },
+    { arg: "count", type: "number", description: "The item count" },
+    { arg: "label", type: "string", description: "The item label" },
+    { arg: "weight", type: "number", description: "The item weight" },
+    { arg: "usable", type: "boolean", description: "Does the item have a use callback?" },
+    { arg: "rare", type: "boolean", description: "Is the item rare?" },
+    { arg: "canRemove", type: "boolean", description: "Can the item be removed?" }
+]}/>
+
+**Server Example**
+```lua 
+local xPlayer = ESX.GetPlayerFromId(source)
+
+if xPlayer.inventory["bread"].count > 0 then
+    print("The player has bread")
+end
+```
+
+**Client Example**
+```lua 
+if ESX.PlayerData.inventory["bread"].count > 0 then
+    print("The player has bread")
+end
+```
+
+### job
+The player's job `table`.
+
+**Values**
+<OutputTable isTable={true} rows={[
+    { arg: "id", type: "number", description: "The job's id from the database" },
+    { arg: "name", type: "string", description: "The job's name" },
+    { arg: "label", type: "string", description: "The job's label" },
+    { arg: "grade", type: "string", description: "The job's grade" },
+    { arg: "grade_name", type: "string", description: "The job's grade name" },
+    { arg: "grade_label", type: "string", description: "The job's grade label" },
+    { arg: "grade_salary", type: "string", description: "The job's grade salary" },
+    { arg: "skin_male", type: "table", description: "The job's male grade skin/outfit" },
+    { arg: "skin_female", type: "table", description: "The job's female grade skin/outfit" },
+]}/>
+
+**Server Example**
+```lua 
+if xPlayer.job.name == "police" then
+    print("Player is a police officer")
+```
+
+**Client Example**
+```lua 
+if ESX.PlayerData.job.name == "police" then
+    print("Player is a police officer")
+    renderMarkers() -- Just an example, does not exist by default.
+end
+```
+
+### loadout
+The player's loadout.
+
+**Values**
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The weapon's name." },
+    { arg: "ammo", type: "number", description: "The weapon's ammo." },
+    { arg: "label", type: "string", description: "The weapon's label." },
+    { arg: "components", type: "table", description: "The weapon's components." },
+    { arg: "tintIndex", type: "number", description: "The weapon's tint." },
+]}/>
+
+**Client Example**
+```lua
+for _, v in ipairs(ESX.PlayerData.loadout) do
+    local weaponName = v.name
+    local weaponHash = joaat(weaponName)
+
+    GiveWeaponToPed(ESX.PlayerData.ped, weaponHash, 0, false, false) -- Add weapon to player weaponwheel
+    SetPedWeaponTintIndex(ESX.PlayerData.ped, weaponHash, v.tintIndex) -- Set the design of the weapon
+end
+```
+
+### name
+The player's name.
+
+**Server Example**
+```lua 
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The player is called: " .. xPlayer.name)
+```
+
+
+**Client Example**
+```lua 
+print("The player is called: " .. ESX.PlayerData.name)
+```
+
+### playerId
+The player's source.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The player's server id/source': " .. xPlayer.playerId)
+```
+
+**Client Example**
+```lua 
+print("The player's server id/source': " .. ESX.PlayerData.playerId)
+```
+
+### source
+The player's source.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The player's server id/source': " .. xPlayer.source)
+```
+
+**Client Example**
+```lua 
+print("The player's server id/source': " .. ESX.PlayerData.source)
+```
+
+### variables
+The player's variables that were set by the server. Inside an `table`.
+
+Can be set via [`xPlayer.set`](/en/esx_core/es_extended/server/xplayer.mdx#set) and get via [`xPlayer.get`](/en/esx_core/es_extended/server/xplayer.mdx#get) on serverside.
+
+### weight
+The player's current weight.
+
+**Client Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The player's current weight is: " .. xPlayer.weight)
+```
+
+**Client Example**
+```lua 
+print("The player's current weight is: " .. ESX.PlayerData.weight)
+```
+
+### maxWeight
+The player's max weight
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+local holdCapacity = xPlayer.maxWeight - xPlayer.weight
+print("The player can still hold " .. holdCapacity .. "kg")
+```
+
+**Client Example**
+```lua 
+local holdCapacity = ESX.PlayerData.maxWeight - ESX.PlayerData.weight
+print("The player can still hold " .. holdCapacity .. "kg")
+```
+
+### metadata
+The player's metadata set by the server.
+
+Can be set via [`xPlayer.setMeta`](/en/esx_core/es_extended/server/xplayer.mdx#setmeta) and get via [`xPlayer.getMeta`](/en/esx_core/es_extended/server/xplayer.mdx#getmeta) on serverside.
+
+### admin
+If the player is an admin.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+if xPlayer.admin then
+    print("Player is admin")
+end
+```
+
+**Client Example**
+```lua 
+if ESX.PlayerData.admin then
+    print("Player is admin")
+end
+```
+
+### license
+The player's rockstar identifier.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The player's license is: " .. xPlayer.license)
+```
+
+**Client Example**
+```lua 
+print("The player's license is: " .. ESX.PlayerData.license)
+```
+
+### dateofbirth
+The player's character's date of birth.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The character was born on: " .. xPlayer.dateofbirth)
+```
+
+**Client Example**
+```lua 
+print("The character was born on: " .. ESX.PlayerData.dateofbirth)
+```
+
+### height
+The player's character's height.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The character's height is: " .. xPlayer.height)
+```
+
+**Client Example**
+```lua 
+print("The character's height is: " .. ESX.PlayerData.height)
+```
+
+### dead
+Is the player dead
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+if xPlayer.dead then
+    print("Player is dead")
+else
+    print("Player is alive")
+end
+```
+
+**Client Example**
+```lua 
+if ESX.PlayerData.dead then
+    print("Player is dead")
+else
+    print("Player is alive")
+end
+```
+
+### firstName
+The character's firstname.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The character is called: " .. xPlayer.firstName)
+```
+
+**Client Example**
+```lua 
+print("The character is called: " .. ESX.PlayerData.firstName)
+```
+
+### lastName
+The character's lastName.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+print("The character is called: " .. xPlayer.firstName .. " " .. xPlayer.lastName)
+```
+
+**Client Example**
+```lua 
+print("The character is called: " .. ESX.PlayerData.firstName .. " " .. xPlayer.lastName)
+```
+
+### sex
+The character's gender. `0` for male and `1` for female.
+
+**Server Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+if xPlayer.sex == 0 then
+    print("Player is male")
+elseif xPlayer.sex == 1 then
+    print("Player is female")
+end
+```
+
+**Client Example**
+```lua 
+if ESX.PlayerData.sex == 0 then
+    print("Player is male")
+elseif ESX.PlayerData.sex == 1 then
+    print("Player is female")
+end
+```
+
+### money
+The player's cash.
+
+<Callout type='info'>
+    This function only exits for backwards compatibility. You should use [accounts](#accounts) instead.
+</Callout>
+
+**Server Example**
+```lua 
+print("The player has $" .. xPlayer.money .. " cash")
+```
+
+**Client Example**
+```lua 
+print("The player has $" .. ESX.PlayerData.money .. " cash")
+```
+
+### accounts
+The player's accounts. A table
+
+**Values**
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The account name" },
+    { arg: "money", type: "number", description: "The account balance" },
+    { arg: "label", type: "string", description: "The account label" },
+]}/>
+
+**Server Example**
+```lua 
+print("The player has $" .. xPlayer.accounts.bank .. " on his bank")
+```
+
+**Client Example**
+```lua 
+print("The player has $" .. ESX.PlayerData.accounts.bank .. " on his bank")
+```

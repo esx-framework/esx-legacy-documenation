@@ -1,0 +1,84 @@
+# Annotations
+Annotations are important for linting. They help the linter to understand what a function is supposed to return, what the function does, and what the parameters are supposed to be. This helps you to find errors and potential problems in your code.
+
+This section will cover the annotation of Lua code using the Lua VSCode extension from sumneko. But only parts of it. For a full list of annotations, you can check the [Lua Language Server Documentation](https://luals.github.io/wiki/annotations/)
+
+## Function signatures
+Function signatures are important for linting. They help the linter to understand what a function is supposed to return, what the function does, and what the parameters are supposed to be. This helps you to find errors and potential problems in your code.
+
+**This is how a function signature is written in Lua:**
+```lua
+--- Comment explaining what the function does
+---@param param class/type Explanation of the parameter
+---@param param2 class/type Explanation of the parameter
+---@return class/type variableName Return result
+function functionName(param, param2)
+    -- Your code here
+    return 
+end
+```
+--
+**Here is an example of a function signature:**
+```lua
+--- Add two numbers together
+---@param num1 number The first number
+---@param num2 number The second number
+---@return number sum result of both numbers
+function addNumbers(num1, num2)
+    -- Calculate the sum of num1 and num2
+    local sum = num1 + num2
+
+    -- Return the sum
+    return sum
+end
+
+addNumbers(5, 10) -- Returns 15
+```
+
+## Classes / Custom Types
+Classes and custom types are important for linting. They help the linter to understand what a table contains and what the properties are supposed to be.
+
+**This is how a class is written in Lua:**
+```lua
+---@class ClassName
+---@field field1 class/type Description of field1
+ClassName = {
+    field1 = nil, -- Set default value
+}
+
+--- Description
+---@param param1 any
+---@param param any
+function ClassName.function(param1, param)
+    
+end
+```
+
+**Here is an example of a class:**
+```lua
+---@class ExtendedPlayer
+---@field accounts table<string, table> The accounts of the player
+---@field coords vector3 The last known position of the Player
+---@field group string The current permission group of the player
+---@field identifier string The players Rockstar Identifier(has char index with multichar in the front, example: char1:[identifier])
+---@field inventory table The players inventory
+---@field job table The players job and grade
+---@field loadout table The current weapons of the player
+---@field name string Returns the name of the FiveM name or consists out of the "firstname lastname" when ESX identity installed.
+---@field playerId number The playerId/source of a player
+---@field source number The playerId/source of a player
+---@field variables table
+---@field weight number Current player weight
+---@field maxWeight number The max weight a player can handle
+---@field metadata table Saved metadata
+---@field license string Player license
+ExtendedPlayer = {}
+
+--Returns the player's current coordinates on the server. The optional boolean useVector argument is for returning a vector3 type. 
+--Keep in mind that the coords sync interval can be adjusted in the configuration file in case you want to get precise player coords.
+---@param useVector? boolean Returns an vector3 type if set to true, and normally a table with x, y and z pairs
+---@return vector3|{x: number, y: number, z: number} coords
+function ExtendedPlayer.getCoords(useVector)
+    return coords
+end
+```

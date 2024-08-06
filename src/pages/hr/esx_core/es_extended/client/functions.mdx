@@ -1,0 +1,847 @@
+import { Callout } from 'nextra/components';
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# Functions 
+This topic includes most functions that are existing in ESX. 
+
+## IsPlayerLoaded 
+This function will return a `bool` if the player has sucessfully loaded.
+This should be checked before manipulating or checking data of the player.
+
+**Example** 
+```lua
+while not ESX.IsPlayerLoaded() do 
+    Wait(250) 
+end 
+
+print('player is loaded') 
+```
+
+## GetPlayerData
+This function simply returns ESX.PlayerData.
+
+**Example**
+```lua
+local playerData = ESX.GetPlayerData()
+
+print("The client's identifier: " .. playerData.identifier)
+```
+
+## SearchInventory 
+Can be used to check for items in the player's Inventory
+
+**Arguments** 
+<ArgumentsTable rows={[
+    { arg: 'items', type: 'string or table', description: 'A string or table containing the items.' }, 
+    { arg: 'count', type:'boolean', optional: true, defaultValue: false, description: 'Only return the count or all data' } 
+]} />
+
+**Example** 
+```lua
+local items = ESX.SearchInventory({'bread', 'water'}, true) 
+
+for key, value in pairs(items) do 
+    print(string.format(('You have %sx %s'), value, key)) 
+end 
+
+local item = ESX.SearchInventory('bread') 
+local count = item.count
+```
+
+**Output** 
+<OutputTable rows={[
+    { arg: 'usable', type: 'boolean', description: 'If the item is usable or not.' }, 
+    { arg: 'count', type: 'number', description: 'How many of the item is found.' }, 
+    { arg: 'canRemove', type: 'number', description: 'This returns 1 when it can be removed otherwise 0' }, 
+    { arg: 'label', type: 'string', description: 'The item label that is shown in the inventory.' }, 
+    { arg: 'name', type: 'string', description: 'The name of the item' }, 
+    { arg: 'rare', type: 'number', description: 'Is the item rare?' }
+]}/>
+
+## SetPlayerData
+This function you can set playerdata with.
+
+**Arguments** 
+<ArgumentsTable rows={[
+    { arg: 'key', type: 'string', description: 'The key of the playerdata.' }, 
+    { arg: 'value', type:'value', description: 'The data to be set.' } 
+]} />
+
+**Example** 
+```lua
+ESX.SetPlayerData('test', 'a nice test')
+ 
+print(ESX.PlayerData.test) -- this will print 'a nice test'
+```
+
+## Context
+ESX has a context system by default as a seperate resource. See more at [esx_context](../../esx_context.mdx)
+
+## Progressbar 
+ESX has a progress bar system by default as a seperate resource. See more at [esx_progressbar](../../esx_progressbar.mdx)
+
+## ShowNotification 
+ESX has a custom notification system as a seperate resource. See more at [esx_notify](../../esx_notify.mdx)
+
+## TextUI 
+ESX has a Text UI system by default as a seperate resource. See more at [esx_textui](../../esx_textui.mdx)
+
+## ShowAdvancedNotification
+This function will show a default GTA 5 notification 
+
+**Arguments** 
+<ArgumentsTable rows={[
+    { arg: 'sender', type: 'string', description: 'The notification title.' }, 
+    { arg: 'subject', type:'string', description: 'The notification subtitle'},
+    { arg: 'msg', type: 'string', description: 'The notification message'}, 
+    { arg: 'textureDict', type: 'string', description: 'The texture dictionary for the icon'}, 
+    { arg: 'iconType', type: 'string', description: 'The icon type, see the list below.'}, 
+    { arg: 'flash', type: 'boolean', optional: true, defaultValue: 'false', description: 'According to the fivem natives, this var never works no matter what.'},  
+    { arg: 'saveToBrief', type: 'boolean', optional: true, defaultValue: 'false', description: 'Makes the notification appear in the "Pause Menu > Info/Brief > Notifications" section.'}, 
+    { arg: 'hudColorIndex', type: 'number', optional: true, description: 'The background color for the notification.'}
+]} />
+
+**Icon types**
+1. Chat Box  
+2. Email  
+3. Add Friend Request  
+4. Nothing  
+5. Nothing  
+6. Nothing  
+7. Right Jumping Arrow  
+8. RP Icon  
+9. $ Icon 
+
+**[Hud color indexes](https://docs.fivem.net/docs/game-references/hud-colors/)**
+
+**Example** 
+```lua
+local handle = RegisterPedheadshot(PlayerPedId())
+while not IsPedheadshotReady(handle) or not IsPedheadshotValid(handle) do
+    Wait(0)
+end
+local txd = GetPedheadshotTxdString(handle)
+local title = GetPlayerName(PlayerId())
+local subtitle = 'Private Message'
+local iconType = 0
+ESX.ShowAdvancedNotification(title, subtitle, 'this is the message that we send to you', txd, iconType, false, true, 6)
+```
+
+## ShowHelpNotification
+This function shows a help notification on the top left of the screen. 
+Either needs to be ran every frame or a duration can be optionally set.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'msg', type: 'string', description: 'The message content.' }, 
+    { arg: 'thisFrame', type: 'boolean', optional: true, defaultValue: 'false', description: 'Should it only be displayed this frame.' },
+    { arg: 'beep', type: 'boolean', optional: true, defaultValue: 'false', description: 'Should it play a beep sound?' },
+    { arg: 'duration', type: 'number', optional: true, defaultValue: '-1', description: 'The duration of how long this should show.' }
+]} /> 
+
+**Example** 
+```lua
+RegisterCommand('help', function (source, args, raw)
+    ESX.ShowHelpNotification("We won't give you help, we are truly not sorry.", false, true, 3500)
+end)
+```
+
+## ShowFloatingHelpNotification 
+This function shows a floating help notification, this is needs to be ran every millisecond.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'msg', type: 'string', description: 'The floating message.' }, 
+    { arg: 'coords', type: 'vector3', description: 'The coords of where it should be displayed' }
+]} /> 
+
+**Example** 
+```lua
+local coords = vector3(0, 0, 0) 
+
+CreateThread(function() 
+    while true do
+        ESX.ShowFloatingHelpNotification('ESX is so cool', coords) 
+        Wait(0) 
+    end 
+end)
+```
+
+## HashString
+This function will turn a string into a (rockstar) hash. Which for example could be used to display a key of a custom keybind.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'str', type: 'string', description: 'The string that should be hashed.' }
+]} />
+
+**Example** 
+```lua
+RegisterCommand('howtosit', function (source, args, raw)
+    local inputMapping = string.format("~INPUT_%s~"):format(ESX.HashString("sit"))
+    ESX.ShowHelpNotification("You can sit down using "..inputMapping , false, true, 3500)
+end)
+```
+
+## RegisterInput 
+This functions registers an input.
+
+**Arguments** 
+<ArgumentsTable rows={[
+    { arg: 'command_name', type: 'string', description: 'The name of the command that should be executed.' }, 
+    { arg: 'label', type:'string', description: 'The label of the keybind.' },
+    { arg: 'input_group', type: 'string', description: 'The input group.' }, 
+    { arg: 'key', type: 'string', description: 'The key used for the keybind.' }, 
+    { arg: 'on_press', type: 'function', description: 'The function that will be executed when pressing the key.' }, 
+    { arg: 'on_release', type: 'function', optional: true, description: 'The function that will be executed when releasing the key.' }
+]} />
+
+**[Input Groups](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/)** 
+
+**Example** 
+```lua
+ESX.RegisterInput('testinput', 'Test', 'keyboard', 'f6', function()
+    print('pressed')
+end, function() 
+    print('released')
+end)  
+```
+
+## TriggerServerCallback
+
+This function trigger a previously registered server callback
+
+*See [RegisterServerCallback](../server/functions/#registerservercallback)*
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", description: "The server callback's name." },
+    { arg: "cb", type: "function", description: "The callback function passed from the server." },
+    { arg: "...", type: "arguments", description: "The callback's argument." },
+]} />
+
+
+```lua
+ESX.TriggerServerCallback('myScript:getMeme', function(cb)
+  print(cb) --output: "Meme data string"
+end)
+```
+
+## Game
+Functions that modify the client some way or another.
+
+### GetPedMugshot 
+This function takes a mugshot from given ped and returns it as a texture.
+
+**Arguments** 
+<ArgumentsTable rows={[
+    { arg: 'ped', type: 'ped object', description: 'The ped you want a mugshot from.' }, 
+    { arg: 'transparent', type:'boolean', optional: true, defaultValue: 'false', description: 'Should the picture be transparent?'} 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'mugshot', type: 'string', description: 'The mugshot' },
+    { arg: 'txd', type: 'string', description: 'The mugshot texture as base64 string'}
+]}/>
+
+**Example** 
+```lua
+local ped = PlayerPedId() 
+local mugshot, txd = ESX.Game.GetPedMugshot(ped, true)
+```
+
+### Teleport
+Teleports the given entity to the given coords and triggers the callback once finished.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'entity', type: 'entity handle', description: 'The entity to teleport.' }, 
+    { arg: 'coords', type:'vector3|vector4', description: 'The coords the entity should be teleported to.'}, 
+    { arg: 'cb', type: 'function', optional: true, description: 'The callback function that will be triggered after.'} 
+]} />
+
+**Example** 
+```lua
+local entity = PlayerPedId() 
+
+ESX.Game.Teleport(entity, vector3(0,0,0), function() 
+      print('player is teleported') 
+end)
+```
+
+### SpawnObject 
+This function will spawn an object with given model at given coords. And can be networked.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'model', type: 'string or hash', description: 'the model name or hash of the object' }, 
+    { arg: 'coords', type:'vector3', description: 'where the object needs to be spawned'}, 
+    { arg: 'cb', type:'function', optional: true, description: 'the callback function'}, 
+    { arg: 'networked', type:'boolean', optional: true, defaultValue: 'true', description: 'if the object needs to be networked or not'}
+]} />
+
+**Example** 
+```lua
+local coords = GetEntityCoords(PlayerPedId()) 
+ESX.Game.SpawnObject('prop_tool_bluepnt', coords, function() 
+  print('object is spawned') 
+end, true)
+```
+
+### SpawnLocalObject 
+This function will spawn a local object with given model at given coords.
+
+<Callout type='info'>
+    This function only exits for backwards compatibility. You should use `ESX.Game.SpawnObject(model, coords, cb, false)` instead.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'model', type: 'string | hash', description: 'The model name or hash of the object.' }, 
+    { arg: 'coords', type:'vector3', description: 'Where the object needs to be spawned.' }, 
+    { arg: 'cb', type:'function', optional: true, description: 'The callback function.' }
+]} />
+
+**Example** 
+```lua
+local coords = GetEntityCoords(PlayerPedId()) 
+ESX.Game.SpawnObject('prop_tool_bluepnt', coords, function() 
+  print('object is spawned') 
+end)
+```
+
+### DeleteVehicle 
+This function will delete given vehicle.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The vehicle that should be removed' }, 
+]} />
+
+**Example** 
+```lua
+local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
+ESX.Game.DeleteVehicle(vehicle) 
+```
+
+### DeleteObject
+This function will delete given object.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'object', type: 'number(object handle)', description: 'the object that needs to be removed' }, 
+]} />
+
+**Example** 
+```lua
+ESX.Game.DeleteObject(object) 
+```
+
+### SpawnVehicle
+This function will spawn given vehicle with given model at given coords. And can be networked.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'vehicleModel', type: 'string|hash', description: 'The model name or hash.' },
+    { arg: 'coords', type: 'vector3', description: 'Where the vehicle needs to be spawned.' }, 
+    { arg: 'heading', type: 'number', description: 'The heading of the vehicle' }, 
+    { arg: 'cb', type: 'function', description: 'The callback function' }, 
+    { arg: 'networked', type: 'boolean', description: 'If the vehicle should to be networked or local' } 
+]} />
+
+**Example** 
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+ESX.Game.SpawnVehicle('blista', coords, 0.0, function(vehicle)
+    print(vehicle) 
+end, true)  
+```
+
+### SpawnLocalVehicle
+This function will spawn given vehicle with model at given coords.
+
+<Callout type='info'>
+    This function only exits for backwards compatibility. You should use `ESX.Game.SpawnVehicle(model, coords, heading, cb, false)` instead.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'vehicleModel', type: 'string|hash', description: 'The model name or hash.' },
+    { arg: 'coords', type: 'vector3', description: 'Where the vehicle needs to be spawned.' }, 
+    { arg: 'heading', type: 'number', description: 'The heading of the vehicle' }, 
+    { arg: 'cb', type: 'function', description: 'The callback function.' }, 
+]} />
+
+**Example** 
+```lua
+ESX.Game.SpawnLocalVehicle('blista', coords, 0.0, function(vehicle)
+    print(vehicle) 
+end)  
+```
+
+### IsVehicleEmpty
+This function will return a `boolean` if the vehicle is empty.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The vehicle you want to check' }, 
+]} />
+
+**Example** 
+```lua
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), true) 
+    local isEmpty = ESX.Game.IsVehicleEmpty(vehicle)
+
+    if isEmpty then
+        print('Vehicle is empty!')
+    end
+```
+
+### GetObjects
+Returns all objects the client has currently loaded.
+
+<Callout type='info'>
+    This function only exits for backwards compatibility. You could use `GetGamePool('CObject')` instead.
+</Callout>
+
+**Example** 
+```lua
+local objects = ESX.Game.GetObjects() 
+
+for i=1, #objects do 
+    local object = objects[i] 
+end 
+```
+
+
+### GetPeds
+Returns all peds the client has currently loaded.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'onlyOtherPeds', type: 'boolean', description: 'Should the own ped be filtered out?' }, 
+]} />
+
+**Example** 
+```lua
+local objects = ESX.Game.GetPeds(true) 
+
+print('We found ' .. #objects .. ' peds other then you!')
+```
+
+### GetVehicles
+Returns all vehicles the client has loaded.
+
+<Callout type='info'>
+    This function only exits for backwards compatibility. You could use `GetGamePool('CVehicle')` instead.
+</Callout>
+
+**Example** 
+```lua
+local vehicles = ESX.Game.GetVehicles() 
+
+for i=1, #vehicles do
+    local vehicle = vehicles[i] 
+end 
+```
+
+### GetPlayers
+Returns all players the client has currently loaded.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'onlyOtherPlayers', type: 'boolean', description: 'Should the own player be filtered out?' }, 
+    { arg: 'returnKeyValue', type: 'boolean', description: "Should the key be the player's id" }, 
+    { arg: 'returnPeds', type: 'boolean', optional: true, defaultValue: 'false', description: 'Should the value be the ped? Otherwise player id. (Value always ped with `returnKeyValue` true)' }, 
+]} />
+
+### GetClosestEntity
+Returns the closest entity's handle and distance to the object in the given table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'entities', type: 'table', description: 'The entities to filter through' }, 
+    { arg: 'isPlayerEntities', type: 'boolean', description: 'Is the table filled with players?' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'filter', type: 'table', description: 'Only look for specific value (model / player id)' }, 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'closestObject', type: 'number(object handle)', description: 'The handle of the closest object.' }, 
+    { arg: 'closestObjectDistance', type: 'number', description: 'The distance to the object.' }
+]}/>
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestObject, distance = ESX.Game.GetClosestObject(coords, {
+    ["prop_weed_01"] = true,
+    ["prop_weed_02"] = true,
+})
+```
+
+### GetClosestObject
+Returns the closest object's handle and distance to the object.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'closestObject', type: 'number(object handle)', description: 'The handle of the closest object.' }, 
+    { arg: 'closestObjectDistance', type: 'number', description: 'The distance to the object.' }
+]}/>
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestObject, distance = ESX.Game.GetClosestObject(coords, {
+    ["prop_weed_01"] = true,
+    ["prop_weed_02"] = true,
+})
+```
+
+### GetClosestPed
+Returns the closest ped's handle and distance to the ped.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'closestPed', type: 'number(ped handle)', description: 'The handle of the closest ped.' }, 
+    { arg: 'closestPedDistance', type: 'number', description: 'The distance to the ped.' }
+]}/>
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestPed, distance = ESX.Game.GetClosestPed(coords, {
+    ["a_f_m_beach_01"] = true,
+    ["a_m_y_hipster_02"] = true,
+})
+```
+
+### GetClosestPlayer
+Returns the closest player's id and distance to the player.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'closestPed', type: 'number(ped handle)', description: 'The player id of the closest player.' }, 
+    { arg: 'closestPedDistance', type: 'number', description: 'The distance to the player.' }
+]}/>
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestPlayer, distance = ESX.Game.GetClosestPlayer(coords, {
+    [5] = true,
+    [9] = true,
+})
+```
+
+### GetClosestVehicle
+Returns the closest vehicle's handle and distance to the vehicle.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'closestVehicle', type: 'number(ped handle)', description: 'The handle of the closest vehicle.' }, 
+    { arg: 'closestVehicleDistance', type: 'number', description: 'The distance to the vehicle.' }
+]}/>
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestVehicle, distance = ESX.Game.GetClosestVehicle(coords, {
+    ["t20"] = true,
+    ["zentorno"] = true,
+})
+```
+
+### GetPlayersInArea
+Returns all players in specified radius.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'The radius to search in.' }, 
+]} />
+
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local playersInArea = ESX.Game.GetPlayersInArea(coords, 20)
+
+print('Found ' .. #playersInArea .. ' player in area')
+```
+
+### GetVehiclesInArea
+Returns all vehicles in speicified radius.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'The radius to search in.' }, 
+]} />
+
+**Example**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local vehiclesInArea = ESX.Game.GetVehiclesInArea(coords, 20)
+
+print('Found ' .. #vehiclesInArea .. ' vehicles in area')
+```
+
+### IsSpawnPointClear
+Returns a `boolean` saying if the given space is clear of other vehicles.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'The radius to search in.' }, 
+]} />
+
+**Example**
+```lua
+RegisterCommand('spawnCoolVehicle', function()
+    local ped = PlayerPedId()
+    local coords = GetEntityCoords(ped)
+    local heading = GetEntityHeading(ped)
+
+    if ESX.Game.IsSpawnPointClear(coords, 10) then
+        ESX.Game.SpawnVehicle('t20', coords, heading, function(vehicle)
+            print(vehicle) 
+        end, true)  
+    end
+end)
+```
+
+### GetVehicleInDirection
+Returns vehicle in front of player.
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The handle of the vehicle.' }, 
+    { arg: 'coords', type: 'number', description: 'The coords of the vehicle.' }
+]}/>
+
+
+**Example**
+```lua
+local vehicle, coords = ESX.Game.GetVehicleInDirection()
+
+if vehicle then
+    print('Vehicle found!')
+    print('It has ' .. GetEntityHealth(vehicle) .. ' health!')
+end
+```
+
+### GetVehicleProperties
+Returns different properties about the given vehicle.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The handle of the vehicle.' }, 
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'model', type: 'string', description: 'The model of the vehicle.' }, 
+    { arg: 'doorsBroken', type: 'table', description: 'The vehicle doors and if they are broken.' },
+    { arg: 'windowsBroken', type: 'table', description: 'The vehicle windows and if they are broken.' },
+    { arg: 'tyreBurst', type: 'table', description: 'The vehicle tyres and if they are broken.' },
+    { arg: 'tyresCanBurst', type: 'boolean', description: 'Can the tyres burst?' },
+    { arg: 'plate', type: 'string', description: 'The vehicle plate.' },
+    { arg: 'plateIndex', type: 'number', description: "The vehicle's plate index/skin." },
+
+    { arg: 'bodyHealth', type: 'number', description: "The vehicle's body health." },
+    { arg: 'engineHealth', type: 'number', description: "The vehicle's engine health." },
+    { arg: 'tankHealth', type: 'number', description: "The vehicle's tank health." },
+
+    { arg: 'fuelLevel', type: 'number', description: "The vehicle's fuel." },
+    { arg: 'dirtLevel', type: 'number', description: "The vehicle's first level." },
+    { arg: 'color1', type: 'number', description: "The vehicle's primary color." },
+    { arg: 'color2', type: 'number', description: "The vehicle's secondary color." },
+    { arg: 'customPrimaryColor', type: 'number', description: "The vehicle's custom secondary color." },
+    { arg: 'customSecondaryColor', type: 'number', description: "The vehicle's custom secondary color." },
+
+    { arg: 'pearescentColor', type: 'number', description: "The vehicle's perlescent color." },
+    { arg: 'wheelColor', type: 'number', description: "The vehicle's wheel color." },
+
+    { arg: 'dashboardColor', type: 'number', description: "The vehicle's dashboard color" },
+    { arg: 'interiorColor', type: 'number', description: "The vehicle's interior color." },
+
+    { arg: 'wheels', type: 'number', description: 'The wheel type of the vehicle.' },
+    { arg: 'windowTint', type: 'number', description: 'The window tint of the vehicle.' },
+    { arg: 'xenonColor', type: 'number', description: "The vehicle's xenon lights color." },
+    { arg: 'customXeconColor', type: 'number', description: "The vehicle's custom xenon lights color." },
+
+    { arg: 'neonEnabled', type: 'boolean', description: 'Does the vehicle have neons?' },
+
+    { arg: 'neonColor', type: 'table', description: "The color of the vehicle's neons" },
+    { arg: 'extras', type: 'table', description: 'The extras of the vehicle' },
+    { arg: 'tyreSmokeColor', type: 'table', description: 'The color of the tyre smoke' },
+
+    { arg: 'modSpoilers', type: 'number', description: '' },
+    { arg: 'modFrontBumper', type: 'number', description: '' },
+    { arg: 'modRearBumper', type: 'number', description: '' },
+    { arg: 'modSideSkirt', type: 'number', description: '' },
+    { arg: 'modExhaust', type: 'number', description: '' },
+    { arg: 'modFrame', type: 'number', description: '' },
+    { arg: 'modGrille', type: 'number', description: '' },
+    { arg: 'modHood', type: 'number', description: '' },
+    { arg: 'modFender', type: 'number', description: '' },
+    { arg: 'modRightFender', type: 'number', description: '' },
+    { arg: 'modRoof', type: 'number', description: '' },
+    { arg: 'modRoofLivery', type: 'number', description: '' },
+
+    { arg: 'modEngine', type: 'number', description: '' },
+    { arg: 'modBrakes', type: 'number', description: '' },
+    { arg: 'modTransmisson', type: 'number', description: '' },
+    { arg: 'modHorns', type: 'number', description: '' },
+    { arg: 'modSuspension', type: 'number', description: '' },
+    { arg: 'modArmor', type: 'number', description: '' },
+
+    { arg: 'modTurbo', type: 'number', description: '' },
+    { arg: 'modSmokeEnabled', type: 'number', description: '' },
+    { arg: 'modXenon', type: 'number', description: '' },
+
+    { arg: 'modFrontWheels', type: 'number', description: '' },
+    { arg: 'modCustomFrontWheels', type: 'number', description: '' },
+    { arg: 'modBackWheels', type: 'number', description: '' },
+    { arg: 'modCustomBackWheels', type: 'number', description: '' },
+
+    { arg: 'modPlateHolder', type: 'number', description: '' },
+    { arg: 'modVanityPlate', type: 'number', description: '' },
+    { arg: 'modTrimA', type: 'number', description: '' },
+    { arg: 'modOrnaments', type: 'number', description: '' },
+    { arg: 'modDashboard', type: 'number', description: '' },
+    { arg: 'modDial', type: 'number', description: '' },
+    { arg: 'modDoorSpeaker', type: 'number', description: '' },
+    { arg: 'modSeats', type: 'number', description: '' },
+    { arg: 'modSteeringWheel', type: 'number', description: '' },
+    { arg: 'modShifterLeavers', type: 'number', description: '' },
+    { arg: 'modAPlate', type: 'number', description: '' },
+    { arg: 'modSpeakers', type: 'number', description: '' },
+    { arg: 'modTrunk', type: 'number', description: '' },
+    { arg: 'modHydrolic', type: 'number', description: '' },
+    { arg: 'modEngineBlock', type: 'number', description: '' },
+    { arg: 'modAirFilter', type: 'number', description: '' },
+    { arg: 'modStruts', type: 'number', description: '' },
+    { arg: 'modArchCover', type: 'number', description: '' },
+    { arg: 'modAerials', type: 'number', description: '' },
+    { arg: 'modTrimB', type: 'number', description: '' },
+    { arg: 'modTank', type: 'number', description: '' },
+    { arg: 'modWindows', type: 'number', description: '' },
+    { arg: 'modLivery', type: 'number', description: '' },
+    { arg: 'modLightbar', type: 'number', description: '' },
+]}/>
+
+**Example**
+```lua
+local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
+local properties = ESX.Game.GetVehicleProperties(vehicle)
+
+print("The vehicle has " .. #properties.doorsBroken .. " doors broken.")
+```
+
+### SetVehicleProperties
+This function sets properties to the vehicle.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The handle of the vehicle.' }, 
+    { arg: 'props', type: 'table', description: "The property as key and value as the key's value." }, 
+]} />
+
+**Example**
+```lua
+local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
+ESX.Game.SetVehicleProperties(vehicle, {
+    ["plate"] = "ABCD1234",
+    ["fuelLevel"] = 100.0
+})
+```
+
+### DrawText3D
+This function draws a 3D Text
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', description: 'The coords of where it should be displayed.' }, 
+    { arg: 'text', type: 'string', description: 'Text that should be displayed.' }, 
+    { arg: 'size', type: 'string', optional: true, defaultValue: '1', description: 'What size the 3D Text should have' }, 
+    { arg: 'font', type: 'string', optional: true, defaultValue: '0', description: 'The font it should have (ID)' }, 
+]} />
+
+**Example**
+```lua
+CreateThread(function()
+    while true do
+        local coords = GetEntityCoords(PlayerPedId())
+        ESX.Game.Utils.DrawText3D(coords, "This person is a really cool guy")
+        Wait(0)
+    end
+end)
+```
+
+## GetAccount
+Returns the player's specified account
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'account', type: 'string', description: 'The account name.' }
+]} />
+
+**Example**
+```lua
+local account = ESX.GetAccount('money')
+
+print("The client has " .. account.money .. ' currently in his purse!')
+```
+
+## ShowInventory
+Opens the player's inventory. (Default es_extended inventory)
+
+## GetVehicleType
+Returns the vehicle type of the given model.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'model', type: 'string|hash', description: "The vehicle's model." }
+]} />
+
+**Returns**
+<OutputTable rows={[
+    { arg: 'vehicleType', type: 'string', description: 'The type of the vehicle.' }, 
+]}/>
+
+**Vehicle Types**
+- bike
+- trailer
+- bike
+- boat
+- heli
+- plane
+- train

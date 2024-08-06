@@ -1,0 +1,63 @@
+import { ArgumentsTable } from 'src/components/table';
+
+# esx_progressbar 
+The Progress bar system used by `es_extended`
+**Only available on clientside**
+
+### ESX.Progressbar
+
+**Arguments** 
+<ArgumentsTable rows={[
+    { arg: 'text', type: 'string', description: 'The text on the progressbar.' }, 
+    { arg: 'length', type:'number', description: 'The lenght of the progressbar in ms' }, 
+    { arg: 'Options', type:'table', description: 'The progressbar options' } 
+]} />
+
+***Options table*** 
+<ArgumentsTable isTable='true' rows={[
+    { arg: 'animation', type: 'table', description: 'A table with animation data' }, 
+    { arg: 'FreezePlayer', type:'boolean', description: 'Should the player be frozen?' }, 
+    { arg: 'onFinish', type:'function', description: 'A function that will be executed on finish' }, 
+    { arg: 'onCancel', type:'function', optional: true, description: 'A function that will be executed on cancel' }
+]} />
+
+***Animation table***
+<ArgumentsTable isTable='true' rows={[
+    { arg: 'type', type: 'string', description: 'anim or scenario' }, 
+    { arg: 'lib', type:'string', description: 'The animation lib' }, 
+    { arg: 'dict', type:'string', description: 'The animation dict' } 
+]} />
+
+**ESX Example**
+```lua
+ESX.Progressbar('test', 25000,{
+    FreezePlayer = false, 
+    animation ={
+        type = 'anim',
+        dict = 'mini@prostitutes@sexlow_veh', 
+        lib ='low_car_sex_to_prop_p2_player' 
+    }, 
+    onFinish = function()
+        -- Code that should run when finished
+    end, onCancel = function() 
+        -- Code that should run when progressbar was cancelled
+    end
+})
+```
+
+**Export Example**
+```lua
+exports['esx_progressbar']:Progressbar('test', 25000, {
+    FreezePlayer = false, 
+    animation ={
+        type = 'anim',
+        dict = 'mini@prostitutes@sexlow_veh', 
+        lib ='low_car_sex_to_prop_p2_player' 
+    }, 
+    onFinish = function()
+        -- Code that should run when finished
+    end, onCancel = function() 
+        -- Code that should run when progressbar was cancelled
+    end
+})
+```

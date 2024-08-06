@@ -1,0 +1,34 @@
+# esx_identity
+A script that allows the player to pick their characters name, gender, height and date of birth. Used by `es_extended`
+
+### Show Identity registration menu
+Show the identity registration menu
+
+**Example**
+```lua
+TriggerEvent("esx_identity:showRegisterIdentity")
+```
+
+### Listen to when a player completed the identity registration
+Listen to when a player completed the identity registration. Server Only
+
+**Arguments**
+<ArgumentsTable rows={[
+  { arg: 'data', type: 'table', description: 'The information of the registered identity.' }
+]} />
+
+***data***
+<ArgumentsTable rows={[
+  { arg: 'firstname', type: 'string', description: 'The first name of the player.' },
+  { arg: 'lastname', type: 'string', description: 'The last name of the player.' },
+  { arg: 'dateofbirth', type: 'string', description: 'The date of birth of the player.' },
+  { arg: 'sex', type: 'string', description: 'The sex of the player. Either m for male or f for female' },
+  { arg: 'height', type: 'number', description: 'The height of the player.' },
+]}/>
+
+**Example**
+```lua
+AddEventHandler("esx_identity:completedRegistration", function(source, data)
+  print("Player with source " .. source .. " has registered their identity. And is called " .. data.firstname .. " " .. data.lastname)
+end)
+```

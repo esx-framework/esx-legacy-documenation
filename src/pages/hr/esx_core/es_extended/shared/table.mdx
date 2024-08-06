@@ -1,0 +1,193 @@
+import { ArgumentsTable } from "src/components/table";
+
+## Table
+
+### DumpTable
+This function dumps the given table to a readable string with a tree structure.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "weaponComponent", type: "string", description: "The weapon component." },
+]}/>
+
+**Example**
+```lua
+local myTable = { {esx = 'awesome'} }
+local dumpedTable = ESX.DumpTable(myTable)
+
+print(dumpedTable)
+```
+
+### SizeOf
+This returns the size of a table. This is a nil proof version to #table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+]}/>
+
+### Set
+This function sets all values of the table to true.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+]}/>
+
+### IndexOf
+This function returns the index with the value that matches the supplied value in the table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "value", type: "any", description: "Value to search for." },
+]}/>
+
+### LastIndexOf
+This function returns the last index with the value that matches the supplied value in the table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "value", type: "any", description: "Value to search for." },
+]}/>
+
+### Find
+This function loops through the specified table and triggers the callback with the found item every time, if the callback returns true the item will be returned.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "cb", type: "function", description: "The callback." },
+]}/>
+
+### FindIndex
+This function loops through the specified table and triggers the callback with the found item every time, if the callback returns true the index gets returned.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "cb", type: "function", description: "The callback." },
+]}/>
+
+### Filter
+This function loops through the specified table and triggers the callback on each item, if the callback returns true it will be kept and later returned in the new table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "cb", type: "function", description: "The callback." },
+]}/>
+
+### Map
+This function loops through the specified table and triggers the callback on each item, the returned value of the callback will be added to a table and later returnd.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "cb", type: "function", description: "The callback." },
+]}/>
+
+
+### Reverse
+This function loops through the specified table from the end and triggers the callback on each item, the returned value of the callback will be added to a table and later returnd.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "cb", type: "function", description: "The callback." },
+]}/>
+
+### Clone
+Clones the table
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." }
+]}/>
+
+### Concat
+Concats two tables, making them one table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table1", type: "table", description: "The first table." },
+    { arg: "table2", type: "table", description: "The second table." },
+]}/>
+
+**Example**
+```lua
+local firstTable = {
+    "the",
+    "best"
+}
+
+local secondTable = {
+    "framework",
+    "is",
+    "esx"
+}
+
+local concattedTable = ESX.Table.Concat(firstTable, secondTable)
+
+print(ESX.DumpTable(concattedTable))
+```
+
+### Join
+Joints the values of the tables into a string seperating them with the specified seperator
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "seperator", type: "table", optional: true, defaultValue: ",", description: "The seperator." },
+]}/>
+
+**Example**
+```lua
+local myTable = {
+    "the",
+    "best",
+    "framework",
+    "is",
+    "esx"
+}
+
+print(ESX.Table.Join(myTable, " "))
+```
+
+### TableContains
+Returns if table contains specified value.
+
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "value", type: "any", description: "The value to check for." },
+]}/>
+
+**Example**
+```lua
+local myTable = {
+    "who",
+    "do",
+    "we",
+    "call?"
+}
+
+local containsGhostbusters = ESX.Table.TableContains(myTable, "Ghostbusters")
+
+if containsGhostbusters then
+    print("We sadly can't call the Ghostbusters :(")
+end
+```
+
+### Sort
+Sorts the table, custom sorting alogrithm can also be specified.
+[Check this for more information](https://stackoverflow.com/a/15706820)
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "table", type: "table", description: "The table." },
+    { arg: "order", type: "function", optional: true, description: "Function to handle the sorting." },
+]}/>
