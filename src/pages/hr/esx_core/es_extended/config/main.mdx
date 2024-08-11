@@ -1,62 +1,63 @@
-# Main Config
-The main config of es_extended
+# Glavni Config
+Glavni config es_extended-a
 
-## Functions
+## Funkcije
 ### ESX.GetConfig
 ```lua
 ESX.GetConfig()
 ```
-This function returns the config table
+Ova funkcija povlaći tablu Configa
 
-## Properties
+## Svojstva
 
 ### Locale
-This config property should not be changed. If you want to change the locale you should set the convar `esx:locale` in your server.cfg using:
+Ovo se nebi trebalo mjenjat. Ako hoćeš promjenit prijevod, setaj convar `esx:locale` u server.cfg:
 ```properties
-setr esx:locale "en" # For english
+setr esx:locale "en" # za engleski
 ```
 
 ### Accounts
-With this config property you can specify what money accounts the player has. New accounts can be added in this format:
+Sa ovim možeš specifirati koje novčane račune igrać ima. Nove račune možeš praviti u ovom formatu:
 ```lua
     bitcoin = {
-        label = "Bitcoin", -- The label that can be used to display it in a hud.
-        round = true -- Should it be rounded up to full numbers?
+        label = "Bitcoin", -- Naziv.
+        round = false -- Hoće biti zaokruživano?
     }
 ```
 
 ### StartingAccountMoney
-With this config property you can specify how much money each account should have after the player created his character.
+Sa ovim određuješ koliko će novca imati igrač u svakom računu kad kreira karaktera.
 
-**Example**
+**Primjer**
 ```lua
 StartingAccountMoney = {
-    bank = 50000, -- Give the player 50 Thousand on his bank account
-    money = 1500, -- Give the player 1500 cash.
-    black_money = 500, -- Give the player 500 Black money,
+    bank = 50000, -- Daje igraću 50k na bankovni račun
+    money = 1500, -- Daje igraću 1.5k casha
+    black_money = 500, -- Daje igraću 500 prljavog casha,
 
-    -- This can also be done with custom accounts:
-    bitcoin = 3 -- Give the player 3 bitcoins
+    -- Ovo se može napraviti i sa custom računima:
+    bitcoin = 3 -- daje igraću 3 bitkoina
 }
 ```
 
 ### StartingInventoryItems
-With this config property you can specify what items the player should have after the player created his character.
-This can be `false` if you don't want the player to receive anything. Or a table with the items and the count he should receive.
+Sa ovim određuješ koje iteme će igrać imati kad kreira karaktera.
+Ovo može biti `false` ako želiš da igrać ne dobije ništa. Ili tabla sa itemima i količinom.
 
-**Example**
+**Primjer**
 ```lua
 StartingInventoryItems = {
-    bread = 2, -- Give the player 2 bread buns
-    water = 4 -- Give the player 4 water bottles
+    kruh = 2, -- daje igraću 2 kruha
+    voda = 4, -- daje igraću 4 vode
+	fontele = 1 -- daje igraću radilicu fon
 }
 ```
 
 ### DefaultSpawns
-With this config property you can specify the spawn locations the player can spawn at after creating a character. The Spawn will be picked randomly by esx.
-You can specify one spawn or multiple.
+Sa ovim određuješ gdje će se igrać spawnati kad napravi karaktera.
+Možeš odrediti 1 spawn ili više spawnova koji će biti random.
 
-**Example**
+**Primjer**
 ```lua
 DefaultSpawns = { 
 	{x = 222.2027, y = -864.0162, z = 30.2922, heading = 1.0},

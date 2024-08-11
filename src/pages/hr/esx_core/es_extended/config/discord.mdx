@@ -1,23 +1,23 @@
 import { Callout } from 'nextra/components';
 
-# Discord Logging Config
+# Discord Logovi
 <Callout type="warning">
-    Logging to discord is inefficient and should not be used on larger scale servers.
-    Also keep in mind if you log to much in a short time span the webhook might get rate limited for a while by Discord.
-    So try looking at options like Datadog or Grafana.
+    Discord logovi su neučinkoviti i nebih se trebali koristiti pogotovo na većim serverima.
+    Zapamti ako logovi budu spamali da će biti ogranićeni od discorda privremeno.
+    Bolja platforma za logove su Datadog ili Grafana.
 </Callout>
 
-### Webhooks
-This specifies the webhooks for specific functions. You can also add your own webhooks here.
-- default (Logging for everything that doesn't have a specific group)
-- test (Logging for testing purposes)
-- Chat (Logging of the ingame chat)
-- UserActions (Commands ran by players)
-- Resources (Logging for resources)
-- Paycheck (Logging the playcheck if enabled)
+### Webhookovi
+Ovo određuje webhookove u različite kategorije. Možeš dodavat svoje kategorije.
+- default (Logovi za sve šta nema posebnu kategoriju)
+- test (Logovi za testiranje)
+- Chat (Logovi chata)
+- UserActions (Komande koje admini i igraći koriste)
+- Resources (Logovi resursa)
+- Paycheck (Logovi za platu ako je uključena)
 
-Adding your own webhook:
-**Example**
+Dodavanje custom webhook kategorije:
+**Primjer**
 ```lua
 Webhooks = {
     default = '',
@@ -26,10 +26,10 @@ Webhooks = {
     UserActions = '',
     Resources = '',
     Paycheck = '',
-    Police = '' -- My custom webhook for logging my custom police actions
+    Police = '' -- Moj custom webhook za policiju
 },
 ```
 
-### Colors
-This specifies the colors that can be used by the logs. You can also add your own colors here. Make sure to use the "Decimal value" of the colors.
-For help you can use this website: [spycolor.com](https://www.spycolor.com/)
+### Boje
+Ovo specificira boju logova. Možeš dodavat svoje boje. Koristi "Decimal value" boja.
+Pomoć možeš naći na ovoj stranici: [spycolor.com](https://www.spycolor.com/)

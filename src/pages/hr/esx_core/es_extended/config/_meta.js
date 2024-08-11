@@ -1,5 +1,5 @@
 export default {
-  main: "Main",
+  main: "Glavno",
   discord: "Discord",
-  weapon: "Weapon",
+  weapon: "Oružje",
 };

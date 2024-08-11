@@ -227,130 +227,130 @@ ESX.TriggerServerCallback('moja_skripta:povuci_nesto', function(cb)
 end)
 ```
 
-## Game
-Functions that modify the client some way or another.
+## Igra
+Funkcije koje modificiraju klijenta.
 
 ### GetPedMugshot 
-This function takes a mugshot from given ped and returns it as a texture.
+Ova funkcija uzima mugshot sliku nekog peda i vraća ju kao teksturu.
 
-**Arguments** 
+**Argumenti** 
 <ArgumentsTable rows={[
-    { arg: 'ped', type: 'ped object', description: 'The ped you want a mugshot from.' }, 
-    { arg: 'transparent', type:'boolean', optional: true, defaultValue: 'false', description: 'Should the picture be transparent?'} 
+    { arg: 'ped', type: 'ped object', description: 'Ped od kojeg tražiš mugshot.' }, 
+    { arg: 'transparent', type:'boolean', optional: true, defaultValue: 'false', description: 'Hoće slika biti transparentna?'} 
 ]} />
 
-**Returns**
+**Vraćanja**
 <OutputTable rows={[
-    { arg: 'mugshot', type: 'string', description: 'The mugshot' },
-    { arg: 'txd', type: 'string', description: 'The mugshot texture as base64 string'}
+    { arg: 'mugshot', type: 'string', description: 'Mugshot slika' },
+    { arg: 'txd', type: 'string', description: 'Mugshot slika kao base64 string'}
 ]}/>
 
-**Example** 
+**Primjer** 
 ```lua
 local ped = PlayerPedId() 
 local mugshot, txd = ESX.Game.GetPedMugshot(ped, true)
 ```
 
 ### Teleport
-Teleports the given entity to the given coords and triggers the callback once finished.
+Teleportira neki entity na date kordinate i poziva callback kad završi.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'entity', type: 'entity handle', description: 'The entity to teleport.' }, 
-    { arg: 'coords', type:'vector3|vector4', description: 'The coords the entity should be teleported to.'}, 
-    { arg: 'cb', type: 'function', optional: true, description: 'The callback function that will be triggered after.'} 
+    { arg: 'entity', type: 'entity handle', description: 'Entity za teleportaciju.' }, 
+    { arg: 'coords', type:'vector3|vector4', description: 'Kordinate za teleport.'}, 
+    { arg: 'cb', type: 'function', optional: true, description: 'Callback funkcija koja će se izvršiti nakon šta ga teleportira.'} 
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
 local entity = PlayerPedId() 
 
 ESX.Game.Teleport(entity, vector3(0,0,0), function() 
-      print('player is teleported') 
+    print('igrač je teleportiran') 
 end)
 ```
 
 ### SpawnObject 
-This function will spawn an object with given model at given coords. And can be networked.
+Funkcija koja spawna određeni model na neke kordinate. Može biti networked
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'model', type: 'string or hash', description: 'the model name or hash of the object' }, 
-    { arg: 'coords', type:'vector3', description: 'where the object needs to be spawned'}, 
-    { arg: 'cb', type:'function', optional: true, description: 'the callback function'}, 
-    { arg: 'networked', type:'boolean', optional: true, defaultValue: 'true', description: 'if the object needs to be networked or not'}
+    { arg: 'model', type: 'string or hash', description: 'Ime modela ili hash modela' }, 
+    { arg: 'coords', type:'vector3', description: 'kordinate za spawn'}, 
+    { arg: 'cb', type:'function', optional: true, description: 'callback funkcija'}, 
+    { arg: 'networked', type:'boolean', optional: true, defaultValue: 'true', description: 'hoće li objekt biti networked ili local'}
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
 local coords = GetEntityCoords(PlayerPedId()) 
 ESX.Game.SpawnObject('prop_tool_bluepnt', coords, function() 
-  print('object is spawned') 
+    print('objekt spawnan uspješno') 
 end, true)
 ```
 
 ### SpawnLocalObject 
-This function will spawn a local object with given model at given coords.
+Ova funkcija spawna objekt samo za klijenta koji izvršava funkciju.
 
 <Callout type='info'>
-    This function only exits for backwards compatibility. You should use `ESX.Game.SpawnObject(model, coords, cb, false)` instead.
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebao bi koristiti `ESX.Game.SpawnObject(model, coords, cb, false)` umjesto ovog.
 </Callout>
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'model', type: 'string | hash', description: 'The model name or hash of the object.' }, 
-    { arg: 'coords', type:'vector3', description: 'Where the object needs to be spawned.' }, 
-    { arg: 'cb', type:'function', optional: true, description: 'The callback function.' }
+    { arg: 'model', type: 'string | hash', description: 'Ime modela ili hash modela.' }, 
+    { arg: 'coords', type:'vector3', description: 'Kordinate za spawn.' }, 
+    { arg: 'cb', type:'function', optional: true, description: 'Callback funkcija.' }
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
 local coords = GetEntityCoords(PlayerPedId()) 
 ESX.Game.SpawnObject('prop_tool_bluepnt', coords, function() 
-  print('object is spawned') 
+    print('objekt je spawnan') 
 end)
 ```
 
 ### DeleteVehicle 
-This function will delete given vehicle.
+Ova funkcija briše zadano vozilo.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The vehicle that should be removed' }, 
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo koje hoćete obrisati' }, 
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
 local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
 ESX.Game.DeleteVehicle(vehicle) 
 ```
 
 ### DeleteObject
-This function will delete given object.
+Ova funkcija briše zadan objekt.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'object', type: 'number(object handle)', description: 'the object that needs to be removed' }, 
+    { arg: 'object', type: 'number(object handle)', description: 'Objekt koji hoćete obrisati' }, 
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
 ESX.Game.DeleteObject(object) 
 ```
 
 ### SpawnVehicle
-This function will spawn given vehicle with given model at given coords. And can be networked.
+Ova funkcija spawna zadano vozilo na zadanu lokaciju. Može biti networked.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'vehicleModel', type: 'string|hash', description: 'The model name or hash.' },
-    { arg: 'coords', type: 'vector3', description: 'Where the vehicle needs to be spawned.' }, 
-    { arg: 'heading', type: 'number', description: 'The heading of the vehicle' }, 
-    { arg: 'cb', type: 'function', description: 'The callback function' }, 
-    { arg: 'networked', type: 'boolean', description: 'If the vehicle should to be networked or local' } 
+    { arg: 'vehicleModel', type: 'string|hash', description: 'Ime modela ili hash modela.' },
+    { arg: 'coords', type: 'vector3', description: 'Lokacija spawna vozila.' }, 
+    { arg: 'heading', type: 'number', description: 'Pravac vozila' }, 
+    { arg: 'cb', type: 'function', description: 'Callback funkcija' }, 
+    { arg: 'networked', type: 'boolean', description: 'Hoće li vozilo  biti networked ili local' } 
 ]} />
 
-**Example** 
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 ESX.Game.SpawnVehicle('blista', coords, 0.0, function(vehicle)
@@ -359,21 +359,21 @@ end, true)
 ```
 
 ### SpawnLocalVehicle
-This function will spawn given vehicle with model at given coords.
+Ova funkcija spawna vozilo samo za igraća koji izvršava funkciju.
 
 <Callout type='info'>
-    This function only exits for backwards compatibility. You should use `ESX.Game.SpawnVehicle(model, coords, heading, cb, false)` instead.
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebali biste koristiti `ESX.Game.SpawnVehicle(model, coords, heading, cb, false)` umjesto ovoga.
 </Callout>
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'vehicleModel', type: 'string|hash', description: 'The model name or hash.' },
-    { arg: 'coords', type: 'vector3', description: 'Where the vehicle needs to be spawned.' }, 
-    { arg: 'heading', type: 'number', description: 'The heading of the vehicle' }, 
-    { arg: 'cb', type: 'function', description: 'The callback function.' }, 
+    { arg: 'vehicleModel', type: 'string|hash', description: 'Ime modela ili hash modela.' },
+    { arg: 'coords', type: 'vector3', description: 'Lokacija spawna vozila.' }, 
+    { arg: 'heading', type: 'number', description: 'Pravac vozila' }, 
+    { arg: 'cb', type: 'function', description: 'Callback funkcija.' }, 
 ]} />
 
-**Example** 
+**Primjer**
 ```lua
 ESX.Game.SpawnLocalVehicle('blista', coords, 0.0, function(vehicle)
     print(vehicle) 
@@ -381,31 +381,31 @@ end)
 ```
 
 ### IsVehicleEmpty
-This function will return a `boolean` if the vehicle is empty.
+Ova funkcija vraća `boolean` je li vozilo prazno.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The vehicle you want to check' }, 
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo koje želite provjeriti' }, 
 ]} />
 
-**Example** 
+**Primjer**
 ```lua
     local vehicle = GetVehiclePedIsIn(PlayerPedId(), true) 
     local isEmpty = ESX.Game.IsVehicleEmpty(vehicle)
 
     if isEmpty then
-        print('Vehicle is empty!')
+        print('Vozilo je prazno!')
     end
 ```
 
 ### GetObjects
-Returns all objects the client has currently loaded.
+Vraća sve objekte koje igrać ima učitane.
 
 <Callout type='info'>
-    This function only exits for backwards compatibility. You could use `GetGamePool('CObject')` instead.
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebali biste koristiti `GetGamePool('CObject')` umjesto ovoga.
 </Callout>
 
-**Example** 
+**Primjer**
 ```lua
 local objects = ESX.Game.GetObjects() 
 
@@ -416,28 +416,28 @@ end
 
 
 ### GetPeds
-Returns all peds the client has currently loaded.
+Returna sve pedove koje igrać ima učitane.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'onlyOtherPeds', type: 'boolean', description: 'Should the own ped be filtered out?' }, 
+    { arg: 'onlyOtherPeds', type: 'boolean', description: 'Hoće li svoj ped biti u listi?' }, 
 ]} />
 
-**Example** 
+**Primjer**
 ```lua
 local objects = ESX.Game.GetPeds(true) 
 
-print('We found ' .. #objects .. ' peds other then you!')
+print('Pronašli smo ' .. #objects .. ' pedova neuključujući tvog!')
 ```
 
 ### GetVehicles
-Returns all vehicles the client has loaded.
+Vraća sva vozila koja igrać ima učitana.
 
 <Callout type='info'>
-    This function only exits for backwards compatibility. You could use `GetGamePool('CVehicle')` instead.
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebali biste koristiti `GetGamePool('CVehicle')` umjesto ovoga.
 </Callout>
 
-**Example** 
+**Primjer**
 ```lua
 local vehicles = ESX.Game.GetVehicles() 
 
@@ -447,33 +447,33 @@ end
 ```
 
 ### GetPlayers
-Returns all players the client has currently loaded.
+Vraća sve igraće koje igrać ima učitane.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'onlyOtherPlayers', type: 'boolean', description: 'Should the own player be filtered out?' }, 
-    { arg: 'returnKeyValue', type: 'boolean', description: "Should the key be the player's id" }, 
-    { arg: 'returnPeds', type: 'boolean', optional: true, defaultValue: 'false', description: 'Should the value be the ped? Otherwise player id. (Value always ped with `returnKeyValue` true)' }, 
+    { arg: 'onlyOtherPlayers', type: 'boolean', description: 'Hoće li uključivati svog karaktera?' }, 
+    { arg: 'returnKeyValue', type: 'boolean', description: "Hoće li keyevi u tabli biti igraćevi ID-evi" }, 
+    { arg: 'returnPeds', type: 'boolean', optional: true, defaultValue: 'false', description: 'Hoće li value u tabli biti ped? Inaće bude ID. (Biti će uvijek ped ako je `returnKeyValue` true)' }, 
 ]} />
 
 ### GetClosestEntity
-Returns the closest entity's handle and distance to the object in the given table.
+Vraća najbližeg entitya i njegovu distancu od kordinata.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'entities', type: 'table', description: 'The entities to filter through' }, 
-    { arg: 'isPlayerEntities', type: 'boolean', description: 'Is the table filled with players?' }, 
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'filter', type: 'table', description: 'Only look for specific value (model / player id)' }, 
+    { arg: 'entities', type: 'table', description: 'Lista entitya' }, 
+    { arg: 'isPlayerEntities', type: 'boolean', description: 'Hoće li tabla sadržavati igraće?' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igračeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'filter', type: 'table', description: 'Koga da ne ukljućuje (model / player id)' }, 
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'closestObject', type: 'number(object handle)', description: 'The handle of the closest object.' }, 
-    { arg: 'closestObjectDistance', type: 'number', description: 'The distance to the object.' }
+    { arg: 'closestObject', type: 'number(object handle)', description: 'Najbliži entity.' }, 
+    { arg: 'closestObjectDistance', type: 'number', description: 'Distanca entitya.' }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local closestObject, distance = ESX.Game.GetClosestObject(coords, {
@@ -483,21 +483,21 @@ local closestObject, distance = ESX.Game.GetClosestObject(coords, {
 ```
 
 ### GetClosestObject
-Returns the closest object's handle and distance to the object.
+Vraća najbliži objekt i njegovu distancu od kordinata.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'closestObject', type: 'number(object handle)', description: 'The handle of the closest object.' }, 
-    { arg: 'closestObjectDistance', type: 'number', description: 'The distance to the object.' }
+    { arg: 'closestObject', type: 'number(object handle)', description: 'Najbliži objekt.' }, 
+    { arg: 'closestObjectDistance', type: 'number', description: 'Distanca objekta od zadane kordinate.' }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local closestObject, distance = ESX.Game.GetClosestObject(coords, {
@@ -507,21 +507,21 @@ local closestObject, distance = ESX.Game.GetClosestObject(coords, {
 ```
 
 ### GetClosestPed
-Returns the closest ped's handle and distance to the ped.
+Vraća najbližeg peda i njegovu distancu od kordinata.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'closestPed', type: 'number(ped handle)', description: 'The handle of the closest ped.' }, 
-    { arg: 'closestPedDistance', type: 'number', description: 'The distance to the ped.' }
+    { arg: 'closestPed', type: 'number(ped handle)', description: 'Najbliži ped.' }, 
+    { arg: 'closestPedDistance', type: 'number', description: 'Distanca peda od kordinata.' }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local closestPed, distance = ESX.Game.GetClosestPed(coords, {
@@ -531,21 +531,21 @@ local closestPed, distance = ESX.Game.GetClosestPed(coords, {
 ```
 
 ### GetClosestPlayer
-Returns the closest player's id and distance to the player.
+Vraća ID najbližeg igraća i njegovu distancu od kordinata.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'closestPed', type: 'number(ped handle)', description: 'The player id of the closest player.' }, 
-    { arg: 'closestPedDistance', type: 'number', description: 'The distance to the player.' }
+    { arg: 'closestPed', type: 'number(ped handle)', description: 'ID najbližeg igraća.' }, 
+    { arg: 'closestPedDistance', type: 'number', description: 'Distanca do igraća.' }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local closestPlayer, distance = ESX.Game.GetClosestPlayer(coords, {
@@ -555,21 +555,21 @@ local closestPlayer, distance = ESX.Game.GetClosestPlayer(coords, {
 ```
 
 ### GetClosestVehicle
-Returns the closest vehicle's handle and distance to the vehicle.
+Vraća najbliže vozilo i distancu od kordinata.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'modelFilter', type: 'table', description: 'Only look for specific models' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'closestVehicle', type: 'number(ped handle)', description: 'The handle of the closest vehicle.' }, 
-    { arg: 'closestVehicleDistance', type: 'number', description: 'The distance to the vehicle.' }
+    { arg: 'closestVehicle', type: 'number(ped handle)', description: 'Najbliže vozilo.' }, 
+    { arg: 'closestVehicleDistance', type: 'number', description: 'Distanca do vozila' }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local closestVehicle, distance = ESX.Game.GetClosestVehicle(coords, {
@@ -579,52 +579,52 @@ local closestVehicle, distance = ESX.Game.GetClosestVehicle(coords, {
 ```
 
 ### GetPlayersInArea
-Returns all players in specified radius.
+Vraća sve igraće u određenom radiusu.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'maxDistance', type: 'table', description: 'The radius to search in.' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'Radius u kojem se traži.' }, 
 ]} />
 
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local playersInArea = ESX.Game.GetPlayersInArea(coords, 20)
 
-print('Found ' .. #playersInArea .. ' player in area')
+print('Pronađeno ' .. #playersInArea .. ' igrača u radiusu')
 ```
 
 ### GetVehiclesInArea
-Returns all vehicles in speicified radius.
+Vraća sva vozila u određenom radiusu.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'maxDistance', type: 'table', description: 'The radius to search in.' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'Radius u kojem se traži.' }, 
 ]} />
 
-**Example**
+**Primjer**
 ```lua
 local coords = GetEntityCoords(PlayerPedId())
 local vehiclesInArea = ESX.Game.GetVehiclesInArea(coords, 20)
 
-print('Found ' .. #vehiclesInArea .. ' vehicles in area')
+print('Pronađeno ' .. #vehiclesInArea .. ' vozila u radiusu')
 ```
 
 ### IsSpawnPointClear
-Returns a `boolean` saying if the given space is clear of other vehicles.
+Vraća `boolean` koji govori je li lokacija ćista za spawn vozila, peda ili objekta.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', defaultValue: 'Player coords', description: 'Coordinates to search at.' }, 
-    { arg: 'maxDistance', type: 'table', description: 'The radius to search in.' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'Radius u kojem se traži.' }, 
 ]} />
 
-**Example**
+**Primjer**
 ```lua
-RegisterCommand('spawnCoolVehicle', function()
+RegisterCommand('spawnajLudoVozilo', function()
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
     local heading = GetEntityHeading(ped)
@@ -638,36 +638,36 @@ end)
 ```
 
 ### GetVehicleInDirection
-Returns vehicle in front of player.
+Vraća vozilo ispred igraća.
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The handle of the vehicle.' }, 
-    { arg: 'coords', type: 'number', description: 'The coords of the vehicle.' }
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo.' }, 
+    { arg: 'coords', type: 'number', description: 'Kordinate vozila.' }
 ]}/>
 
 
-**Example**
+**Primjer**
 ```lua
 local vehicle, coords = ESX.Game.GetVehicleInDirection()
 
 if vehicle then
-    print('Vehicle found!')
-    print('It has ' .. GetEntityHealth(vehicle) .. ' health!')
+    print('Vozilo pronađeno!')
+    print('Ima ' .. GetEntityHealth(vehicle) .. ' healtha!')
 end
 ```
 
 ### GetVehicleProperties
-Returns different properties about the given vehicle.
+Vraća svojstva vozila.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The handle of the vehicle.' }, 
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo.' }, 
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'model', type: 'string', description: 'The model of the vehicle.' }, 
+    { arg: 'model', type: 'string', description: 'Model vozila.' }, 
     { arg: 'doorsBroken', type: 'table', description: 'The vehicle doors and if they are broken.' },
     { arg: 'windowsBroken', type: 'table', description: 'The vehicle windows and if they are broken.' },
     { arg: 'tyreBurst', type: 'table', description: 'The vehicle tyres and if they are broken.' },
@@ -758,86 +758,86 @@ Returns different properties about the given vehicle.
     { arg: 'modLightbar', type: 'number', description: '' },
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
 local properties = ESX.Game.GetVehicleProperties(vehicle)
 
-print("The vehicle has " .. #properties.doorsBroken .. " doors broken.")
+print("Ovo vozilo ima " .. #properties.doorsBroken .. " razbijenih vrata.")
 ```
 
 ### SetVehicleProperties
-This function sets properties to the vehicle.
+Ova funkcija seta svojstva vozilu.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'The handle of the vehicle.' }, 
-    { arg: 'props', type: 'table', description: "The property as key and value as the key's value." }, 
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo.' }, 
+    { arg: 'props', type: 'table', description: "Key kao ime svojstva za mjenjati i value kao svojstvo." }, 
 ]} />
 
-**Example**
+**Primjer**
 ```lua
 local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
 ESX.Game.SetVehicleProperties(vehicle, {
-    ["plate"] = "ABCD1234",
+    ["plate"] = "THEKUCHA",
     ["fuelLevel"] = 100.0
 })
 ```
 
 ### DrawText3D
-This function draws a 3D Text
+Ova funkcija crta 3D tekst.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'coords', type: 'vector', description: 'The coords of where it should be displayed.' }, 
-    { arg: 'text', type: 'string', description: 'Text that should be displayed.' }, 
-    { arg: 'size', type: 'string', optional: true, defaultValue: '1', description: 'What size the 3D Text should have' }, 
-    { arg: 'font', type: 'string', optional: true, defaultValue: '0', description: 'The font it should have (ID)' }, 
+    { arg: 'coords', type: 'vector', description: 'Kordinate gdje bi se pokazivao 3D Text.' }, 
+    { arg: 'text', type: 'string', description: 'Tekst koji bi pisao.' }, 
+    { arg: 'size', type: 'string', optional: true, defaultValue: '1', description: 'Veličina teksta' }, 
+    { arg: 'font', type: 'string', optional: true, defaultValue: '0', description: 'ID fonta' }, 
 ]} />
 
-**Example**
+**Primjer**
 ```lua
 CreateThread(function()
     while true do
         local coords = GetEntityCoords(PlayerPedId())
-        ESX.Game.Utils.DrawText3D(coords, "This person is a really cool guy")
+        ESX.Game.Utils.DrawText3D(coords, "Ova osoba smrdi")
         Wait(0)
     end
 end)
 ```
 
 ## GetAccount
-Returns the player's specified account
+Vraća tablu određenog igraćevog računa
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'account', type: 'string', description: 'The account name.' }
+    { arg: 'account', type: 'string', description: 'Ime računa.' }
 ]} />
 
-**Example**
+**Primjer**
 ```lua
 local account = ESX.GetAccount('money')
 
-print("The client has " .. account.money .. ' currently in his purse!')
+print("Igrać ima " .. account.money .. ' u njegovom novčaniku!')
 ```
 
 ## ShowInventory
-Opens the player's inventory. (Default es_extended inventory)
+Otvara igraćev inventory. (Samo za defualt es_extended inventory)
 
 ## GetVehicleType
-Returns the vehicle type of the given model.
+Vraća tip vozila datog modela.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'model', type: 'string|hash', description: "The vehicle's model." }
+    { arg: 'model', type: 'string|hash', description: "Model vozila." }
 ]} />
 
-**Returns**
+**Vraća**
 <OutputTable rows={[
-    { arg: 'vehicleType', type: 'string', description: 'The type of the vehicle.' }, 
+    { arg: 'vehicleType', type: 'string', description: 'Tip vozila.' }, 
 ]}/>
 
-**Vehicle Types**
+**Tipovi vozila**
 - bike
 - trailer
 - bike
