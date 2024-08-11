@@ -1,4 +1,4 @@
 export default {
-  functions: "Functions",
+  functions: "Funkcije",
   ui: "UI",
 };

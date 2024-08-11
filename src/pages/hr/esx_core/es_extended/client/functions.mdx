@@ -1,120 +1,120 @@
 import { Callout } from 'nextra/components';
 import { ArgumentsTable, OutputTable } from 'src/components/table';
 
-# Functions 
-This topic includes most functions that are existing in ESX. 
+# Funkcije 
+Ova sekcija sadrži funkcije ESX-a. 
 
 ## IsPlayerLoaded 
-This function will return a `bool` if the player has sucessfully loaded.
-This should be checked before manipulating or checking data of the player.
+Ova funkcija će vratiti `bool` je li se igrač učitao.
+Ovo biste trebali provjeriti prije mjenjanja ili provjeravanja podataka igrača
 
-**Example** 
+**Primjer** 
 ```lua
 while not ESX.IsPlayerLoaded() do 
     Wait(250) 
 end 
 
-print('player is loaded') 
+print('igrač je učitan') 
 ```
 
 ## GetPlayerData
-This function simply returns ESX.PlayerData.
+Ova funkcija vraća objekt ESX.PlayerData.
 
-**Example**
+**Primjer**
 ```lua
 local playerData = ESX.GetPlayerData()
 
-print("The client's identifier: " .. playerData.identifier)
+print("Igračev identifier je: " .. playerData.identifier)
 ```
 
 ## SearchInventory 
-Can be used to check for items in the player's Inventory
+Može se koristiti da bi provjerili igračev inventory
 
-**Arguments** 
+**Argumenti** 
 <ArgumentsTable rows={[
-    { arg: 'items', type: 'string or table', description: 'A string or table containing the items.' }, 
-    { arg: 'count', type:'boolean', optional: true, defaultValue: false, description: 'Only return the count or all data' } 
+    { arg: 'items', type: 'string ili tabla', description: 'String ili tabla koja sadrži igračeve iteme.' }, 
+    { arg: 'count', type:'boolean', optional: true, defaultValue: false, description: 'Da vrati samo broj itema ili sve podatke' } 
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
-local items = ESX.SearchInventory({'bread', 'water'}, true) 
+local itemi = ESX.SearchInventory({'kruh', 'voda'}, true) 
 
-for key, value in pairs(items) do 
-    print(string.format(('You have %sx %s'), value, key)) 
+for key, value in pairs(itemi) do 
+    print(string.format(('Imaš %sx %s'), value, key)) 
 end 
 
-local item = ESX.SearchInventory('bread') 
+local item = ESX.SearchInventory('kruh') 
 local count = item.count
 ```
 
-**Output** 
+**Izlaz** 
 <OutputTable rows={[
-    { arg: 'usable', type: 'boolean', description: 'If the item is usable or not.' }, 
-    { arg: 'count', type: 'number', description: 'How many of the item is found.' }, 
-    { arg: 'canRemove', type: 'number', description: 'This returns 1 when it can be removed otherwise 0' }, 
-    { arg: 'label', type: 'string', description: 'The item label that is shown in the inventory.' }, 
-    { arg: 'name', type: 'string', description: 'The name of the item' }, 
-    { arg: 'rare', type: 'number', description: 'Is the item rare?' }
+    { arg: 'usable', type: 'boolean', description: 'Jel item iskoristiv ili ne.' }, 
+    { arg: 'count', type: 'broj', description: 'Koliko tog itema ima.' }, 
+    { arg: 'canRemove', type: 'broj', description: 'Vraća 1 ako se može micati iz inv, ako ne onda 0' }, 
+    { arg: 'label', type: 'string', description: 'Oznaka itema koja se vidi u inventoryu.' }, 
+    { arg: 'name', type: 'string', description: 'Ime itema' }, 
+    { arg: 'rare', type: 'broj', description: 'Jel item rijedak?' }
 ]}/>
 
 ## SetPlayerData
-This function you can set playerdata with.
+Sa ovom funkcijom možeš setati player data
 
-**Arguments** 
+**Argumenti** 
 <ArgumentsTable rows={[
-    { arg: 'key', type: 'string', description: 'The key of the playerdata.' }, 
-    { arg: 'value', type:'value', description: 'The data to be set.' } 
+    { arg: 'key', type: 'string', description: 'Ključ u PlayerDati.' }, 
+    { arg: 'value', type:'value', description: 'Podatak za postaviti.' } 
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
-ESX.SetPlayerData('test', 'a nice test')
+ESX.SetPlayerData('lokacija', 'Sjeverni Pol')
  
-print(ESX.PlayerData.test) -- this will print 'a nice test'
+print(ESX.PlayerData.lokacija) -- ovo će printati 'Sjeverni Pol'
 ```
 
-## Context
-ESX has a context system by default as a seperate resource. See more at [esx_context](../../esx_context.mdx)
+## Kontekst
+ESX ima kontekst sistem kao odvojena skripta. Pogledaj više u [esx_context](../../esx_context.mdx)
 
 ## Progressbar 
-ESX has a progress bar system by default as a seperate resource. See more at [esx_progressbar](../../esx_progressbar.mdx)
+ESX ima progress bar sistem kao odvojena skripta. See more at [esx_progressbar](../../esx_progressbar.mdx)
 
 ## ShowNotification 
-ESX has a custom notification system as a seperate resource. See more at [esx_notify](../../esx_notify.mdx)
+ESX ima sistem notifikacija kao odvojena skripta. See more at [esx_notify](../../esx_notify.mdx)
 
 ## TextUI 
-ESX has a Text UI system by default as a seperate resource. See more at [esx_textui](../../esx_textui.mdx)
+ESX ima TextUI sistem kao odvojena skripta. See more at [esx_textui](../../esx_textui.mdx)
 
 ## ShowAdvancedNotification
-This function will show a default GTA 5 notification 
+Ova funkcija prikazuje obične GTA notifikacije 
 
-**Arguments** 
+**Argumenti** 
 <ArgumentsTable rows={[
-    { arg: 'sender', type: 'string', description: 'The notification title.' }, 
-    { arg: 'subject', type:'string', description: 'The notification subtitle'},
-    { arg: 'msg', type: 'string', description: 'The notification message'}, 
-    { arg: 'textureDict', type: 'string', description: 'The texture dictionary for the icon'}, 
-    { arg: 'iconType', type: 'string', description: 'The icon type, see the list below.'}, 
-    { arg: 'flash', type: 'boolean', optional: true, defaultValue: 'false', description: 'According to the fivem natives, this var never works no matter what.'},  
-    { arg: 'saveToBrief', type: 'boolean', optional: true, defaultValue: 'false', description: 'Makes the notification appear in the "Pause Menu > Info/Brief > Notifications" section.'}, 
-    { arg: 'hudColorIndex', type: 'number', optional: true, description: 'The background color for the notification.'}
+    { arg: 'sender', type: 'string', description: 'Naslov notifikacije.' }, 
+    { arg: 'subject', type:'string', description: 'Podnaslov notifikacije'},
+    { arg: 'msg', type: 'string', description: 'Poruka notifikacije'}, 
+    { arg: 'textureDict', type: 'string', description: 'Texture dictionary notifikacije'}, 
+    { arg: 'iconType', type: 'string', description: 'Tip ikone, pogledaj ispod.'}, 
+    { arg: 'flash', type: 'boolean', optional: true, defaultValue: 'false', description: 'Prema FiveM dokumentaciji, ovo ništa ne radi.'},  
+    { arg: 'saveToBrief', type: 'boolean', optional: true, defaultValue: 'false', description: 'Prikazuje notifikaciju u "Pause Menu > Info/Brief > Notifications" sekciji u GTA.'}, 
+    { arg: 'hudColorIndex', type: 'broj', optional: true, description: 'Boja pozadine u notifikaciji.'}
 ]} />
 
-**Icon types**
+**Tipovi ikone**
 1. Chat Box  
 2. Email  
 3. Add Friend Request  
-4. Nothing  
-5. Nothing  
-6. Nothing  
+4. Ništa  
+5. Ništa  
+6. Ništa  
 7. Right Jumping Arrow  
-8. RP Icon  
-9. $ Icon 
+8. RP Ikona  
+9. $ Ikona  
 
-**[Hud color indexes](https://docs.fivem.net/docs/game-references/hud-colors/)**
+**[Boje](https://docs.fivem.net/docs/game-references/hud-colors/)**
 
-**Example** 
+**Primjer** 
 ```lua
 local handle = RegisterPedheadshot(PlayerPedId())
 while not IsPedheadshotReady(handle) or not IsPedheadshotValid(handle) do
@@ -122,108 +122,108 @@ while not IsPedheadshotReady(handle) or not IsPedheadshotValid(handle) do
 end
 local txd = GetPedheadshotTxdString(handle)
 local title = GetPlayerName(PlayerId())
-local subtitle = 'Private Message'
+local subtitle = 'Privatna poruka'
 local iconType = 0
-ESX.ShowAdvancedNotification(title, subtitle, 'this is the message that we send to you', txd, iconType, false, true, 6)
+ESX.ShowAdvancedNotification(title, subtitle, 'ovo je poruka koju vam šaljemo', txd, iconType, false, true, 6)
 ```
 
 ## ShowHelpNotification
-This function shows a help notification on the top left of the screen. 
-Either needs to be ran every frame or a duration can be optionally set.
+Ova funkcija prikazuje pomoćnu notifikaciju u gornjem lijevom kutu. 
+Treba se koristiti u petlji ili se može staviti trajanje.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'msg', type: 'string', description: 'The message content.' }, 
-    { arg: 'thisFrame', type: 'boolean', optional: true, defaultValue: 'false', description: 'Should it only be displayed this frame.' },
-    { arg: 'beep', type: 'boolean', optional: true, defaultValue: 'false', description: 'Should it play a beep sound?' },
-    { arg: 'duration', type: 'number', optional: true, defaultValue: '-1', description: 'The duration of how long this should show.' }
+    { arg: 'msg', type: 'string', description: 'Poruka.' }, 
+    { arg: 'thisFrame', type: 'boolean', optional: true, defaultValue: 'false', description: 'Hoće se prikazati samo ovaj frame.' },
+    { arg: 'beep', type: 'boolean', optional: true, defaultValue: 'false', description: 'Hoće pustiti beep zvuk?' },
+    { arg: 'duration', type: 'broj', optional: true, defaultValue: '-1', description: 'Koliko dugo da se prikaže.' }
 ]} /> 
 
-**Example** 
+**Primjer** 
 ```lua
-RegisterCommand('help', function (source, args, raw)
-    ESX.ShowHelpNotification("We won't give you help, we are truly not sorry.", false, true, 3500)
+RegisterCommand('pomoc', function (source, args, raw)
+    ESX.ShowHelpNotification("Nema tebi pomoći brate.", false, true, 3500)
 end)
 ```
 
 ## ShowFloatingHelpNotification 
-This function shows a floating help notification, this is needs to be ran every millisecond.
+Prikazuje plutajuću notifikaciju. Mora biti u petlji svaki milisekund.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'msg', type: 'string', description: 'The floating message.' }, 
-    { arg: 'coords', type: 'vector3', description: 'The coords of where it should be displayed' }
+    { arg: 'msg', type: 'string', description: 'Plutajuća poruka.' }, 
+    { arg: 'coords', type: 'vector3', description: 'Kordinate gdje će plutati' }
 ]} /> 
 
-**Example** 
+**Primjer** 
 ```lua
 local coords = vector3(0, 0, 0) 
 
 CreateThread(function() 
     while true do
-        ESX.ShowFloatingHelpNotification('ESX is so cool', coords) 
+        ESX.ShowFloatingHelpNotification('ESX je baš zanimljiv', coords) 
         Wait(0) 
     end 
 end)
 ```
 
 ## HashString
-This function will turn a string into a (rockstar) hash. Which for example could be used to display a key of a custom keybind.
+Ova funkcija pretvara string u rockstarov hash.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'str', type: 'string', description: 'The string that should be hashed.' }
+    { arg: 'str', type: 'string', description: 'String koji hoćete hashirati.' }
 ]} />
 
-**Example** 
+**Primjer** 
 ```lua
-RegisterCommand('howtosit', function (source, args, raw)
+RegisterCommand('kakosjesti', function (source, args, raw)
     local inputMapping = string.format("~INPUT_%s~"):format(ESX.HashString("sit"))
-    ESX.ShowHelpNotification("You can sit down using "..inputMapping , false, true, 3500)
+    ESX.ShowHelpNotification("Možeš sjesti ako stisneš "..inputMapping , false, true, 3500)
 end)
 ```
 
 ## RegisterInput 
-This functions registers an input.
+Ova funkcija registrira keybind.
 
-**Arguments** 
+**Argumenti** 
 <ArgumentsTable rows={[
-    { arg: 'command_name', type: 'string', description: 'The name of the command that should be executed.' }, 
-    { arg: 'label', type:'string', description: 'The label of the keybind.' },
-    { arg: 'input_group', type: 'string', description: 'The input group.' }, 
-    { arg: 'key', type: 'string', description: 'The key used for the keybind.' }, 
-    { arg: 'on_press', type: 'function', description: 'The function that will be executed when pressing the key.' }, 
-    { arg: 'on_release', type: 'function', optional: true, description: 'The function that will be executed when releasing the key.' }
+    { arg: 'command_name', type: 'string', description: 'Ime komande.' }, 
+    { arg: 'label', type:'string', description: 'Oznaka keybinda.' },
+    { arg: 'input_group', type: 'string', description: 'Grupa unosa.' }, 
+    { arg: 'key', type: 'string', description: 'Keybind.' }, 
+    { arg: 'on_press', type: 'function', description: 'Funkcija koja će se izvršiti pritiskom na keybind.' }, 
+    { arg: 'on_release', type: 'function', optional: true, description: 'Funkcija koja će se izvršiti kada pustiš keybind.' }
 ]} />
 
-**[Input Groups](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/)** 
+**[Grupe Unosa](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/)** 
 
-**Example** 
+**Primjer** 
 ```lua
 ESX.RegisterInput('testinput', 'Test', 'keyboard', 'f6', function()
-    print('pressed')
+    print('stisnuto')
 end, function() 
-    print('released')
+    print('pusteno')
 end)  
 ```
 
 ## TriggerServerCallback
 
-This function trigger a previously registered server callback
+Ova funkcija poziva povratni event prethodno registriran u RegisterServerCallback funkciji.
 
-*See [RegisterServerCallback](../server/functions/#registerservercallback)*
+*Pogledaj [RegisterServerCallback](../server/functions/#registerservercallback)*
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: "name", type: "string", description: "The server callback's name." },
-    { arg: "cb", type: "function", description: "The callback function passed from the server." },
-    { arg: "...", type: "arguments", description: "The callback's argument." },
+    { arg: "name", type: "string", description: "Ime callbacka." },
+    { arg: "cb", type: "funkcija", description: "Callback funkcija iz servera." },
+    { arg: "...", type: "argumenti", description: "Argumenti callbacka." },
 ]} />
 
 
 ```lua
-ESX.TriggerServerCallback('myScript:getMeme', function(cb)
-  print(cb) --output: "Meme data string"
+ESX.TriggerServerCallback('moja_skripta:povuci_nesto', function(cb)
+  print(cb) -- printa nešto iz servera
 end)
 ```
 
