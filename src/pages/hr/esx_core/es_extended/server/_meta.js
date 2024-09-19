@@ -1,5 +1,5 @@
 export default {
-  functions: "Functions",
+  functions: "Funkcije",
   onesync: "OneSync",
   xplayer: "xPlayer",
 };

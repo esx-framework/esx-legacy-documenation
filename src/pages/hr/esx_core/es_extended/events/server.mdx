@@ -1,250 +1,250 @@
 import { Callout } from 'nextra/components';
 import { OutputTable } from "src/components/table";
 
-# Serversided Events
-This page is dedicated to the server events introduced by the es_extended script.
+# Server side Eventi
+Ova stranica sadrži sve evente server strane koje pruža es_extended
 
-## Event Triggers
+## Event Triggeri
 <Callout type="info">
-    These events can be triggered by any scripts. 
+    Ovi eventi mogu biti triggerani od strane bilo koje skripte. 
 </Callout>
 
 
 
-## Event Handlers
+## Event Handleri
 <Callout type="warning">
-    These events can only be listened to and should **not** be triggered. If done eitherway **will** break scripts.
+    Ovi eventi se mogu samo slušati i **ne bi trebali** biti triggerani. Ako se to ipak učini, doći će do do **kvara** skripti
 </Callout>
 
 ### esx:playerLoaded
-This event gets triggered when the player has successfully loaded / the character was chosen and loaded.
+Ovaj event se triggera kada je igrač uspješno učitan / kada je lik odabran i učitan.
 
-**Arguments**
+**Argumenti**
 <OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." },
-    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." },
-    { arg: "isNew", type: "boolean", description: "Is the player's character new." }
+    { arg: "playerId", type: "number", description: "ID igrača." },
+    { arg: "xPlayer", type: "string", description: "xPlayer objekt igrača koji se povezao." },
+    { arg: "isNew", type: "boolean", description: "Je li lik igrača nov." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
     if isNew then
-        print("The new character " .. xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+        print("Novi lik " .. xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
     else
-        print(xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+        print(xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
     end
 end)
 ```
 
 ### esx:playerLogout
-This event gets triggered when the player has logged out. This happens when a player used `/logout`
+Ovaj event se triggera kada se igrač odjavi. To se događa kada igrač koristi `/logout`
 
-**Arguments**
+**Argumenti**
 <OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." }
+    { arg: "playerId", type: "number", description: "ID igrača." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 AddEventHandler('esx:playerLogout', function (playerId)
-    print(string.format("Player %s logged out.", playerId))
+    print(string.format("Igrač %s se odjavio.", playerId))
 end)
 ```
 
 ### esx:playerDropped
-This event gets triggered when the player disconnected.
+Ovaj event se triggera kada se igrač odspoji.
 
-**Arguments**
+**Argumenti**
 <OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." }
+    { arg: "playerId", type: "number", description: "ID igrača." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 AddEventHandler('esx:playerDropped', function (playerId)
-    print(string.format("Player %s disconnected out.", playerId))
+    print(string.format("Igrač %s se odspojio.", playerId))
 end)
 ```
 
 ### esx:playerLoaded
-This event gets triggered when the player has successfully loaded / the character was chosen and loaded.
+Ovaj event se triggera kada je igrač uspješno učitan / kada je lik odabran i učitan.
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." },
-    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." },
-    { arg: "isNew", type: "boolean", description: "Is the player's character new." }
+    { arg: "playerId", type: "number", description: "ID igrača." },
+    { arg: "xPlayer", type: "string", description: "xPlayer objekt igrača koji se povezao." },
+    { arg: "isNew", type: "boolean", description: "Je li lik igrača nov." }
 ]}/>
 
 ```lua
 AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
     if isNew then
-        print("The new character " .. xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+        print("Novi lik " .. xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
     else
-        print(xPlayer.getName() .. " successfully loaded with the playerId: " .. playerId)
+        print(xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
     end
 end)
 ```
 
 ### esx:playerJumping
-This event gets triggered when the player jumps. *This is a client triggered event*
+Ovaj event se triggera kada igrač skače. *Ovo je event triggeran s klijentske strane*
 
-**Example**
+**Primjer**
 ```lua 
 RegisterNetEvent('esx:playerJumping', function()
-    print("Player " .. source .. " is jumping")
+    print("Igrač " .. source .. " skače")
 end)
 ```
 
 ### esx:enteringVehicle
-This event gets triggered when the player is entering a vehicle. *This is a client triggered event*
+Ovaj event se triggera kada igrač ulazi u vozilo. *Ovo je event triggeran s klijentske strane*
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "plate", type: "string", description: "The vehicle's plate." },
-    { arg: "seat", type: "number", description: "The seat the player is entering." },
-    { arg: "netId", type: "number", description: "The vehicle's net id." }
+    { arg: "plate", type: "string", description: "Registarska oznaka vozila." },
+    { arg: "seat", type: "number", description: "Sjedalo na koje igrač ulazi." },
+    { arg: "netId", type: "number", description: "Net ID vozila." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 RegisterNetEvent('esx:enteringVehicle', function(plate, seat, netId)
-    print("Player " .. source .. " is entering a vehicle with the plate: " .. plate)
+    print("Igrač " .. source .. " ulazi u vozilo s registarskom oznakom: " .. plate)
 end)
 ```
 
 ### esx:enteringVehicleAborted
-This event gets triggered when the player has stopped entering a vehicle. *This is a client triggered event*
+Ovaj event se triggera kada igrač prestane ulaziti u vozilo. *Ovo je event triggeran s klijentske strane*
 
-**Example**
+**Primjer**
 ```lua 
 RegisterNetEvent('esx:enteringVehicleAborted', function()
-    print("Player " .. source .. " has stopped entering vehicle")
+    print("Igrač " .. source .. " je prestao ulaziti u vozilo")
 end)
 ```
 
 ### esx:enteredVehicle
-This event gets triggered when the player has succesfully entered a vehicle. *This is a client triggered event*
+Ovaj event se triggera kada je igrač uspješno ušao u vozilo. *Ovo je event triggeran s klijentske strane*
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "plate", type: "string", description: "The vehicle's plate." },
-    { arg: "seat", type: "number", description: "The seat the player has entered." },
-    { arg: "displayName", type: "string", description: "The vehicle's display name." },
-    { arg: "netId", type: "number", description: "The vehicle's net id." }
+    { arg: "plate", type: "string", description: "Registarska oznaka vozila." },
+    { arg: "seat", type: "number", description: "Sjedalo na koje je igrač ušao." },
+    { arg: "displayName", type: "string", description: "Prikazno ime vozila." },
+    { arg: "netId", type: "number", description: "Net ID vozila." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 RegisterNetEvent('esx:enteredVehicle', function(plate, seat, displayName, netId)
-    print("Player " .. source .. " has entered an " .. displayName)
+    print("Igrač " .. source .. " je ušao u " .. displayName)
 end)
 ```
 
 ### esx:exitedVehicle
-This event gets triggered when the player has exited a vehicle. *This is a client triggered event*
+Ovaj event se triggera kada igrač izađe iz vozila. *Ovo je event triggeran s klijentske strane*
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "plate", type: "string", description: "The vehicle's plate." },
-    { arg: "seat", type: "number", description: "The seat the player has exited out of." },
-    { arg: "displayName", type: "string", description: "The vehicle's display name." },
-    { arg: "netId", type: "number", description: "The vehicle's net id." }
+    { arg: "plate", type: "string", description: "Registarska oznaka vozila." },
+    { arg: "seat", type: "number", description: "Sjedalo s kojeg je igrač izašao." },
+    { arg: "displayName", type: "string", description: "Prikazno ime vozila." },
+    { arg: "netId", type: "number", description: "Net ID vozila." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 RegisterNetEvent('esx:exitedVehicle', function(plate, seat, displayName, netId)
-    print("Player " .. source .. " has exited an " .. displayName .. " from the seat with the index: " .. seat)
+    print("Igrač " .. source .. " je izašao iz " .. displayName .. " s sjedala s indeksom: " .. seat)
 end)
 ```
 
 ### esx:updateWeaponAmmo
-Can be used to update weapon ammo or listen to ammo updates. *This is a client triggered event*
+Može se koristiti za ažuriranje metaka oružja ili handlanje ažuriranja metaka. *Ovo je event triggeran s klijentske strane*
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." },
-    { arg: "ammoCount", type: "number", description: "The new weapon's ammo count." }
+    { arg: "weaponName", type: "string", description: "Ime oružja." },
+    { arg: "ammoCount", type: "number", description: "Novi broj metaka za oružje." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 RegisterNetEvent('esx:updateWeaponAmmo', function(weaponName, ammoCount)
-    print("Player " .. source .. "'s " .. weaponName .. " new ammo count is: " .. ammoCount)
+    print("Novi broj streljiva za " .. source .. " igračev " .. weaponName .. " je: " .. ammoCount)
 end)
 ```
 
 ### esx:onAddInventoryItem
-Gets triggered when an inventory item gets added.
+Triggera se kada se doda stavka u inventar.
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "source", type: "number", description: "The player's player id." },
-    { arg: "itemName", type: "string", description: "The item that got added." },
-    { arg: "itemCount", type: "number", description: "The amount the player now has." }
+    { arg: "source", type: "number", description: "ID igrača." },
+    { arg: "itemName", type: "string", description: "Stavka koja je dodana." },
+    { arg: "itemCount", type: "number", description: "Količina koju igrač sada ima." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 AddEventHandler('esx:onAddInventoryItem', function(source, itemName, itemCount)
     local xPlayer = ESX.GetPlayerFromId(source)
-    print(xPlayer.getName() .. " received " .. itemName .. " and now has " .. itemCount)
+    print(xPlayer.getName() .. " je dobio " .. itemName .. " i sada ima " .. itemCount)
 end)
 ```
 
 ### esx:onRemoveInventoryItem
-Gets triggered when an inventory item gets removed.
+Triggera se kada se stavka ukloni iz inventara.
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "source", type: "number", description: "The player's player id." },
-    { arg: "itemName", type: "string", description: "The item that got removed." },
-    { arg: "itemCount", type: "number", description: "The amount the player now has." }
+    { arg: "source", type: "number", description: "ID igrača." },
+    { arg: "itemName", type: "string", description: "Stavka koja je uklonjena." },
+    { arg: "itemCount", type: "number", description: "Količina koju igrač sada ima." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 AddEventHandler('esx:onRemoveInventoryItem', function(source, itemName, itemCount)
     local xPlayer = ESX.GetPlayerFromId(source)
-    print(xPlayer.getName() .. " lost some " .. itemName .. " and now has " .. itemCount)
+    print(xPlayer.getName() .. " je izgubio " .. itemName .. " i sada ima " .. itemCount)
 end)
 ```
 
 ### esx:playerSaved
-Gets triggered when a single player was saved.
+Triggera se kada je jedan igrač spremljen.
 
-**Returns**
+**Povratne vrijednosti**
 <OutputTable rows={[
-    { arg: "source", type: "number", description: "The player's player id." },
-    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." }
+    { arg: "source", type: "number", description: "ID igrača." },
+    { arg: "xPlayer", type: "string", description: "xPlayer objekt igrača koji se povezao." }
 ]}/>
 
-**Example**
+**Primjer**
 ```lua 
 AddEventHandler('esx:playerSaved', function(source, xPlayer)
-    print(xPlayer.getName() .. " was saved.")
+    print(xPlayer.getName() .. " je spremljen.")
 end)
 ```
 
 ### esx:onPlayerDeath
-This event gets triggered when the player hdies
+Ovaj event se triggera kada igrač umre
 
-**Data**
+**Podaci**
 <OutputTable isTable={true} rows={[
-    { arg: "victimCoords", type: "vector3", description: "The coords of the victim." },
-    { arg: "killerCoords", type: "vector3", description: "The coords of the killer." },
-    { arg: "distance", type: "number", description: "The distance between the victim and the killer." },
-    { arg: "killedByPlayer", type: "boolean", description: "Is the killer a player." },
-    { arg: "deathCause", type: "string", description: "The death cause." },
-    { arg: "killerServerId", type: "number", description: "The killer's server id." },
-    { arg: "killerClientId", type: "string", description: "The killer's local id." },
+    { arg: "victimCoords", type: "vector3", description: "Koordinate žrtve." },
+    { arg: "killerCoords", type: "vector3", description: "Koordinate ubojice." },
+    { arg: "distance", type: "number", description: "Udaljenost između žrtve i ubojice." },
+    { arg: "killedByPlayer", type: "boolean", description: "Je li ubojica igrač." },
+    { arg: "deathCause", type: "string", description: "Uzrok smrti." },
+    { arg: "killerServerId", type: "number", description: "Server ID ubojice." },
+    { arg: "killerClientId", type: "string", description: "Lokalni ID ubojice." },
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 RegisterNetEvent('esx:onPlayerDeath', function (data)
-    print(string.format("%s was killed by %s from %s meters away.", source, data.killerServerId, data.distance))
+    print(string.format("%s je ubijen od strane %s s udaljenosti od %s metara.", source, data.killerServerId, data.distance))
 end)
 ```
