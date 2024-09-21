@@ -1,56 +1,56 @@
 import { ArgumentsTable, OutputTable } from 'src/components/table';
 
 # esx_menu_default
-A list type menu used by `es_extended`
-**Only available on clientside**
+Izbornik tipa lista korišten od strane `es_extended`
+**Dostupno samo na client strani**
 
 ### ESX.UI.Menu.Open
-Open a menu that can be used with arrow keys
+Otvara izbornik koji se može koristiti s tipkama sa strelicama
 
 ```lua
 ESX.UI.Menu.Open(type, namespace, name, data, onSelect, cancel )
 ```
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'type', type: 'string', description: 'the menu to open `default` in this case' }, 
-    { arg: 'namespace', type: 'string', description: 'The namespace of the menu, usually ```GetResourceName()```is used' },
-    { arg: 'name', type: 'string', description: 'The name of the menu' },
-    { arg: 'data', type: 'table', description: 'The table with the elements to show in the menu' },
-    { arg: 'onSelect', type: 'function', description: 'Function that gets ran when an element is selected.'},
-    { arg: 'cancel', type: 'function', description: 'Function that gets ran when the menu gets closed'},
+    { arg: 'type', type: 'string', description: 'izbornik za otvaranje `default` u ovom slučaju' }, 
+    { arg: 'namespace', type: 'string', description: 'Namespace izbornika, obično se koristi ```GetResourceName()```' },
+    { arg: 'name', type: 'string', description: 'Naziv izbornika' },
+    { arg: 'data', type: 'table', description: 'Tablica s elementima za prikaz u izborniku' },
+    { arg: 'onSelect', type: 'function', description: 'Funkcija koja se pokreće kada se odabere element.'},
+    { arg: 'cancel', type: 'function', description: 'Funkcija koja se pokreće kada se izbornik zatvori'},
     
 ]} /> 
 
-**Data table**
-- title: title of the menu
-- align: position (top-left | top-right | bottom-left | bottom-right | center)
-- elements: selectable elements table
+**Tablica podataka**
+- title: naslov izbornika
+- align: pozicija (top-left | top-right | bottom-left | bottom-right | center)
+- elements: tablica odabirnih elemenata
 
-**Elements**
+**Elementi**
 <OutputTable rows={[
-    { arg: 'label', type: 'string', description: 'label name to show, supports HTML' },
-    { arg: 'name', type: 'string', description: 'name of the element' },
-    { arg: 'value', type: 'number|string', description: 'value of the element/slider' },
-    { arg: 'type', type: 'string', description: 'Type of the element' },
-    { arg: 'min', type: 'number', description: 'minimum slider value' },
-    { arg: 'max', type: 'number', description: 'Maximum slider value' },
+    { arg: 'label', type: 'string', description: 'naziv etikete za prikaz, podržava HTML' },
+    { arg: 'name', type: 'string', description: 'naziv elementa' },
+    { arg: 'value', type: 'number|string', description: 'vrijednost elementa/klizača' },
+    { arg: 'type', type: 'string', description: 'Vrsta elementa' },
+    { arg: 'min', type: 'number', description: 'minimalna vrijednost klizača' },
+    { arg: 'max', type: 'number', description: 'maksimalna vrijednost klizača' },
 ]}/>
 
 ### onSelect
 
-Function triggered when an element is selected, returns `data` and `menu`, `data.current` is used to get the current selected element
+Funkcija koja se pokreće kada se odabere element, vraća `data` i `menu`, `data.current` se koristi za dobivanje trenutno odabranog elementa
 
-**Example**
+**Primjer**
 ```lua
 function(data, menu)
-  --- for a simple element
+  --- za jednostavan element
   if data.current.name == "element1" then
-    print("Element 1 Selected")
+    print("Element 1 odabran")
     menu.close()
   end
 
-  -- for slider elements
+  -- za elemente klizača
 
   if data.current.name == "bread" then
     print(data.current.value)
@@ -59,49 +59,49 @@ end
 ```
 ### cancel
 
-This function is triggered when the menu gets closed, returns `data` and `menu`
+Ova funkcija se pokreće kada se izbornik zatvori, vraća `data` i `menu`
 
-**Example**
+**Primjer**
 ```lua
 function(data, menu)
-  print("Closing Menu - " .. menu.title)
-  menu.close() -- close menu
+  print("Zatvaranje izbornika - " .. menu.title)
+  menu.close() -- zatvori izbornik
 end
 ```
 
-### Menu Example
+### Primjer izbornika
 ```lua
     local Elements = {
-        {label = "I`m An Element", name = "element1"},
-        {label = "Bread - £200", name = "bread", value = 1, type = 'slider', min = 1,max = 100},
-        {label = '<span style="color:green;">HEY! IM GREEN!/span>', name = "geen_element"}
+        {label = "Ja sam element", name = "element1"},
+        {label = "Kruh - £200", name = "bread", value = 1, type = 'slider', min = 1, max = 100},
+        {label = '<span style="color:green;">Hej! Ja sam zelen!/span>', name = "green_element"}
       }
 
       ESX.UI.Menu.Open("default", GetCurrentResourceName(), "Example_Menu", {
-        title = "Example Menu", -- The Name of Menu to show to users,
+        title = "Primjer izbornika", -- Naziv izbornika za prikaz korisnicima,
         align    = 'top-left', -- top-left | top-right | bottom-left | bottom-right | center |
-        elements = Elements -- define elements as the pre-created table
-      }, function(data,menu) -- OnSelect Function
-        --- for a simple element
+        elements = Elements -- definirajte elemente kao unaprijed kreiranu tablicu
+      }, function(data,menu) -- OnSelect funkcija
+        --- za jednostavan element
         if data.current.name == "element1" then
-          print("Element 1 Selected")
+          print("Element 1 odabran")
           menu.close()
         end
 
-        -- for slider elements
+        -- za elemente klizača
 
         if data.current.name == "bread" then
           print(data.current.value)
 
           if data.current.value == 69 then
-            print("Nice!")
+            print("Super!")
             menu.close()
           end
         end
-      end, function(data, menu) -- Cancel Function
-        print("Closing Menu")
-        menu.close() -- close menu
+      end, function(data, menu) -- Cancel funkcija
+        print("Zatvaranje izbornika")
+        menu.close() -- zatvori izbornik
       end)
 ```
-**Result**
+**Rezultat**
 <img src = "https://i.gyazo.com/b2d991444a2b7b14849ec17b8401126f.png"></img>

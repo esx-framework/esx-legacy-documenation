@@ -1,63 +1,63 @@
 import { ArgumentsTable } from 'src/components/table';
 
 # esx_progressbar 
-The Progress bar system used by `es_extended`
-**Only available on clientside**
+Sustav za prikaz progress bara koji koristi `es_extended`
+**Dostupno samo na client strani**
 
 ### ESX.Progressbar
 
-**Arguments** 
+**Argumenti** 
 <ArgumentsTable rows={[
-    { arg: 'text', type: 'string', description: 'The text on the progressbar.' }, 
-    { arg: 'length', type:'number', description: 'The lenght of the progressbar in ms' }, 
-    { arg: 'Options', type:'table', description: 'The progressbar options' } 
+    { arg: 'text', type: 'string', description: 'Tekst na progress baru.' }, 
+    { arg: 'length', type:'number', description: 'Dužina trajanja progress bara u milisekundama' }, 
+    { arg: 'Options', type:'table', description: 'Opcije za progress bar' } 
 ]} />
 
-***Options table*** 
+***Tablica opcija*** 
 <ArgumentsTable isTable='true' rows={[
-    { arg: 'animation', type: 'table', description: 'A table with animation data' }, 
-    { arg: 'FreezePlayer', type:'boolean', description: 'Should the player be frozen?' }, 
-    { arg: 'onFinish', type:'function', description: 'A function that will be executed on finish' }, 
-    { arg: 'onCancel', type:'function', optional: true, description: 'A function that will be executed on cancel' }
+    { arg: 'animation', type: 'table', description: 'Tablica s podacima o animaciji' }, 
+    { arg: 'FreezePlayer', type:'boolean', description: 'Treba li igrač biti zamrznut?' }, 
+    { arg: 'onFinish', type:'function', description: 'Funkcija koja će se izvršiti kada završi' }, 
+    { arg: 'onCancel', type:'function', optional: true, description: 'Funkcija koja će se izvršiti kada se otkaže' }
 ]} />
 
-***Animation table***
+***Tablica animacija***
 <ArgumentsTable isTable='true' rows={[
-    { arg: 'type', type: 'string', description: 'anim or scenario' }, 
-    { arg: 'lib', type:'string', description: 'The animation lib' }, 
-    { arg: 'dict', type:'string', description: 'The animation dict' } 
+    { arg: 'type', type: 'string', description: 'anim ili scenario' }, 
+    { arg: 'lib', type:'string', description: 'lib animacije' }, 
+    { arg: 'dict', type:'string', description: 'dict animacije' } 
 ]} />
 
-**ESX Example**
+**ESX Primjer**
 ```lua
-ESX.Progressbar('test', 25000,{
+ESX.Progressbar('test', 25000, {
     FreezePlayer = false, 
-    animation ={
+    animation = {
         type = 'anim',
         dict = 'mini@prostitutes@sexlow_veh', 
-        lib ='low_car_sex_to_prop_p2_player' 
+        lib = 'low_car_sex_to_prop_p2_player' 
     }, 
     onFinish = function()
-        -- Code that should run when finished
+        -- Kod koji će se izvršiti kada završi
     end, onCancel = function() 
-        -- Code that should run when progressbar was cancelled
+        -- Kod koji će se izvršiti kada se progress bar otkaže
     end
 })
 ```
 
-**Export Example**
+**Export Primjer**
 ```lua
 exports['esx_progressbar']:Progressbar('test', 25000, {
     FreezePlayer = false, 
-    animation ={
+    animation = {
         type = 'anim',
         dict = 'mini@prostitutes@sexlow_veh', 
-        lib ='low_car_sex_to_prop_p2_player' 
+        lib = 'low_car_sex_to_prop_p2_player' 
     }, 
     onFinish = function()
-        -- Code that should run when finished
+        -- Kod koji će se izvršiti kada završi
     end, onCancel = function() 
-        -- Code that should run when progressbar was cancelled
+        -- Kod koji će se izvršiti kada se progress bar otkaže
     end
 })
 ```

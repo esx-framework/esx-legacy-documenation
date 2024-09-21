@@ -1,30 +1,30 @@
 import { ArgumentsTable, OutputTable } from 'src/components/table';
 
 # skinchanger
-A script to get and set player clothing, accessoires and model used by `es_extended`
-**Only available on clientside**
+Skripta za postavljanje i mijenjanje odjeće, dodataka i modela igrača koju koristi `es_extended`
+**Dostupno samo na client strani**
 
-### Load the default model
-**Arguments**
+### Učitaj default model
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'isMale', type: 'boolean', description: 'Should the player be set to a male ped?' }, 
+    { arg: 'isMale', type: 'boolean', description: 'Treba li igrač biti postavljen na muški ped?' }, 
 ]} /> 
 
-***Example**
+**Primjer**
 ```lua
---- Set the player to the default male ped (mp_m_freemode_01)
+--- Postavi igrača na zadani muški ped (mp_m_freemode_01)
 TriggerEvent('skinchanger:loadDefaultModel', true)
 ```
 
-### Load a skin
-Used to set a skin of the local player, you can also only set specific components.
+### Učitaj skin
+Koristi se za postavljanje skina lokalnog igrača, također možete postaviti samo određene komponente.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'skin', type: 'table', description: 'A table containing all skin details.' }, 
+    { arg: 'skin', type: 'table', description: 'Tablica koja sadrži sve detalje skina.' }, 
 ]} /> 
 
-***Example**
+**Primjer**
 ```lua
 TriggerEvent('skinchanger:loadSkin', {
     sex          = 1,
@@ -62,27 +62,27 @@ TriggerEvent('skinchanger:loadSkin', {
 })
 ```
 
-### Get list of existing components
-**Arguments**
+### Povuci listu postojećih komponenti
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'callback', type: 'function', description: 'Callback function that will return the data' }, 
+    { arg: 'callback', type: 'function', description: 'Povratna funkcija koja će vratiti podatke' }, 
 ]} /> 
 
-***Example**
+**Primjer**
 ```lua
 TriggerEvent('skinchanger:getData', function(components, maxVals)
-    print(('Components => %s'):format(json.encode(components)))
+    print(('Komponente => %s'):format(json.encode(components)))
     print(('MaxVals => %s'):format(json.encode(maxVals)))
 end)
 ```
 
-### Get list of existing components
-**Arguments**
+### Povuci listu postojećih skinova
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'callback', type: 'function', description: 'Callback function that will return the data' }, 
+    { arg: 'callback', type: 'function', description: 'Povratna funkcija koja će vratiti podatke' }, 
 ]} /> 
 
-***Example**
+**Primjer**
 ```lua
 TriggerEvent('skinchanger:getSkin', function(skin)
     print(('%s'):format(json.encode(skin)))

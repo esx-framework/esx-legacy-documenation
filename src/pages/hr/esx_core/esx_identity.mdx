@@ -1,34 +1,34 @@
 # esx_identity
-A script that allows the player to pick their characters name, gender, height and date of birth. Used by `es_extended`
+Skript koji omogućuje igraču da odabere ime svog lika, spol, visinu i datum rođenja. Koristi se u `es_extended`.
 
-### Show Identity registration menu
-Show the identity registration menu
+### Prikaži izbornik za registraciju identiteta
+Prikazivanje izbornika za registraciju identiteta.
 
-**Example**
+**Primjer**
 ```lua
 TriggerEvent("esx_identity:showRegisterIdentity")
 ```
 
-### Listen to when a player completed the identity registration
-Listen to when a player completed the identity registration. Server Only
+### Slušanje kada igrač završi registraciju identiteta
+Slušanje kada igrač završi registraciju identiteta. Samo server strana.
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-  { arg: 'data', type: 'table', description: 'The information of the registered identity.' }
+  { arg: 'data', type: 'table', description: 'Informacije o registriranom identitetu.' }
 ]} />
 
-***data***
+***Podatci***
 <ArgumentsTable rows={[
-  { arg: 'firstname', type: 'string', description: 'The first name of the player.' },
-  { arg: 'lastname', type: 'string', description: 'The last name of the player.' },
-  { arg: 'dateofbirth', type: 'string', description: 'The date of birth of the player.' },
-  { arg: 'sex', type: 'string', description: 'The sex of the player. Either m for male or f for female' },
-  { arg: 'height', type: 'number', description: 'The height of the player.' },
+  { arg: 'firstname', type: 'string', description: 'Ime igrača.' },
+  { arg: 'lastname', type: 'string', description: 'Prezime igrača.' },
+  { arg: 'dateofbirth', type: 'string', description: 'Datum rođenja igrača.' },
+  { arg: 'sex', type: 'string', description: 'Spol igrača. M za muški ili F za ženski' },
+  { arg: 'height', type: 'number', description: 'Visina igrača.' },
 ]}/>
 
-**Example**
+**Primjer**
 ```lua
 AddEventHandler("esx_identity:completedRegistration", function(source, data)
-  print("Player with source " .. source .. " has registered their identity. And is called " .. data.firstname .. " " .. data.lastname)
+  print("Igrač sa id-em " .. source .. " registrirao je svoj identitet. I zove se " .. data.firstname .. " " .. data.lastname)
 end)
 ```

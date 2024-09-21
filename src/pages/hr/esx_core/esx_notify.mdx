@@ -1,37 +1,37 @@
 import { ArgumentsTable } from 'src/components/table';
 
 # esx_notify
-The notification system used by `es_extended`
-**Only available on clientside**
+Sustav za obavijesti koji koristi `es_extended`
+**Dostupno samo na client strani**
 
 ### ShowNotifation
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'message', type: 'string', description: 'The notification message.' }, 
-    { arg: 'type', type:'string', description: 'The notification type' }, 
-    { arg: 'length', type:'number', description: 'The progressbar options' } 
+    { arg: 'message', type: 'string', description: 'Poruka obavijesti.' }, 
+    { arg: 'type', type:'string', description: 'Tip obavijesti' }, 
+    { arg: 'length', type:'number', description: 'Opcije za progress bar' } 
 ]} />
 
-**Notification Types** 
+**Tipovi obavijesti** 
 - success 
 - error 
 - info
 
-**ESX Example** 
+**ESX Primjer** 
 ```lua
-ESX.ShowNotification('This is my new test.', 'error', 1500) 
+ESX.ShowNotification('Ovo je moj novi test.', 'error', 1500) 
 ```
 
-**Arguments**
+**Argumenti**
 <ArgumentsTable rows={[
-    { arg: 'type', type:'string', description: 'The notification type' },
-    { arg: 'message', type: 'string', description: 'The notification message.' }, 
-    { arg: 'length', type:'number', description: 'The progressbar options' } 
+    { arg: 'type', type:'string', description: 'Tip obavijesti' },
+    { arg: 'message', type: 'string', description: 'Poruka obavijesti.' }, 
+    { arg: 'length', type:'number', description: 'Opcije za progress bar' } 
 ]} />
 
-**Export Example** 
+**Export Primjer** 
 ```lua
-exports['esx_notify']:Notify('error', 'This is my new test.',  1500) 
+exports['esx_notify']:Notify('error', 'Ovo je moj novi test.', 1500) 
 ```
 

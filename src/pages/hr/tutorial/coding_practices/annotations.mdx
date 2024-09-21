@@ -1,82 +1,82 @@
-# Annotations
-Annotations are important for linting. They help the linter to understand what a function is supposed to return, what the function does, and what the parameters are supposed to be. This helps you to find errors and potential problems in your code.
+# Anotacije
+Anotacije su važne za lintanje. Pomažu linteru da razumije što funkcija treba vratiti, što funkcija radi i koji bi parametri trebali biti. To vam pomaže pronaći greške i potencijalne probleme u vašem kodu.
 
-This section will cover the annotation of Lua code using the Lua VSCode extension from sumneko. But only parts of it. For a full list of annotations, you can check the [Lua Language Server Documentation](https://luals.github.io/wiki/annotations/)
+Ovaj dio će pokriti anotacije Lua koda koristeći Lua VSCode ekstenziju od sumneko-a. Ali samo dijelove. Za potpuni popis anotacija, možete provjeriti [Lua Language Server Documentation](https://luals.github.io/wiki/annotations/)
 
-## Function signatures
-Function signatures are important for linting. They help the linter to understand what a function is supposed to return, what the function does, and what the parameters are supposed to be. This helps you to find errors and potential problems in your code.
+## Potpisi funkcija
+Potpisi funkcija su važni za lintanje. Pomažu linteru da razumije što funkcija treba vratiti, što funkcija radi i koji bi parametri trebali biti. To vam pomaže pronaći greške i potencijalne probleme u vašem kodu.
 
-**This is how a function signature is written in Lua:**
+**Ovako se piše potpis funkcije u Lua::**
 ```lua
---- Comment explaining what the function does
----@param param class/type Explanation of the parameter
----@param param2 class/type Explanation of the parameter
----@return class/type variableName Return result
+--- Komentar koji objašnjava što funkcija radi
+---@param param klasa/tip Objašnjenje parametra
+---@param param2 klasa/tip Objašnjenje parametra
+---@return klasa/tip varijablaNaziv Povratni rezultat
 function functionName(param, param2)
-    -- Your code here
+    -- Vaš kod ovdje
     return 
 end
 ```
 --
-**Here is an example of a function signature:**
+**Evo primjera potpisa funkcije:**
 ```lua
---- Add two numbers together
----@param num1 number The first number
----@param num2 number The second number
----@return number sum result of both numbers
+--- Zbraja dva broja
+---@param num1 number Prvi broj
+---@param num2 number Drugi broj
+---@return number sum Zbroj oba broja
 function addNumbers(num1, num2)
-    -- Calculate the sum of num1 and num2
+    -- Izračunaj zbroj num1 i num2
     local sum = num1 + num2
 
-    -- Return the sum
+    -- Vrati zbroj
     return sum
 end
 
-addNumbers(5, 10) -- Returns 15
+addNumbers(5, 10) -- Vraća 15
 ```
 
-## Classes / Custom Types
-Classes and custom types are important for linting. They help the linter to understand what a table contains and what the properties are supposed to be.
+## Klase / Prilagođeni Tipovi
+Klase i prilagođeni tipovi su važni za lintanje. Pomažu linteru da razumije što tablica sadrži i koja bi svojstva trebala biti.
 
-**This is how a class is written in Lua:**
+**Ovako se piše klasa u Lua:**
 ```lua
 ---@class ClassName
----@field field1 class/type Description of field1
+---@field field1 klasa/tip Opis field1
 ClassName = {
-    field1 = nil, -- Set default value
+    field1 = nil, -- Postavi zadanu vrijednost
 }
 
---- Description
----@param param1 any
----@param param any
+--- Opis
+---@param param1 bilo što
+---@param param bilo što
 function ClassName.function(param1, param)
     
 end
 ```
 
-**Here is an example of a class:**
+**Evo primjera klase:**
 ```lua
 ---@class ExtendedPlayer
----@field accounts table<string, table> The accounts of the player
----@field coords vector3 The last known position of the Player
----@field group string The current permission group of the player
----@field identifier string The players Rockstar Identifier(has char index with multichar in the front, example: char1:[identifier])
----@field inventory table The players inventory
----@field job table The players job and grade
----@field loadout table The current weapons of the player
----@field name string Returns the name of the FiveM name or consists out of the "firstname lastname" when ESX identity installed.
----@field playerId number The playerId/source of a player
----@field source number The playerId/source of a player
+---@field accounts table<string, table> Računi igrača
+---@field coords vector3 Posljednja poznata pozicija igrača
+---@field group string Trenutna grupa dopuštenja igrača
+---@field identifier string Rockstar identifikator igrača (ima char indeks s više znakova na početku, primjer: char1:[identifier])
+---@field inventory table Inventar igrača
+---@field job table Posao i stupanj igrača
+---@field loadout table Trenutno oružje igrača
+---@field name string Vraća ime FiveM ili se sastoji od "ime prezime" kada je instaliran ESX identitet.
+---@field playerId number playerId/izvor igrača
+---@field source number playerId/izvor igrača
 ---@field variables table
----@field weight number Current player weight
----@field maxWeight number The max weight a player can handle
----@field metadata table Saved metadata
----@field license string Player license
+---@field weight number Trenutna težina igrača
+---@field maxWeight number Maksimalna težina koju igrač može nositi
+---@field metadata table Spremljena metadata
+---@field license string Licenca igrača
 ExtendedPlayer = {}
 
---Returns the player's current coordinates on the server. The optional boolean useVector argument is for returning a vector3 type. 
---Keep in mind that the coords sync interval can be adjusted in the configuration file in case you want to get precise player coords.
----@param useVector? boolean Returns an vector3 type if set to true, and normally a table with x, y and z pairs
+--Vraća trenutne koordinate igrača na serveru. Opcionalni boolean useVector argument je za vraćanje tipa vector3.
+--Imajte na umu da se interval sinkronizacije koordinata može prilagoditi u konfiguracijskoj datoteci ako želite dobiti precizne koordinate igrača.
+---@param useVector? boolean Vraća tip vector3 ako je postavljen na true, i inače tablicu s x, y i z parovima
 ---@return vector3|{x: number, y: number, z: number} coords
 function ExtendedPlayer.getCoords(useVector)
     return coords
