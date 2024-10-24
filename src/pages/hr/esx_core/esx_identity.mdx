@@ -1,0 +1,34 @@
+# esx_identity
+Skript koji omogućuje igraču da odabere ime svog lika, spol, visinu i datum rođenja. Koristi se u `es_extended`.
+
+### Prikaži izbornik za registraciju identiteta
+Prikazivanje izbornika za registraciju identiteta.
+
+**Primjer**
+```lua
+TriggerEvent("esx_identity:showRegisterIdentity")
+```
+
+### Slušanje kada igrač završi registraciju identiteta
+Slušanje kada igrač završi registraciju identiteta. Samo server strana.
+
+**Argumenti**
+<ArgumentsTable rows={[
+  { arg: 'data', type: 'table', description: 'Informacije o registriranom identitetu.' }
+]} />
+
+***Podatci***
+<ArgumentsTable rows={[
+  { arg: 'firstname', type: 'string', description: 'Ime igrača.' },
+  { arg: 'lastname', type: 'string', description: 'Prezime igrača.' },
+  { arg: 'dateofbirth', type: 'string', description: 'Datum rođenja igrača.' },
+  { arg: 'sex', type: 'string', description: 'Spol igrača. M za muški ili F za ženski' },
+  { arg: 'height', type: 'number', description: 'Visina igrača.' },
+]}/>
+
+**Primjer**
+```lua
+AddEventHandler("esx_identity:completedRegistration", function(source, data)
+  print("Igrač sa id-em " .. source .. " registrirao je svoj identitet. I zove se " .. data.firstname .. " " .. data.lastname)
+end)
+```

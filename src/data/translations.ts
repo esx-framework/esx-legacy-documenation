@@ -31,5 +31,19 @@ export const TRANSLATIONS = {
     FEEDBACK: "Une question? Donnez-nous votre avis →",
     TIMESTAMP: "Dernière mise à jour le",
     BACK_TO_TOP: "Retour en haut"
+  },
+  hr: {
+    title: "ESX Dokumentacija",
+    description: "ESX Dokumentacija",
+    copyright: "Autorska prava ©",
+    allRightsReserved: "Sva prava zadržana.",
+    poweredBy: "Pokreće",
+    keywords: "ESX, docs, dokumentacija, ESX docs, ESX dokumentacija, fivem dokumentacija, fivem, fivem server, ESX framework, fivem server upravljanje, fivem framework, fivem server tutorial, fivem server upravljanje, prerađeno",
+    EDIT_TEXT: "Uredi ovu stranicu na GitHub-u →",
+    SEARCH_PLACEHOLDER: "Pretraži dokumentaciju...",
+    ON_THIS_PAGE: "Na ovoj stranici",
+    FEEDBACK: "Pitanje? Daj nam povratne informacije →",
+    TIMESTAMP: "Posljednji put ažurirano",
+    BACK_TO_TOP: "Vrati se na vrh",
   }
 };

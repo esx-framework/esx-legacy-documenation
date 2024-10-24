@@ -1,0 +1,35 @@
+import { Callout } from 'nextra/components';
+
+# Discord Logovi
+<Callout type="warning">
+    Discord logovi su neučinkoviti i nebih se trebali koristiti pogotovo na većim serverima.
+    Zapamti ako logovi budu spamali da će biti ogranićeni od discorda privremeno.
+    Bolja platforma za logove su Datadog ili Grafana.
+</Callout>
+
+### Webhookovi
+Ovo određuje webhookove u različite kategorije. Možeš dodavat svoje kategorije.
+- default (Logovi za sve šta nema posebnu kategoriju)
+- test (Logovi za testiranje)
+- Chat (Logovi chata)
+- UserActions (Komande koje admini i igraći koriste)
+- Resources (Logovi resursa)
+- Paycheck (Logovi za platu ako je uključena)
+
+Dodavanje custom webhook kategorije:
+**Primjer**
+```lua
+Webhooks = {
+    default = '',
+    test = '',
+    Chat = '',
+    UserActions = '',
+    Resources = '',
+    Paycheck = '',
+    Police = '' -- Moj custom webhook za policiju
+},
+```
+
+### Boje
+Ovo specificira boju logova. Možeš dodavat svoje boje. Koristi "Decimal value" boja.
+Pomoć možeš naći na ovoj stranici: [spycolor.com](https://www.spycolor.com/)

@@ -1,0 +1,91 @@
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# skinchanger
+Skripta za postavljanje i mijenjanje odjeće, dodataka i modela igrača koju koristi `es_extended`
+**Dostupno samo na client strani**
+
+### Učitaj default model
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'isMale', type: 'boolean', description: 'Treba li igrač biti postavljen na muški ped?' }, 
+]} /> 
+
+**Primjer**
+```lua
+--- Postavi igrača na zadani muški ped (mp_m_freemode_01)
+TriggerEvent('skinchanger:loadDefaultModel', true)
+```
+
+### Učitaj skin
+Koristi se za postavljanje skina lokalnog igrača, također možete postaviti samo određene komponente.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'skin', type: 'table', description: 'Tablica koja sadrži sve detalje skina.' }, 
+]} /> 
+
+**Primjer**
+```lua
+TriggerEvent('skinchanger:loadSkin', {
+    sex          = 1,
+    face         = 0,
+    skin         = 0,
+    beard_1      = 0,
+    beard_2      = 0,
+    beard_3      = 0,
+    beard_4      = 0,
+    hair_1       = 0,
+    hair_2       = 0,
+    hair_color_1 = 0,
+    hair_color_2 = 0,
+    tshirt_1     = 0,
+    tshirt_2     = 0,
+    torso_1      = 0,
+    torso_2      = 0,
+    decals_1     = 0,
+    decals_2     = 0,
+    arms         = 0,
+    pants_1      = 0,
+    pants_2      = 0,
+    shoes_1      = 0,
+    shoes_2      = 0,
+    mask_1       = 0,
+    mask_2       = 0,
+    bproof_1     = 0,
+    bproof_2     = 0,
+    chain_1      = 0,
+    chain_2      = 0,
+    helmet_1     = 0,
+    helmet_2     = 0,
+    glasses_1    = 0,
+    glasses_2    = 0,
+})
+```
+
+### Povuci listu postojećih komponenti
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'callback', type: 'function', description: 'Povratna funkcija koja će vratiti podatke' }, 
+]} /> 
+
+**Primjer**
+```lua
+TriggerEvent('skinchanger:getData', function(components, maxVals)
+    print(('Komponente => %s'):format(json.encode(components)))
+    print(('MaxVals => %s'):format(json.encode(maxVals)))
+end)
+```
+
+### Povuci listu postojećih skinova
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'callback', type: 'function', description: 'Povratna funkcija koja će vratiti podatke' }, 
+]} /> 
+
+**Primjer**
+```lua
+TriggerEvent('skinchanger:getSkin', function(skin)
+    print(('%s'):format(json.encode(skin)))
+end)
+```
+

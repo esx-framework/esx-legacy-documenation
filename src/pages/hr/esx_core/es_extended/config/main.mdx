@@ -1,0 +1,209 @@
+# Glavni Config
+Glavni config es_extended-a
+
+## Funkcije
+### ESX.GetConfig
+```lua
+ESX.GetConfig()
+```
+Ova funkcija povlaći tablu Configa
+
+## Svojstva
+
+### Locale
+Ovo se nebi trebalo mjenjat. Ako hoćeš promjenit prijevod, setaj convar `esx:locale` u server.cfg:
+```properties
+setr esx:locale "en" # za engleski
+```
+
+### Accounts
+Sa ovim možeš specifirati koje novčane račune igrać ima. Nove račune možeš praviti u ovom formatu:
+```lua
+    bitcoin = {
+        label = "Bitcoin", -- Naziv.
+        round = false -- Hoće biti zaokruživano?
+    }
+```
+
+### StartingAccountMoney
+Sa ovim određuješ koliko će novca imati igrač u svakom računu kad kreira karaktera.
+
+**Primjer**
+```lua
+StartingAccountMoney = {
+    bank = 50000, -- Daje igraću 50k na bankovni račun
+    money = 1500, -- Daje igraću 1.5k casha
+    black_money = 500, -- Daje igraću 500 prljavog casha,
+
+    -- Ovo se može napraviti i sa custom računima:
+    bitcoin = 3 -- daje igraću 3 bitkoina
+}
+```
+
+### StartingInventoryItems
+Sa ovim određuješ koje iteme će igrać imati kad kreira karaktera.
+Ovo može biti `false` ako želiš da igrać ne dobije ništa. Ili tabla sa itemima i količinom.
+
+**Primjer**
+```lua
+StartingInventoryItems = {
+    kruh = 2, -- daje igraću 2 kruha
+    voda = 4, -- daje igraću 4 vode
+	fontele = 1 -- daje igraću radilicu fon
+}
+```
+
+### DefaultSpawns
+Sa ovim određuješ gdje će se igrać spawnati kad napravi karaktera.
+Možeš odrediti 1 spawn ili više spawnova koji će biti random.
+
+**Primjer**
+```lua
+DefaultSpawns = { 
+	{x = 222.2027, y = -864.0162, z = 30.2922, heading = 1.0},
+	{x = 224.9865, y = -865.0871, z = 30.2922, heading = 1.0},
+	{x = 227.8436, y = -866.0400, z = 30.2922, heading = 1.0},
+	{x = 230.6051, y = -867.1450, z = 30.2922, heading = 1.0},
+	{x = 233.5459, y = -868.2626, z = 30.2922, heading = 1.0}
+}
+```
+
+### AdminGroups
+Sa ovim svojstvom configa možeš specificirati grupe koje će biti smatrane "adminima" od strane esx-a. Ovo se koristi da bi se igraću dalo admin prava ako ima jednu od tih uloga prilikom kreiranja karaktera.
+Također možeš koristiti ovo pomoću callbacka `esx:isUserAdmin`.
+
+**Primjer**
+```lua
+AdminGroups = {
+	['owner'] = true,
+	['sradmin'] = true,
+    ['admin'] = true,
+}
+```
+
+### EnablePaycheck
+Sa ovim svojstvom configa možeš specificirati da li plaće trebaju biti logirane na discord preko `Paycheck` webhuka. Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### LogPaycheck
+Sa ovim svojstvom configa možeš specificirati da li society posla igrača treba isplatiti plaću. Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### EnableSocietyPayouts
+With this config property you can specify if the society of the player's job should payout the paycheck. Set to `true` if you want to enable it and `false` to disable.
+
+### MaxWeight
+Sa ovim svojstvom configa možeš specificirati maksimalnu težinu koju igrač može nositi bez ruksaka.
+
+### PaycheckInterval
+Sa ovim svojstvom configa možeš specificirati interval u milisekundama kada će plaća biti isplaćena.
+
+### EnableDebug
+Sa ovim svojstvom configa možeš specificirati da li se informacije o otklanjanju grešaka trebaju logirati u konzolu. Postavi na `true` ako želiš omogućiti i `false` da onemogućiš. Ovo bi trebalo biti postavljeno na `false` na normalnom serveru.
+
+### EnalbeDefaultInventory
+Sa ovim svojstvom configa možeš specificirati da li bi ugrađeni inventar od es_extended trebao biti omogućen. Ovo bi trebalo biti postavljeno na `false` ako koristiš drugačiji inventar. Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### EnableWantedLevel
+Sa ovim svojstvom configa možeš specificirati da li bi GTA nivo traženja trebao biti omogućen. Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### EnablePVP
+Sa ovim svojstvom configa možeš specificirati da li bi Player vs. Player borba trebala biti omogućen na serveru. Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### Multichar
+Ovo svojstvo configa se obično ne bi trebalo mijenjati ako ne koristiš multicharacter sistem ili koristiš esx_multicharacter.
+Ako koristiš drugu skriptu za multicharacter i oni ti savjetuju da ovo promijeniš, postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### Identity
+Ovo svojstvo configa specificira da li bi identitet igrača trebao biti učitan (ime, prezime, datum rođenja, spol, visina). Ovo će također biti `true` ako je `Multichar` omogućen.
+Ne diraj ovo ako ne znaš šta radiš.
+
+### DistanceGive
+Ovo svojstvo configa specificira maksimalnu udaljenost za igrača da bi dao nešto drugom igraču.
+
+### AdminLogging
+Ovo svojstvo configa specificira da li određene admin komande trebaju biti logirane na discord koristeći `UserActions` webhook.
+Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### DisableHealthRegeneration
+Ovo svojstvo configa specificira da li bi igrač trebao regenerirati health.
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableVehicleRewards
+Ovo svojstvo configa specificira da li bi igrač trebao dobiti oružje iz specifičnih vozila (oružje u policijskim autima, padobran u helikopteru).
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableNPCDrops
+Ovo svojstvo configa specificira da li bi peds/npc trebali ispustiti oružje/metke nakon što umru.
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableDispatchServices
+Ovo svojstvo configa specificira da li bi se dispatch usluge (Policija, Hitna pomoć, Vatrogasci) trebale pojaviti nakon što se dogodi događaj (Neko umre, auto se zapali, itd.).
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableScenarios
+Ovo svojstvo configa specificira da li bi se npc scenariji trebali događati (Slučajna Hitna pomoć vozi okolo, Helikopteri, Radnici na gradilištu, itd.).
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableWeaponWheel
+Ovo svojstvo configa specificira da li bi igračev weaponwheel trebao biti onemogućen.
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableAimAssist
+Ovo svojstvo configa specificira da li bi ciljna pomoć trebala biti onemogućena (uglavnom za kontrolere).
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableVehicleSeatShuff
+Ovo svojstvo configa specificira da li bi trebalo biti onemogućeno da suvozač prelazi na vozačko sjedalo ako je slobodno.
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### DisableDisplayAmmo
+Ovo svojstvo configa specificira da li bi trebalo onemogućiti prikaz municije u gornjem desnom kutu od strane GTA.
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+
+### RemoveHudComponents
+Ovo svojstvo configa specificira da li bi trebalo onemogućiti određene dijelove igračeve HUD-a.
+Postavi na `true` ako želiš onemogućiti i `false` da omogućiš.
+```lua
+RemoveHudComponents       = {
+	[1] = false,  -- Igračeve tražene zvijezde,
+	[2] = false,  -- Ikona trenutnog oružja.
+	[3] = false,  -- Igračev novac (Ovo ne koristi ESX)
+	[4] = false,  -- Igračev novac (Ovo ne koristi ESX)
+	[5] = false,  -- Gta5 zadane notifikacije/poruke.
+	[6] = false,  -- Prikaz na donjem desnom uglu koji kratko pokazuje oznaku vozila.
+	[7] = false,  -- Prikaz koji kratko pokazuje oznaku trenutnog područja.
+	[8] = false,  -- Prikaz na donjem desnom uglu koji kratko pokazuje klasu vozila.
+	[9] = false,  -- Prikaz koji kratko pokazuje ime trenutne ulice.
+	[10] = false, -- Tekst pomoći.
+	[11] = false, -- Plutajući tekst pomoći 1
+	[12] = false, -- Plutajući tekst pomoći 2
+	[13] = false, -- Popup kada se promijeni količina novca (Ovo ne koristi ESX)
+	[14] = false, -- Križić
+	[15] = false, -- SUBTITLE_TEXT
+	[16] = false, -- Izbornik radio stanice u autu
+	[17] = false, -- Ikona spremanja igre,
+	[18] = false, -- GAME_STREAM
+	[19] = false, -- Kotačić za oružje
+	[20] = false, -- Statistike oružja u kotačiću za oružje
+	[21] = false, -- HUD_COMPONENTS
+	[22] = false, -- HUD_WEAPONS
+}
+```
+
+### SpawnVehMaxUpgrades
+Ovo svojstvo configa specificira da li bi vozila koja su spawnana od strane admin komande /car trebala imati maksimalne nadogradnje.
+Postavi na `true` ako želiš omogućiti i `false` da onemogućiš.
+
+### CustomAIPlates
+Ovo svojstvo configa specificira uzorak registarskih tablica prirodno spawnanih NPC vozila.
+- Korištenje `1` će dovesti do slučajnog broja od 0-9
+- Korištenje `A` će dovesti do slučajnog slova od A-z
+- Korištenje `.` će rezultirati nasumičnim slovom ili brojem
+- Korištenje `^1` će rezultirati doslovnim brojem 1
+- Korištenje `^A` će rezultirati doslovnim slovom A
+- Bilo koji drugi znak će rezultirati ispisivanjem tog znaka
+- String kraći od 8 znakova bit će popunjen s desne strane
+
+**Primjer**
+```lua
+CustomAIPlates = "ESX-^11EA" -- Primjer rezultata: ESX-15EG
+```

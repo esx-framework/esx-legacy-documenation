@@ -1,0 +1,219 @@
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# esx_context
+The context menu used by `es_extended`
+
+### OpenContext
+Open a context menu and enable mouse focus.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'position', type: 'string', description: 'The position the context should be displayed at.' }, 
+    { arg: 'elements', type: 'table', description: 'Table with the elements that should be displayed.' },
+    { arg: 'canClose', type: 'boolean', optional: true, defaultValue: 'true', description: 'Should the menu be able to be closed?' },
+    { arg: 'onSelect', type: 'function', description: 'Function that gets ran when the client selects an element.' },
+    { arg: 'onClose', type: 'function', description: 'Function that gets ran when the client clsoes the menu.'}
+]} /> 
+
+**Positions**
+- left
+- center
+- right
+
+**Elements**
+<OutputTable rows={[
+    { arg: 'uselectable', type: 'boolean', description: 'Should selection be disabled?' },
+    { arg: 'disabled', type: 'boolean', description: 'Should the button be disabled?' },
+    { arg: 'icon', type: 'string', description: '(Free) Fontawesome Icon or empty to hide icon?' },
+    { arg: 'title', type: 'string', description: 'Title of the element.' },
+    { arg: 'description', type: 'string', description: 'Description of the element.' },
+    { arg: 'input', type: 'boolean', description: 'Allow input?' },
+    { arg: 'inputType', type: '"radio" | "number" | "text"', description: 'Type of the input.' },
+    { arg: 'inputPlaceholder', type: 'string', description: 'Placeholder to show in input.' },
+    { arg: 'inputValue', type: 'number|string', description: 'Default value' },
+    { arg: 'inputMin', type: 'number', description: 'Minimum Value. Only works with type: "number"' },
+    { arg: 'inputMax', type: 'number', description: 'Maximum Value. Only works with type: "number"' },
+    { arg: 'name', type: 'string', description: 'Input key (later used when checking in code).'}
+]}/>
+
+**Example**
+```lua
+RegisterCommand('contextTest', function()
+    local formMenu = {
+        {
+            unselectable = true,
+            icon = 'fas fa-info-circle',
+            title = 'Unselectable Item (Header/Label?)',
+        },
+        {
+            icon = '',
+            title = 'Input Text',
+            input = true,
+            inputType = 'text',
+            inputPlaceholder = 'Placeholder...',
+            name = 'firstname',
+        },
+        {
+            icon = 'fas fa-check',
+            title = 'Submit',
+            name = 'submit'
+        }
+    }
+
+    ESX.OpenContext('right', formMenu, function(menu, element)
+        print('Element selected', element.title)
+
+		if element.name ~= 'submit' then
+			return
+		end
+
+		for _, element in ipairs(menu.eles) do
+			if element.input then
+				print(element.name, element.inputType, element.inputValue)
+			end
+		end
+
+        ESX.CloseContext()
+    end, function ()
+        print('Context closed')
+    end)
+end)
+```
+
+### PreviewContext
+Open context menu without enabling mouse focus.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'position', type: 'string', description: 'The position the context should be displayed at.' }, 
+    { arg: 'elements', type: 'table', description: 'Table with the elements that should be displayed.' },
+    { arg: 'canClose', type: 'boolean', optional: true, defaultValue: 'true', description: 'Should the menu be able to be closed?' },
+    { arg: 'onSelect', type: 'function', description: 'Function that gets ran when the client selects an element.' },
+    { arg: 'onClose', type: 'function', description: 'Function that gets ran when the client clsoes the menu.'}
+]} /> 
+
+**Positions**
+- left
+- center
+- right
+
+**Elements**
+<OutputTable rows={[
+    { arg: 'uselectable', type: 'boolean', description: 'Should selection be disabled?' },
+    { arg: 'disabled', type: 'boolean', description: 'Should the button be disabled?' },
+    { arg: 'icon', type: 'string', description: '(Free) Fontawesome Icon or empty to hide icon?' },
+    { arg: 'title', type: 'string', description: 'Title of the element.' },
+    { arg: 'description', type: 'string', description: 'Description of the element.' },
+    { arg: 'input', type: 'boolean', description: 'Allow input?' },
+    { arg: 'inputType', type: '"radio" | "number" | "text"', description: 'Type of the input.' },
+    { arg: 'inputPlaceholder', type: 'string', description: 'Placeholder to show in input.' },
+    { arg: 'inputValue', type: 'number|string', description: 'Default value' },
+    { arg: 'inputMin', type: 'number', description: 'Minimum Value. Only works with type: "number"' },
+    { arg: 'inputMax', type: 'number', description: 'Maximum Value. Only works with type: "number"' },
+    { arg: 'name', type: 'string', description: 'Input key (later used when checking in code).'}
+]}/>
+
+**Example**
+```lua
+RegisterCommand('contextTest', function()
+    local formMenu = {
+        {
+            unselectable = true,
+            icon = 'fas fa-info-circle',
+            title = 'Unselectable Item (Header/Label?)',
+        },
+        {
+            icon = '',
+            title = 'Input Text',
+            input = true,
+            inputType = 'text',
+            inputPlaceholder = 'Placeholder...',
+            name = 'firstname',
+        },
+        {
+            icon = 'fas fa-check',
+            title = 'Submit',
+            name = 'submit'
+        }
+    }
+
+    ESX.OpenContext('right', formMenu, function(menu, element)
+        print('Element selected', element.title)
+
+		if element.name ~= 'submit' then
+			return
+		end
+
+		for _, element in ipairs(menu.eles) do
+			if element.input then
+				print(element.name, element.inputType, element.inputValue)
+			end
+		end
+
+        ESX.CloseContext()
+    end, function ()
+        print('Context closed')
+    end)
+end)
+```
+
+### CloseContext
+This function closes the current open context.
+
+### RefreshContext
+This function updates the context menu.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: 'position', type: 'string', description: 'The position the context should be displayed at.' }, 
+    { arg: 'elements', type: 'table', description: 'Table with the elements that should be displayed.' },
+]} /> 
+
+**Positions**
+- left
+- center
+- right
+
+**Elements**
+<OutputTable rows={[
+    { arg: 'uselectable', type: 'boolean', description: 'Should selection be disabled?' },
+    { arg: 'disabled', type: 'boolean', description: 'Should the button be disabled?' },
+    { arg: 'icon', type: 'string', description: '(Free) Fontawesome Icon or empty to hide icon?' },
+    { arg: 'title', type: 'string', description: 'Title of the element.' },
+    { arg: 'description', type: 'string', description: 'Description of the element.' },
+    { arg: 'input', type: 'boolean', description: 'Allow input?' },
+    { arg: 'inputType', type: '"radio" | "number" | "text"', description: 'Type of the input.' },
+    { arg: 'inputPlaceholder', type: 'string', description: 'Placeholder to show in input.' },
+    { arg: 'inputValue', type: 'number|string', description: 'Default value' },
+    { arg: 'inputMin', type: 'number', description: 'Minimum Value. Only works with type: "number"' },
+    { arg: 'inputMax', type: 'number', description: 'Maximum Value. Only works with type: "number"' },
+    { arg: 'name', type: 'string', description: 'Input key (later used when checking in code).' }
+]}/>
+
+**Example**
+```lua
+RegisterCommand('updateContext', function()
+    local formMenu = {
+        {
+            unselectable = true,
+            icon = 'fas fa-info-circle',
+            title = 'Really cool Header',
+        },
+        {
+            icon = '',
+            title = 'New Input Text',
+            input = true,
+            inputType = 'text',
+            inputPlaceholder = 'Placeholders are useful...',
+            name = 'firstname',
+        },
+        {
+            icon = 'fas fa-check',
+            title = 'Submit',
+            name = 'submit'
+        }
+    }
+
+    ESX.RefreshContext('right', formMenu)
+end)
+```

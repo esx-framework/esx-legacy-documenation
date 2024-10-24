@@ -1,0 +1,92 @@
+import { Tabs } from 'nextra/components'
+
+# Update-aj svoje skripte
+Među starim verzijama ESX-a i novim verzijama, ubaćene su velike promjene ukljućujući:
+- Promjena inventory sistema sa limit sistema na weight sistem
+- Promjena `esx:getSharedObject` eventa u `getSharedObject` export ili import u fxmanifest-u.
+
+
+## Updateanje getSharedObject-a
+Da bih napravio da nova metoda radi, moraš izbrisati staru.
+I onda ubaciti import ili export da bih povukao ESX objekt
+
+Provjeri da ti se skripta starta **nakon** es_extended-a i drugih core skripti.
+
+### Brisanje stare metode
+Postoji razlika između stare metode u client strani i u server strani.
+Ispod su primjeri starih metoda. 
+Ako primjetiš ovaj kod negdje obriši ga i zamjeni sa metodama ispod.
+
+Obriši svaki `ESX = nil`
+
+#### Client strana
+```lua
+ESX = nil
+
+Citizen.CreateThread(function()
+    while ESX == nil do
+        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+        Citizen.Wait(0)
+    end
+end)
+```
+
+#### Server strana
+```lua
+ESX = nil
+
+TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+```
+
+### Export metoda
+Ova metoda je perfektna ako trebaš samo ESX objekt.
+
+Da bih je iskoristio samo napraviš ovo:
+```lua
+ESX = exports['es_extended']:getSharedObject()
+```
+
+#### Primjer
+<img src= "https://i.gyazo.com/b9f7213a75deeb6db3fd97d38b64e1cc.gif"></img>
+
+### Import metoda
+Ova metoda je ista kao export metoda ali dodaje event listener i funkciju koja provjerava jel ESX.PlayerData updatean.
+
+Da iskoristiš ovu metodu samo ubaci ovo u client ili server stranu u fxmanifestu:
+```lua
+'@es_extended/imports.lua'
+```
+
+#### Primjer
+<Tabs items={["fxmanifest.lua", "client.lua"]}>
+    <Tabs.Tab>
+    ```lua
+    fx_version 'cerulean'
+    game 'gta5'
+
+    description 'My favourite script'
+
+    shared_scripts {
+        '@es_extended/imports.lua'
+    }
+
+    server_script 'server.lua'
+    client_script 'client.lua'
+
+    dependencies {
+        'es_extended'
+    }
+    ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+    ```lua
+    OnPlayerData = function(key, val, last) -- Nije potrebno ali se može koristiti sa import metodom (samo client side)
+        print(("The data %s has been changed from %s to %s"):format(key, last, val))
+    end
+
+    RegisterCommand('test', function()
+        print(("Name: %s | Job: %s (%s)"):format(ESX.PlayerData.name, ESX.PlayerData.job.label, ESX.PlayerData.job.grade_label))
+    end, false)
+    ```
+    </Tabs.Tab>
+</Tabs>

@@ -1,0 +1,522 @@
+import { ArgumentsTable, OutputTable } from "src/components/table";
+import { Callout } from 'nextra/components'; 
+
+# Serverside Funkcije
+
+## Globalne varijable
+Ove globalne varijable su spremljene u ESX tabli. Možete slobodno koristiti njihove podatke.
+
+<OutputTable isTable={true} rows={[
+    { arg: "Players", type: "table", description: "Svi učitani igrači." },
+    { arg: "Jobs", type: "table", description: "Svi registrirani poslovi." },
+    { arg: "JobsPlayerCount", type: "table", description: "Svi registrirani poslovi i broj njihovih igrača." },
+    { arg: "Items", type: "table", description: "Svi registrirani predmeti." }
+]}/>
+
+## Ispis tragova
+Ova funkcija ispisuje poruku u konzolu kada je Debug upaljen u ESX Config-u.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "msg", type: "any", description: "Poruka koja će biti ispisana." },
+]} />
+
+**Primjer**
+
+```lua 
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+if xPlayer.admin then
+    ESX.Trace(xPlayer.name .. " je administrator.") -- "[TRACE] John Doe je administrator." kada je Debug upaljen.
+end
+```
+
+## RegisterServerCallback
+Ova funkcija registrira server callback, koji se koristi za slanje podataka servera klijentu.
+
+Pogledajte [*TriggerClientCallback*](../client/functions/#triggerservercallback)
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", description: "Naziv server callback-a." },
+    { arg: "cb", type: "function", description: "Callback funkcija." },
+    { arg: "...", type: "arguments", description: "Argumenti callback funkcije." },
+]} />
+
+**Primjer**
+```lua
+local myMemeServer = 'Meme data string'
+-- Prvi argument handler funkcije je source igrača (NetID),
+-- cb je callback funkcija koju zovemo kada želimo vratiti podatke klijentu
+-- sljedeći parametri su argumenti pozvani od strane klijenta.
+ESX.RegisterServerCallback('mojaSkripta:getMeme', function(src, cb, param1, param2)
+  -- Logika potrebna za dobivanje podataka koje želite poslati natrag
+  -- koristeći proslijeđene parametre u handleru (src, param1, param2, itd.)
+
+  -- Pošaljite naše meme podatke natrag klijentskom handleru
+  cb(myMemeServer)
+end)
+```
+
+## TriggerClientCallback
+Ova funkcija aktivira klijentski callback, koji se koristi za dobivanje podataka od klijenta.
+
+<Callout type="warning">
+    Ovo treba koristiti s oprezom! Nikada ne biste trebali vjerovati podacima od klijenta.
+    Zato ih nemojte koristiti za dobivanje osjetljivih podataka, poput iznosa novca koji igrač treba dobiti.
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "player", type: "number", description: "Klijent za kojeg se aktivira callback." },
+    { arg: "eventName", type: "string", description: "Naziv callback-a koji se aktivira." },
+    { arg: "cb", type: "function", description: "Callback funkcija koja se aktivira kada podaci budu poslani natrag." },
+    { arg: "...", type: "arguments", description: "Argumenti callback funkcije koji se trebaju poslati klijentu." },
+]} />
+
+**Primjer**
+```lua
+ESX.TriggerClientCallback(player, "esx:GetVehicleType", function(vehicleType)
+	print("Bati801 je " .. vehicleType) -- "Bati801 je motor"
+end, "bati")
+```
+
+## RegisterCommand
+Ova funkcija registrira komandu.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string | table", description: "Naziv komande." },
+    { arg: "group", type: "string | table", description: "Grupe koje mogu pokrenuti ovu komandu." },
+    { arg: "cb", type: "function", description: "Callback funkcija koja se pokreće." },
+    { arg: "allowConsole", type: "boolean", optional: true, description: "Je li dozvoljeno da se komanda pokrene kroz konzolu." },
+    { arg: "suggestion", type: "table", optional: true, description: "Podaci za prijedlog u chatu." }
+]} />
+
+**Callback**
+<OutputTable rows={[
+    { arg: "xPlayer", type: "table", description: "xPlayer tablica klijenta." },
+    { arg: "args", type: "table", description: "Argumenti koje je igrač unio." },
+    { arg: "showError", type: "function", description: "Ispis ili prikaz obavijesti o pogrešci." }
+]}/>
+
+**Prijedlog**
+<ArgumentsTable rows={[
+    { arg: "help", type: "string", description: "Poruka pomoći prikazana u chatu." },
+    { arg: "arguments", type: "table", description: "Argumenti koje igrač može unijeti." }
+]}/>
+
+**Argumenti prijedloga**
+<ArgumentsTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "Ključ argumenta." },
+    { arg: "help", type: "string", description: "Objašnjenje argumenta." },
+    { arg: "type", type: "string", description: "Tip argumenta. Mogući tipovi: number, playerId, string, item, weapon, any, merge, coordinate." },
+]}/>
+
+**Primjer**
+```lua
+ESX.RegisterCommand({'cardel', 'dv'}, 'admin', function(xPlayer, args, showError)
+  if not args.radius then args.radius = 4 end
+  xPlayer.triggerEvent('esx:deleteVehicle', args.radius)
+end, false, {
+    help = _U('command_cardel'), 
+    arguments = {
+        name = 'radius', 
+        help = _U('command_cardel_radius'), 
+        type = 'any'
+    }
+})
+```
+
+## GetExtendedPlayers
+Ova funkcija vraća sve učitane xPlayers i, ako je primijenjen filtar, one koji odgovaraju filtru.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "key", optional: true, type: "string", description: "Ključ za filtriranje igrača" },
+    { arg: "val", optional: true, type: "any", description: "Vrijednost za filtriranje" }
+]} />
+
+**Povratne informacije**
+
+Tabla s xPlayer objektima.
+
+**Primjer**
+```lua
+local policeOfficers = ESX.GetExtendedPlayers('job', 'police')
+
+for i, xPlayer in ipairs(policeOfficers) do
+    print("Pronađen policajac s činom " .. xPlayer.getJob().grade_label .. ".")
+end
+```
+
+## GetNumPlayers
+Ova funkcija vraća broj igrača online i, ako je primijenjen filtar, one koji odgovaraju filtru.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "key", optional: true, type: "string", description: "Ključ za filtriranje igrača" },
+    { arg: "val", optional: true, type: "any", description: "Vrijednost za filtriranje" }
+]} />
+
+**Povratne informacije**
+
+Broj igrača online koji odgovaraju filtru.
+
+**Primjer**
+```lua
+local officersOnline = ESX.GetNumPlayers('job', 'police')
+
+print("Trenutno je " .. officersOnline .. " policajaca online.")
+```
+
+## GetPlayerFromId
+Ova funkcija vraća xPlayer objekt za specificirani playerId.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "source", type: "number", description: "PlayerId igrača" }
+]} />
+
+**Povratne informacije**
+
+xPlayer objekt specificiranog igrača.
+
+**Primjer**
+```lua
+local xPlayer = ESX.GetPlayerFromId(5) -- Vraća xPlayer objekt za igrača 5
+
+print("Igrač 5 se zove " .. xPlayer.getName())
+```
+
+## GetPlayerFromIdentifier
+Ova funkcija vraća xPlayer objekt za specificirani identifier.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "identifier", type: "string", description: "Identifier igrača" }
+]} />
+
+**Povratne informacije**
+
+xPlayer objekt specificiranog igrača.
+
+**Primjer**
+```lua
+AddEventHandler('esx:onPlayerJoined', function ()
+    local identifier = ESX.GetIdentifier(source)
+    if ESX.GetPlayerFromIdentifier(identifier) then
+        print("Igrač s istim identifier-om je već na serveru.")
+    end
+end)
+```
+
+## GetIdentifier
+Ova funkcija vraća identifier specificiranog igrača. Ako je u Cfx.re Development Kit, vratit će "ESX-DEBUG-LICENSE".
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "playerId", type: "number", description: "PlayerId igrača" }
+]} />
+
+**Povratne informacije**
+
+Identifikator igrača
+
+**Primjer**
+```lua
+AddEventHandler('esx:onPlayerJoined', function ()
+    local identifier = ESX.GetIdentifier(5) -- Vraća identifikator igrača 5
+
+    print("Identifikator igrača 5 je " .. identifier)
+end)
+```
+
+## GetVehicleType
+Ova funkcija vraća tip vozila za određeno vozilo.
+
+<Callout type="info">
+    Ova funkcija radi samo kad je igrač online jer treba biti specificiran.
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "model", type: "string | number", description: "Model vozila, bilo kao string ili hash" },
+    { arg: "player", type: "number", description: "playerId igrača" },
+    { arg: "cb", type: "function", description: "Callback funkcija koja se pokreće kada funkcija završi." },
+]} />
+
+**Primjer**
+```lua
+local vehicleType = ESX.GetVehicleType("t20", 5, function(vehicleType)
+    print("Tip vozila " .. vehicleType)
+end)
+```
+
+## DiscordLog
+Ova funkcija šalje log na Discord.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", optional: true, defaultValue: "Default", description: "Ime webhooka (nalazi se u Config.logs.lua)" },
+    { arg: "title", type: "string", description: "Naslov webhooka" },
+    { arg: "color", type: "string", optional: true, defaultValue: "Default", description: "Boja webhooka (nalazi se u Config.logs.lua)" },
+    { arg: "message", type: "string", description: "Poruka za logiranje" },
+]} />
+
+**Primjer**
+```lua
+ESX.DiscordLog(
+    "UserActions", -- Ime webhooka
+    "Igrač Ušao", -- Naslov poruke
+    "green", -- Boja
+    "Igrač je ušao na server" -- Poruka
+)
+```
+
+## DiscordLogFields
+Ova funkcija šalje log na Discord s poljima.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", optional: true, defaultValue: "Default", description: "Ime webhooka (nalazi se u Config.logs.lua)" },
+    { arg: "title", type: "string", description: "Naslov webhooka" },
+    { arg: "color", type: "string", optional: true, defaultValue: "Default", description: "Boja webhooka (nalazi se u Config.logs.lua)" },
+    { arg: "fields", type: "table", description: "Polja za logiranje" },
+]} />
+
+**Primjer**
+```lua
+ESX.DiscordLogFields("UserActions", "/car Iskorišten", "pink", {
+    {name = "Igrač", value = xPlayer.name, inline = true},
+    {name = "ID", value = xPlayer.source, inline = true},
+    {name = "Vozilo", value = args.car, inline = true}
+})
+```
+
+## CreateJob
+Ova funkcija stvara novi posao i ubacuje ga u databazu.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", description: "Ime posla" },
+    { arg: "label", type: "string", description: "Labela posla" },
+    { arg: "grades", type: "table", description: "Razine posla" },
+]} />
+
+**Primjer**
+```lua
+ESX.CreateJob("pekar", "Pekar", {
+    {grade = 0, name = "apprentice", label = "Početnik", salary = 320},
+    {grade = 1, name = "employee", label = "Zaposlenik", salary = 470},
+    {grade = 2, name = "senior", label = "Glavni Pekar", salary = 610},
+    {grade = 3, name = "owner", label = "Šef", salary = 910},
+})
+```
+
+## RefreshJobs
+Ova funkcija vuće sve poslove iz databaze i ažurira `ESX.Jobs` tablu.
+
+**Primjer**
+```lua
+-- Funkcija koja je promijenila nešto u podacima o poslu u bazi podataka.
+ESX.RefreshJobs()
+```
+
+## RegisterUsableItem
+Ova funkcija registrira upotrebljivi predmet.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "item", type: "string", description: "Ime predmeta." },
+    { arg: "cb", type: "function", description: "Callback funkcija koja se pokreće kada se predmet koristi." },
+]} />
+
+**Primjer**
+```lua
+ESX.RegisterUsableItem('bread', function(playerId)
+  local xPlayer = ESX.GetPlayerFromId(playerId)
+  xPlayer.removeInventoryItem('bread', 1)
+  xPlayer.showNotification('To je bilo ukusno.. zar ne?')
+end)
+```
+
+## UseItem
+Ova funkcija prisiljava igrača da koristi predmet.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "source", type: "number", description: "playerId igrača" },
+    { arg: "item", type: "string", description: "Ime predmeta koji bi trebao biti korišten." },
+    { arg: "...", type: "arguments", optional: true, description: "Svi argumenti koje želite poslati." }
+]} />
+
+**Primjer**
+```lua
+ESX.UseItem(5, "bread") -- Prisili igrača da pojede kruh.
+```
+
+## RegisterPlayerFunctionOverrides
+S ovom funkcijom možete nadjačati postojeće funkcije u objektu igrača ili dodati nove.
+
+<Callout type="warning">
+    Napomena: samo jedno nadjačavanje može biti aktivno u isto vrijeme. Osigurajte da nijedna druga skripta ne koristi ovu funkciju istovremeno. Ovo ograničenje može biti uklonjeno u budućim ažuriranjima
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "index", type: "string", description: "Indeks nadjačavanja." },
+    { arg: "overrides", type: "table", description: "Tablica s funkcijama koje treba nadjačati." },
+]} />
+
+**Primjer**
+```lua
+local LeoJobs = { "police", "sheriff", "fib" }
+local FireJobs = { "ambulance", "doctor", "firefighter" }
+ESX.RegisterPlayerFunctionOverrides("myOverrides", {
+    isLeo = function(self)
+        return table.contains(LeoJobs, self.job.name)
+    end,
+    isMedic = function(self)
+        return table.contains(FireJobs, self.job.name)
+    end
+})
+```
+
+## SetPlayerFunctionOverride
+Ova funkcija mijenja funkcionalne nadjačanja.
+
+<Callout type="warning">
+    Napomena: samo jedno nadjačavanje može biti aktivno u isto vrijeme. Osigurajte da nijedna druga skripta ne koristi ovu funkciju istovremeno. Ovo ograničenje može biti uklonjeno u budućim ažuriranjima
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "index", type: "string", description: "Indeks nadjačavanja." }
+]} />
+
+**Primjer**
+```lua
+ESX.SetPlayerFunctionOverride("myOverrides")
+```
+
+## GetItemLabel
+Ova funkcija vraća oznaku predmeta.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "item", type: "string", description: "Predmet." }
+]} />
+
+**Povratne informacije**
+
+Oznaka predmeta.
+<OutputTable rows={[
+    { arg: "label", type: "string", description: "Oznaka predmeta." }
+]}/>
+
+**Primjer**
+```lua
+local jetonLabel = ESX.GetItemLabel("jeton")
+
+print("Igračke žetone kasina zovu se "..jetonLabel)
+```
+
+## GetJobs
+Ova funkcija vraća sve registrirane poslove.
+
+**Povratne informacije**
+
+Tablica svih registriranih poslova.
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "Ime posla" },
+    { arg: "label", type: "string", description: "Oznaka posla" },
+    { arg: "grades", type: "table", description: "Razine posla" },
+]}/>
+Činovi:
+<OutputTable isTable={true} rows={[
+    { arg: "grade", type: "number", description: "Indeks čina" },
+    { arg: "name", type: "string", description: "Ime čina" },
+    { arg: "label", type: "string", description: "Oznaka čina" },
+    { arg: "salary", type: "number", description: "Plaća čina" },
+]}/>
+
+**Primjer**
+```lua
+local jobs = ESX.GetJobs()
+
+for jobName, jobData in pairs(jobs) do
+    print(jobName .. " pronađen s činom 0 koji se zove: " .. jobData.grade[0].label)
+end
+```
+
+## GetUsableItems
+Ova funkcija vraća sve upotrebljive predmete.
+
+**Povratne informacije**
+
+Vraća tablicu s ključem koji je predmet i vrijednost koja je boolean ako je predmet upotrebljiv.
+
+**Primjer**
+```lua
+local usableItems = ESX.GetUsableItems()
+
+for item, usable in pairs(usableItems) do
+    if usable then
+        print("Predmet " .. item .. " je upotrebljiv")
+    else
+        print("Predmet " .. item .. " nije upotrebljiv")
+    end
+end
+```
+
+## CreatePickup
+Ova funkcija stvara pickup.
+
+<Callout type="error">
+    Ova funkcija **ne** postoji ako je instaliran ox_inventory.
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "itemType", type: "string", description: "Tip pickup-a, valjani unosi: item_standard za predmete, item_money za novac, item_account za račun i item_weapon za oružja." },
+    { arg: "name", type: "string", description: "Ime predmeta, računa ili oružja." },
+    { arg: "count", type: "number", description: "Broj predmeta, novca, računa ili streljiva za oružje." },
+    { arg: "label", type: "string", description: "Oznaka koja se prikazuje." },
+    { arg: "playerId", type: "number", description: "Server ID igrača koji je stvorio pickup, koristi se za određivanje točke pojavljivanja pickup-a." },
+    { arg: "components", type: "table", optional: true, description: "Koristi se samo kada je tip item_weapon, tablica s komponentama."},
+    { arg: "tintIndex", type: "number", optional: true, description: "Koristi se samo kada je tip item_weapon, indeks nijanse."}
+]} />
+
+**Primjer**
+```lua
+ESX.CreatePickup("item_standard", "bread", 5, "Bread", 10)
+-- Stvoren pickup s 5 kruha na poziciji igrača s ID 10
+```
+
+## DoesJobExist
+Ova funkcija provjerava postoji li određeni posao i razina.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "job", type: "string", description: "Ime posla." },
+    { arg: "grade", type: "number", description: "Indeks čina posla." }
+]} />
+
+**Povratne informacije**
+
+Vraća boolean vrijednost ako određeni posao i razina postoje.
+<OutputTable rows={[
+    { arg: "exists", type: "boolean", description: "Postoji li posao i razina." },
+]}/>
+
+**Primjer**
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+local Job = 'police'
+local Grade = 4 -- najviša razina policije
+
+if ESX.DoesJobExist(Job, Grade) then -- provjerava postoje li posao i razina u bazi podataka
+  xPlayer.setJob(Job, Grade)
+end
+```

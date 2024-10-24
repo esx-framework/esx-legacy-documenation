@@ -1,0 +1,1153 @@
+import { ArgumentsTable, OutputTable } from "src/components/table";
+import { Callout } from 'nextra/components'; 
+
+# xPlayer Functions
+Used to set and manipulate data from the player. It consists out of multiple functions and multiple variables.
+
+## Getting the xPlayer
+You can get the xPlayer by using the `ESX.GetPlayerFromId` function.
+
+<Callout type="warning">
+    You should always check for `nil` before using xPlayer
+</Callout>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+if xPlayer then ... end  --Always check for nil
+```
+
+## Playerdata
+There are some variables that contain different data about the player. For more information about the playerdata, check the [Player Data](#player-data) section.
+
+
+## Miscellaneous
+
+### triggerEvent 
+This function will trigger a client side event for the player.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "eventName", type: "string", description: "The event you want to trigger for the xPlayer." },
+    { arg: "...", type: "arguments", optional: true, description: "All arguments that you want to send."}
+]} />
+
+**Example**
+
+You can use more arguments like you would do in a classic TriggerEvent 
+```lua 
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+xPlayer.triggerEvent('esx:showNotification', 'this is a notification', 'error', 4000) 
+```
+
+
+
+### setCoords 
+This function will change the coords of the player. Making him teleport.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "coords", type: "vector3 | vector4 | table", description: "The coords the player needs to be teleported to" },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+xPlayer.setCoords(vector3(0, 0, 0)) 
+```
+
+### getCoords 
+This function will return the coords from the player.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "vector", type: "boolean", optional: true, defaultValue: 'false',  description: "True if you want a vector3 returned or a table" },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromid(playerId) 
+local playerCoords = xPlayer.getCoords(true) 
+```
+
+### kick 
+This function will kick the player from the Server. 
+
+<Callout type="info">
+    This function only exits for backwards compatibility. You should use `DropPlayer(playerId)` instead.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "reason", type: "string", optional: true, explanation: "The reason why the player is being kicked" },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+xPlayer.kick('You are kicked')
+```
+
+## Player Data
+
+### getIdentifier 
+This function will return the player's identifier. 
+
+**Returns**
+
+The player's rockstar license.
+<OutputTable rows={[
+    { arg: "identifier", type: "string", description: "The rockstar license of the player" },
+]}/>
+
+**Example** 
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+local identifier = xPlayer.getIdentifier()
+```
+
+### setName
+This function sets the name of the player.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", description: "The new name of the player." }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.setName("John Doe")
+```
+
+### getName
+This function returns the name of the fivem player.
+
+**Returns**
+
+Returns either a roleplay name consisting out of firstname and lastname with esx_identity or his fivem name.
+<OutputTable rows={[
+    { arg: "name", type: "string", description: "Player's name" }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+print("Player is called: " .. xPlayer.getName())
+```
+
+### setJob
+This function sets the players current job.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "newJob", type: "string", description: "The player's new job." },
+    { arg: "grade", type: "number", description: "The player's new grade index." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.setJob("police", 4) -- Set the player the police boss.
+```
+
+### getJob
+This function returns the job of the player.
+
+**Returns**
+<OutputTable isTable={true} rows={[
+    { arg: "id", type: "number", description: "The job's id from the database" },
+    { arg: "name", type: "string", description: "The job's name" },
+    { arg: "label", type: "string", description: "The job's label" },
+    { arg: "grade", type: "string", description: "The job's grade" },
+    { arg: "grade_name", type: "string", description: "The job's grade name" },
+    { arg: "grade_label", type: "string", description: "The job's grade label" },
+    { arg: "grade_salary", type: "string", description: "The job's grade salary" },
+    { arg: "skin_male", type: "table", description: "The job's male grade skin/outfit" },
+    { arg: "skin_female", type: "table", description: "The job's female grade skin/outfit" },
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local job = xPlayer.getJob()
+
+print("Player is a " .. job.label .. " with a salary of " .. job.grade_salary)
+```
+
+
+## Handling Money
+
+### setMoney 
+This function will set the money account from the player.
+
+<Callout type="info">
+    This function only exits for backwards compatibility. You should use `xPlayer.setAccountMoney('money', amount)` instead.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "amount", type: "number", description: "The amount of cash to set" },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+xPlayer.setMoney(100) 
+```
+
+### getMoney 
+This function will return the amount of money the player has. 
+
+<Callout type="info">
+    This function only exits for backwards compatibility. You should use `xPlayer.getAccount('money').money` instead.
+</Callout>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+local money = xPlayer.getMoney() 
+```
+
+### addMoney 
+This function will add money to the players money account. 
+
+<Callout type="info">
+    This function only exits for backwards compatibility. You should use `xPlayer.addAccountMoney('money', amount, reason)` instead.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "amount", type: "number", description: "The amount you want to add to the player's money account." },
+    { arg: "reason", type: "string", optional: true, description: "The reason the player receives the money."}
+]} />
+
+**Example**
+```lua 
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+xPlayer.addMoney(100, "Sold an apple")
+```
+
+### removeMoney
+This function will remove money from the player's money account.
+
+<Callout type="info">
+    This function only exits for backwards compatibility. You should use `xPlayer.removeAccountMoney('money', amount, reason)` instead.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "amount", type: "number", description: "The amount you want to remove from the player's money account." },
+    { arg: "reason", type: "string", optional: true, defaultValue: "Unknown", description: "The reason the player looses the money."}
+]} />
+
+**Example**
+```lua 
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+xPlayer.removeMoney(900, "Bought an apple including Tax")
+```
+
+### getAccounts
+This function returns all of the player's accounts.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "minimal", type: "boolean", optional: true, description: "Should only return amount of accounts." }
+]} />
+
+**Returns**
+
+A **`table`** with the key being the account name and the value either being a table or a number with the accounts balance amount when minimal.
+
+Non-Minimal:
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The account name" },
+    { arg: "money", type: "number", description: "The account balance" },
+    { arg: "label", type: "string", description: "The account label" },
+]}/>
+
+Minimal:
+<OutputTable rows={[
+    { arg: "money", type: "number", description: "The account balance" }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local accounts = xPlayer.getAccounts()
+local accountsMinimal = xPlayer.getAccounts(true) -- Minimal data
+
+print("Player has " .. accounts["bank"].money .. " on his " .. accounts["bank"].name .. " account.")
+print("Player has " .. accounts["black_money"] .. "on his black_money account") 
+```
+
+### setAccountMoney
+This function sets the accounts balance.
+
+<Callout type="info">
+    This function has different behaviour with ox_inventory installed. But it's nothing to worry about.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "accountName", type: "string", description: "The name of the account." },
+    { arg: "money", type: "number", description: "The new account balance." },
+    { arg: "reason", type: "string", optional: true, defaultValue: "unknown", description: "The reason the player's money is set." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.setAccountMoney("bank", 5000, "5000$ Limit reached")
+```
+
+### addAccountMoney
+This function adds money to specified account.
+
+<Callout type="info">
+    This function has different behaviour with ox_inventory installed. But it's nothing to worry about.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "accountName", type: "string", description: "The name of the account." },
+    { arg: "money", type: "number", description: "The money to add." },
+    { arg: "reason", type: "string", optional: true, defaultValue: "Unknown", description: "The reason the player receives the money." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.setAccountMoney("bank", 5000, "5000$ Limit reached")
+```
+
+### removeAccountMoney
+This function removes money from the account.
+
+<Callout type="info">
+    This function has different behaviour with ox_inventory installed. But it's nothing to worry about.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "accountName", type: "string", description: "The name of the account." },
+    { arg: "money", type: "number", description: "The money to remove." },
+    { arg: "reason", type: "string", optional: true, defaultValue: "Unknown", description: "The reason the player's money has lost that money." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.removeAccountMoney("bank", 2400, "Dept payoff.")
+```
+
+
+## Permission Groups
+
+### setGroup 
+This function will set the player's group. 
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "group", type: "string", description: "The group you want to give the player" },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+xPlayer.setGroup('admin')
+```
+
+### getGroup
+This function will get the player's group.
+
+**Returns**
+
+The player's group.
+<OutputTable rows={[
+    { arg: "group", type: "string", description: "The players group" },
+]}/>
+
+## Variables
+
+### set
+This function will set a variable that you can access from the xPlayer table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "key", type: "string", description: "The key of the variable" },
+    { arg: "value", type: "any", description: "The value of the variable" }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+xPlayer.set('cool', false)
+```
+
+### get
+This function will get a variable saved in the xPlayer table.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "key", type: "string", description: "The key of the variable" }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId) 
+
+if xPlayer.get('cool') then
+    print("Player is cool! :)")
+else
+    print("Player is not cool! >:/")
+end
+```
+
+## Handling Weapons
+
+### getLoadout
+This function returns the loadout of the player.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use `xPlayer.getInventory` as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "minimal", type: "boolean", optional: true, description: "Should only return ammo and components." }
+]} />
+
+**Returns**
+
+A **`table`** with the key being the weapon name and the value either being a table.
+Non-Minimal:
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The weapon's name." },
+    { arg: "ammo", type: "number", description: "The weapon's ammo." },
+    { arg: "label", type: "string", description: "The weapon's label." },
+    { arg: "components", type: "table", description: "The weapon's components." },
+    { arg: "tintIndex", type: "number", description: "The weapon's tint." },
+]}/>
+
+Minimal:
+<OutputTable rows={[
+    { arg: "ammo", type: "number", description: "The weapon's ammo." },
+    { arg: "components", type: "table", description: "The weapon's components." },
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local loadout = xPlayer.getLoadout()
+
+if loudout["weapon_pistol"] ~= nil then
+    print("Player has a pistol with " .. loadout["weapon_pistol"].ammo .. " ammo.")
+end
+```
+
+### getWeapon
+This function returns the weapon table of the specified weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use `xPlayer.hasItem` as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." }
+]} />
+
+**Returns**
+
+Returns the weapon table of the specified weapon.
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The weapon's name." },
+    { arg: "ammo", type: "number", description: "The weapon's ammo." },
+    { arg: "label", type: "string", description: "The weapon's label." },
+    { arg: "components", type: "table", description: "The weapon's components." },
+    { arg: "tintIndex", type: "number", description: "The weapon's tint." },
+]}/>
+
+### addWeapon
+This function gives the player the specified weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use `xPlayer.addInventoryItem` as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "ammo", type: "number", description: "The weapon's ammo." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.addWeapon("weapon_pistol50", 200) -- Give the player a 50. cal with 200 bullets.
+```
+
+### addWeaponComponent
+This function gives the player specified components on the specified weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "weaponComponent", type: "string", description: "The component to add." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.addWeaponComponent("weapon_pistol50", "suppressor") -- Give the player's 50. cal a suppressor.
+```
+
+### addWeaponAmmo
+This function adds ammo to the specified weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "ammoCount", type: "number", description: "The ammo count to add." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.addWeaponAmmo("weapon_pistol50", 250) -- Give the player's 50. cal 250 more bullets.
+```
+
+### updateWeaponAmmo
+This function sets the weapon's ammo to the specified count.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "ammoCount", type: "number", description: "The ammo count to set." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.updateWeaponAmmo("weapon_pistol50", 50) -- Set the player's 50. cal to 50 bullets.
+```
+
+### setWeaponTint
+This function sets the specified weapon's tint to the specified tint.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "weaponTintIndex", type: "number", description: "The weapon tint index to set to." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.setWeaponTint("weapon_pistol50", 23) -- Set the player's 50. cal tint to mettalic gold.
+```
+
+### getWeaponTint
+This function returns the specified weapon's tint.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." }
+]} />
+
+**Returns**
+
+Returns the specified weapon's tint.
+<OutputTable rows={[
+    { arg: "tintIndex", type: "number", description: "Specified weapon's current tint index." }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+print("Player's 50. Caliber has tint index " .. xPlayer.getWeaponTint("weapon_pistol50"))
+```
+
+### removeWeapon
+This function removes a weapon from the player's loadout.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.removeWeapon("weapon_pistol50") -- Remove 50. cal pistol
+```
+
+### removeWeaponComponent
+This function removes a component from a weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "weaponComponent", type: "string", description: "The weapon component to remove." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.removeWeaponComponent("weapon_pistol50", "suppressor") -- Remove suppressor from 50. cal pistol
+```
+
+### removeWeaponAmmo
+This function removes specified ammo count from specified weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "ammoCount", type: "string", description: "The amount of ammo to remove." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.removeWeaponAmmo("weapon_pistol50", 25) -- Remove 25 bullets from 50. cal pistol
+```
+
+### hasWeaponComponent
+This function removes specified component from specified weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed and will always return `false`. You should use ox_inventories metadata system as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." },
+    { arg: "weaponComponent", type: "string", description: "The weapon component that should be checked." }
+]} />
+
+**Returns**
+
+Returns a boolean if the player has specified weapon component.
+<OutputTable rows={[
+    { arg: "hasComponent", type: "boolean", description: "Does the player have specified weapon component." }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+if xPlayer.hasWeaponComponent("weapon_pistol50", "suppressor") then
+    print("50. Cal Pistol has a suppressor.")
+else
+    print("50. Cal Pistol doesn't have a suppressor.")
+end
+```
+
+### hasWeapon
+This function checks if player has given weapon.
+
+<Callout type="error">
+    This function does **not** exist with ox_inventory installed and will always return `false`. You should use `xPlayer.hasItem` as a fallback when ox_inventory is active.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weaponName", type: "string", description: "The weapon name." }
+]} />
+
+**Returns**
+
+Returns a boolean if the player has specified weapon.
+<OutputTable rows={[
+    { arg: "hasWeapon", type: "boolean", description: "Does the player have specified weapon." }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+if xPlayer.hasWeapon("weapon_pistol50") then
+    print("Player has a 50. Cal Pistol")
+else
+    print("Player doesn't have a 50. Cal Pistol")
+end
+```
+
+## Inventory
+
+### getInventory
+This function returns the inventory of the player.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#getinventoryitems) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "minimal", type: "boolean", optional: true, description: "Should only return count of items." }
+]} />
+
+**Returns**
+
+A **`table`** with the key being the item name and the value either being a table or a number with the item count when minimal.
+Non-Minimal:
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The item name" },
+    { arg: "count", type: "number", description: "The item count" },
+    { arg: "label", type: "string", description: "The item label" },
+    { arg: "weight", type: "number", description: "The item weight" },
+    { arg: "usable", type: "boolean", description: "Does the item have a use callback?" },
+    { arg: "rare", type: "boolean", description: "Is the item rare?" },
+    { arg: "canRemove", type: "boolean", description: "Can the item be removed?" }
+]}/>
+
+Minimal:
+<OutputTable rows={[
+    { arg: "count", type: "number", description: "The item count" }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local inventory = xPlayer.getInventory()
+local breadItem = inventory["bread"]
+
+print("Player has " .. breadItem.count .. " bread. Each weighing: " .. breadItem.weight)
+```
+
+### getWeight
+This function returns the player's current inventory weight.
+
+**Returns**
+
+Returns the player's inventory weight
+<OutputTable rows={[
+    { arg: "weight", type: "number", description: "The inventories weight" }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+print("The player's current inventory weighs " .. xPlayer.getWeight())
+```
+
+### getMaxWeight
+This function returns the player's max inventory weight.
+
+**Returns**
+
+Returns the player's inventory max weight.
+<OutputTable rows={[
+    { arg: "maxWeight", type: "number", description: "The inventories max weight" }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+print("The player can hold a max of " .. xPlayer.getMaxWeight())
+```
+
+### setMaxWeight
+This function sets the max weight that can be carried.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "newWeight", type: "number", description: "The new max weight." },
+]} />
+
+**Example**
+```lua
+local backpack = true -- Player has backpack on
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+if backpack then
+    xPlayer.setMaxWeight(120)
+else
+    xPlayer.setMaxWeight(ESX.Config.MaxWeight)
+end
+```
+
+### canCarryItem
+This function returns a boolean if the player can carry specified item with amount of times.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#cancarryitem) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "itemName", type: "string", description: "The name of the item." },
+    { arg: "count", type: "number", description: "How many items it should check for." },
+]} />
+
+**Returns**
+
+Returns if player can carry specified item with amount of times.
+<OutputTable rows={[
+    { arg: "canCarry", type: "boolean", description: "Can player carry items." }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local canHoldBread = xPlayer.canCarryItem("bread", 5)
+
+if canHoldBread then
+    print("Player can hold 5 bread")
+else
+    print("Player can't hold 5 bread")
+end
+```
+
+### canSwapItem
+This function returns a boolean if the player can swap specified items with the specified amounts.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#canswapitem) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "firstItem", type: "string", description: "The name of the item that will be checked." },
+    { arg: "firstItemCount", type: "number", description: "How many items it should checked for." },
+    { arg: "secondItemName", type: "string", description: "The name of the item that should be swapped out." },
+    { arg: "secondItemCount", type: "number", description: "How many items it should checked for to swap out." },
+]} />
+
+**Returns**
+
+Returns if the player can swap specified items with the specified amounts.
+<OutputTable rows={[
+    { arg: "canSwapItem", type: "boolean", description: "Can player spaw items." }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local canBeSwapped = xPlayer.canCarryItem("bread", 5, "water", 6)
+
+if canBeSwapped then
+    print("Player's inventory fits to swap 6 water with 5 bread")
+else
+    print("Player can't swap items")
+end
+```
+
+### syncInventory
+This function syncs weight, items and account money from ox_iventory with esx.
+
+<Callout type="warning">
+    This function only exists with ox_inventory.
+    This function should not be used and only exists to sync data between the scripts.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "weight", type: "number", description: "The weight of the player" },
+    { arg: "maxWeight", type: "number", description: "The max weight of the player" },
+    { arg: "items", type: "table", description: "The items of the player" },
+    { arg: "money", type: "table", description: "The account's of the player" },
+]} />
+
+## Item
+
+### hasItem
+This function checks if player has item.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#getitem) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "item", type: "string", description: "The item name." }
+]} />
+
+**Returns**
+
+Returns a boolean if the player has specified item.
+<OutputTable rows={[
+    { arg: "hasItem", type: "boolean", description: "Does the player have specified item." }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+if xPlayer.hasWeapon("weapon_pistol50") then
+    print("Player has a 50. Cal Pistol")
+else
+    print("Player doesn't have a 50. Cal Pistol")
+end
+```
+
+### getInventoryItem
+This function returns the specified item from the player's inventory.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#getitem) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "itemName", type: "string", description: "The name of the item." }
+]} />
+
+**Returns**
+
+Returns the item data from player's inventory.
+<OutputTable isTable={true} rows={[
+    { arg: "name", type: "string", description: "The item name" },
+    { arg: "count", type: "number", description: "The item count" },
+    { arg: "label", type: "string", description: "The item label" },
+    { arg: "weight", type: "number", description: "The item weight" },
+    { arg: "usable", type: "boolean", description: "Does the item have a use callback?" },
+    { arg: "rare", type: "boolean", description: "Is the item rare?" },
+    { arg: "canRemove", type: "boolean", description: "Can the item be removed?" }
+]}/>
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+local item = xPlayer.getInventoryItem("water")
+
+print("Player has " .. item.count .. " water bottles. Each weighing: " .. item.weight)
+```
+
+### addInventoryItem
+This function gives the player specified item, speciefied count of times.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#additem) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "itemName", type: "string", description: "The name of the item." },
+    { arg: "count", type: "number", description: "How many items it should add." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.addInventoryItem("bread", 5) -- Add 5 breads
+```
+
+### removeInventoryItem
+This function removes the item from the player's inventory specified count of times.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+    You should visit ox_inventory's [docs](https://overextended.dev/ox_inventory/Functions/Server#removeitem) for more information.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "itemName", type: "string", description: "The name of the item." },
+    { arg: "count", type: "number", description: "How many items it should be removed." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.removeInventoryItem("bread", 5) -- Remove 5 breads
+```
+
+### setInventoryItem
+This function sets the item in the player's inventory to the specified count.
+
+<Callout type="warning">
+    This function has different behaviour with ox_inventory installed. And also returns some different values.
+</Callout>
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "itemName", type: "string", description: "The name of the item." },
+    { arg: "count", type: "number", description: "How many items it should be set to." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.setInventoryItem("bread", 5) -- Sets bread count to 5
+```
+
+
+## Notifications
+
+### showNotification
+This function triggers a notification.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "msg", type: "string", description: "The message that should be displayed." },
+    { arg: "notifyType", type: "string", description: "The notification type." },
+    { arg: "length", type: "number", description: "The length the notification should be displayed in milliseconds." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.showNotification("You have been invited to a round of DnD", "info", 3000)
+```
+
+### showAdvancedNotification
+This function shows a advanced notification.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "sender", type: "string", description: "The notification's sender." },
+    { arg: "subject", type: "string", description: "The notification's subject." },
+    { arg: "msg", type: "string", description: "The notification's message." },
+    { arg: "textureDict", type: "string", description: "The notification's texture dictionary." },
+    { arg: "iconType", type: "string", description: "The notification's icon type." },
+    { arg: "flash", type: "boolean", description: "Flash notification." },
+    { arg: "saveToBrief", type: "boolean", description: "Save notification to brief menu?" },
+    { arg: "hudColorIndex", type: "number", description: "The hud color of the notification" }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.showAdvancedNotification('title', 'subject', 'msg', 'CHAR_BANK_MAZE', 9)
+```
+![Example Image](https://i.imgur.com/bX1oxrF.jpg)
+
+### showHelpNotification
+This function shows a help notification.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "msg", type: "string", description: "The message that should be displayed." },
+    { arg: "thisFrame", type: "boolean", optional: true, description: "Should it only be displayed this frame. (Do it on client instead)" },
+    { arg: "beep", type: "boolean", optional: true, description: "Play the beep sound?" },
+    { arg: "duration", type: "number", optional: true, defaultValue: "-1 (5000)", description: "Duration to show the help notification in milliseconds." },
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+xPlayer.showHelpNotification('TIP: If you find 10 pieces you win!', false, false, 3000)
+```
+
+
+## Metadata
+
+### setMeta
+This function sets the value of the specified meta.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "index", type: "string", description: "The key of the meta." },
+    { arg: "value", type: "string | number | table", description: "The key value of the meta." },
+    { arg: "subIndex", type: "string", optional: true, description: "The sub index/key if meta is a table" }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+xPlayer.setMeta("title", "Sr. Doctor")
+```
+
+### getMeta
+This function returns the value of the specified meta.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "index", type: "string", optional: true, description: "The key of the meta." },
+    { arg: "subIndex", type: "string", optional: true, description: "The sub index/key if meta is a table" }
+]} />
+
+**Returns**
+
+Returns the metadata requested or the table with all metadatas if no `index` was specified with.
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+
+print("Player has the " .. xPlayer.getMeta("title") .. " title!")
+```
+
+### clearMeta
+This function clears the specified meta.
+
+**Arguments**
+<ArgumentsTable rows={[
+    { arg: "index", type: "string", description: "The key of the meta." },
+    { arg: "subIndex", type: "string", optional: true, description: "The sub index/key if meta is a table" }
+]} />
+
+**Example**
+```lua
+local xPlayer = ESX.GetPlayerFromId(playerId)
+xPlayer.clearMeta("title") -- Clear the player's title, removing it.
+```

@@ -1,0 +1,26 @@
+# Weapon
+Sve konfiguracije vezane uz oružje kao predmet.
+
+### DefaultWeaponTints
+Ovo specificira oznaku za zadane boje oružja za oružje koje nije mk2.
+
+### Weapons
+Ovo specificira dostupna oružja, oznaku i komponente. Ovo slijedi specifičan format:
+```lua
+{
+    name = 'WEAPON_APPISTOL',
+    label = "AP Pištolj",
+    ammo = {
+        label = 'metak(a)',
+        hash = `AMMO_PISTOL`
+    },
+    tints = Config.DefaultWeaponTints,
+    components = {
+        { name = 'clip_default',  label = 'standardni magazin',     hash = `COMPONENT_APPISTOL_CLIP_01` },
+		{ name = 'clip_extended', label = 'produženi magazin',    hash = `COMPONENT_APPISTOL_CLIP_02` },
+		{ name = 'flashlight',    label = 'svjetiljka',           hash = `COMPONENT_AT_PI_FLSH` },
+		{ name = 'suppressor',    label = 'prigušivač',           hash = `COMPONENT_AT_PI_SUPP` },
+		{ name = 'luxary_finish', label = 'luksuzni završetak', hash = `COMPONENT_APPISTOL_VARMOD_LUXE` }
+    }
+}
+```

@@ -1,0 +1,847 @@
+import { Callout } from 'nextra/components';
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# Funkcije 
+Ova sekcija sadrži funkcije ESX-a. 
+
+## IsPlayerLoaded 
+Ova funkcija će vratiti `bool` je li se igrač učitao.
+Ovo biste trebali provjeriti prije mjenjanja ili provjeravanja podataka igrača
+
+**Primjer** 
+```lua
+while not ESX.IsPlayerLoaded() do 
+    Wait(250) 
+end 
+
+print('igrač je učitan') 
+```
+
+## GetPlayerData
+Ova funkcija vraća objekt ESX.PlayerData.
+
+**Primjer**
+```lua
+local playerData = ESX.GetPlayerData()
+
+print("Igračev identifier je: " .. playerData.identifier)
+```
+
+## SearchInventory 
+Može se koristiti da bi provjerili igračev inventory
+
+**Argumenti** 
+<ArgumentsTable rows={[
+    { arg: 'items', type: 'string ili tabla', description: 'String ili tabla koja sadrži igračeve iteme.' }, 
+    { arg: 'count', type:'boolean', optional: true, defaultValue: false, description: 'Da vrati samo broj itema ili sve podatke' } 
+]} />
+
+**Primjer** 
+```lua
+local itemi = ESX.SearchInventory({'kruh', 'voda'}, true) 
+
+for key, value in pairs(itemi) do 
+    print(string.format(('Imaš %sx %s'), value, key)) 
+end 
+
+local item = ESX.SearchInventory('kruh') 
+local count = item.count
+```
+
+**Izlaz** 
+<OutputTable rows={[
+    { arg: 'usable', type: 'boolean', description: 'Jel item iskoristiv ili ne.' }, 
+    { arg: 'count', type: 'broj', description: 'Koliko tog itema ima.' }, 
+    { arg: 'canRemove', type: 'broj', description: 'Vraća 1 ako se može micati iz inv, ako ne onda 0' }, 
+    { arg: 'label', type: 'string', description: 'Oznaka itema koja se vidi u inventoryu.' }, 
+    { arg: 'name', type: 'string', description: 'Ime itema' }, 
+    { arg: 'rare', type: 'broj', description: 'Jel item rijedak?' }
+]}/>
+
+## SetPlayerData
+Sa ovom funkcijom možeš setati player data
+
+**Argumenti** 
+<ArgumentsTable rows={[
+    { arg: 'key', type: 'string', description: 'Ključ u PlayerDati.' }, 
+    { arg: 'value', type:'value', description: 'Podatak za postaviti.' } 
+]} />
+
+**Primjer** 
+```lua
+ESX.SetPlayerData('lokacija', 'Sjeverni Pol')
+ 
+print(ESX.PlayerData.lokacija) -- ovo će printati 'Sjeverni Pol'
+```
+
+## Kontekst
+ESX ima kontekst sistem kao odvojena skripta. Pogledaj više u [esx_context](../../esx_context.mdx)
+
+## Progressbar 
+ESX ima progress bar sistem kao odvojena skripta. See more at [esx_progressbar](../../esx_progressbar.mdx)
+
+## ShowNotification 
+ESX ima sistem notifikacija kao odvojena skripta. See more at [esx_notify](../../esx_notify.mdx)
+
+## TextUI 
+ESX ima TextUI sistem kao odvojena skripta. See more at [esx_textui](../../esx_textui.mdx)
+
+## ShowAdvancedNotification
+Ova funkcija prikazuje obične GTA notifikacije 
+
+**Argumenti** 
+<ArgumentsTable rows={[
+    { arg: 'sender', type: 'string', description: 'Naslov notifikacije.' }, 
+    { arg: 'subject', type:'string', description: 'Podnaslov notifikacije'},
+    { arg: 'msg', type: 'string', description: 'Poruka notifikacije'}, 
+    { arg: 'textureDict', type: 'string', description: 'Texture dictionary notifikacije'}, 
+    { arg: 'iconType', type: 'string', description: 'Tip ikone, pogledaj ispod.'}, 
+    { arg: 'flash', type: 'boolean', optional: true, defaultValue: 'false', description: 'Prema FiveM dokumentaciji, ovo ništa ne radi.'},  
+    { arg: 'saveToBrief', type: 'boolean', optional: true, defaultValue: 'false', description: 'Prikazuje notifikaciju u "Pause Menu > Info/Brief > Notifications" sekciji u GTA.'}, 
+    { arg: 'hudColorIndex', type: 'broj', optional: true, description: 'Boja pozadine u notifikaciji.'}
+]} />
+
+**Tipovi ikone**
+1. Chat Box  
+2. Email  
+3. Add Friend Request  
+4. Ništa  
+5. Ništa  
+6. Ništa  
+7. Right Jumping Arrow  
+8. RP Ikona  
+9. $ Ikona  
+
+**[Boje](https://docs.fivem.net/docs/game-references/hud-colors/)**
+
+**Primjer** 
+```lua
+local handle = RegisterPedheadshot(PlayerPedId())
+while not IsPedheadshotReady(handle) or not IsPedheadshotValid(handle) do
+    Wait(0)
+end
+local txd = GetPedheadshotTxdString(handle)
+local title = GetPlayerName(PlayerId())
+local subtitle = 'Privatna poruka'
+local iconType = 0
+ESX.ShowAdvancedNotification(title, subtitle, 'ovo je poruka koju vam šaljemo', txd, iconType, false, true, 6)
+```
+
+## ShowHelpNotification
+Ova funkcija prikazuje pomoćnu notifikaciju u gornjem lijevom kutu. 
+Treba se koristiti u petlji ili se može staviti trajanje.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'msg', type: 'string', description: 'Poruka.' }, 
+    { arg: 'thisFrame', type: 'boolean', optional: true, defaultValue: 'false', description: 'Hoće se prikazati samo ovaj frame.' },
+    { arg: 'beep', type: 'boolean', optional: true, defaultValue: 'false', description: 'Hoće pustiti beep zvuk?' },
+    { arg: 'duration', type: 'broj', optional: true, defaultValue: '-1', description: 'Koliko dugo da se prikaže.' }
+]} /> 
+
+**Primjer** 
+```lua
+RegisterCommand('pomoc', function (source, args, raw)
+    ESX.ShowHelpNotification("Nema tebi pomoći brate.", false, true, 3500)
+end)
+```
+
+## ShowFloatingHelpNotification 
+Prikazuje plutajuću notifikaciju. Mora biti u petlji svaki milisekund.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'msg', type: 'string', description: 'Plutajuća poruka.' }, 
+    { arg: 'coords', type: 'vector3', description: 'Kordinate gdje će plutati' }
+]} /> 
+
+**Primjer** 
+```lua
+local coords = vector3(0, 0, 0) 
+
+CreateThread(function() 
+    while true do
+        ESX.ShowFloatingHelpNotification('ESX je baš zanimljiv', coords) 
+        Wait(0) 
+    end 
+end)
+```
+
+## HashString
+Ova funkcija pretvara string u rockstarov hash.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'str', type: 'string', description: 'String koji hoćete hashirati.' }
+]} />
+
+**Primjer** 
+```lua
+RegisterCommand('kakosjesti', function (source, args, raw)
+    local inputMapping = string.format("~INPUT_%s~"):format(ESX.HashString("sit"))
+    ESX.ShowHelpNotification("Možeš sjesti ako stisneš "..inputMapping , false, true, 3500)
+end)
+```
+
+## RegisterInput 
+Ova funkcija registrira keybind.
+
+**Argumenti** 
+<ArgumentsTable rows={[
+    { arg: 'command_name', type: 'string', description: 'Ime komande.' }, 
+    { arg: 'label', type:'string', description: 'Oznaka keybinda.' },
+    { arg: 'input_group', type: 'string', description: 'Grupa unosa.' }, 
+    { arg: 'key', type: 'string', description: 'Keybind.' }, 
+    { arg: 'on_press', type: 'function', description: 'Funkcija koja će se izvršiti pritiskom na keybind.' }, 
+    { arg: 'on_release', type: 'function', optional: true, description: 'Funkcija koja će se izvršiti kada pustiš keybind.' }
+]} />
+
+**[Grupe Unosa](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/)** 
+
+**Primjer** 
+```lua
+ESX.RegisterInput('testinput', 'Test', 'keyboard', 'f6', function()
+    print('stisnuto')
+end, function() 
+    print('pusteno')
+end)  
+```
+
+## TriggerServerCallback
+
+Ova funkcija poziva povratni event prethodno registriran u RegisterServerCallback funkciji.
+
+*Pogledaj [RegisterServerCallback](../server/functions/#registerservercallback)*
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: "name", type: "string", description: "Ime callbacka." },
+    { arg: "cb", type: "funkcija", description: "Callback funkcija iz servera." },
+    { arg: "...", type: "argumenti", description: "Argumenti callbacka." },
+]} />
+
+
+```lua
+ESX.TriggerServerCallback('moja_skripta:povuci_nesto', function(cb)
+  print(cb) -- printa nešto iz servera
+end)
+```
+
+## Igra
+Funkcije koje modificiraju klijenta.
+
+### GetPedMugshot 
+Ova funkcija uzima mugshot sliku nekog peda i vraća ju kao teksturu.
+
+**Argumenti** 
+<ArgumentsTable rows={[
+    { arg: 'ped', type: 'ped object', description: 'Ped od kojeg tražiš mugshot.' }, 
+    { arg: 'transparent', type:'boolean', optional: true, defaultValue: 'false', description: 'Hoće slika biti transparentna?'} 
+]} />
+
+**Vraćanja**
+<OutputTable rows={[
+    { arg: 'mugshot', type: 'string', description: 'Mugshot slika' },
+    { arg: 'txd', type: 'string', description: 'Mugshot slika kao base64 string'}
+]}/>
+
+**Primjer** 
+```lua
+local ped = PlayerPedId() 
+local mugshot, txd = ESX.Game.GetPedMugshot(ped, true)
+```
+
+### Teleport
+Teleportira neki entity na date kordinate i poziva callback kad završi.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'entity', type: 'entity handle', description: 'Entity za teleportaciju.' }, 
+    { arg: 'coords', type:'vector3|vector4', description: 'Kordinate za teleport.'}, 
+    { arg: 'cb', type: 'function', optional: true, description: 'Callback funkcija koja će se izvršiti nakon šta ga teleportira.'} 
+]} />
+
+**Primjer** 
+```lua
+local entity = PlayerPedId() 
+
+ESX.Game.Teleport(entity, vector3(0,0,0), function() 
+    print('igrač je teleportiran') 
+end)
+```
+
+### SpawnObject 
+Funkcija koja spawna određeni model na neke kordinate. Može biti networked
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'model', type: 'string or hash', description: 'Ime modela ili hash modela' }, 
+    { arg: 'coords', type:'vector3', description: 'kordinate za spawn'}, 
+    { arg: 'cb', type:'function', optional: true, description: 'callback funkcija'}, 
+    { arg: 'networked', type:'boolean', optional: true, defaultValue: 'true', description: 'hoće li objekt biti networked ili local'}
+]} />
+
+**Primjer** 
+```lua
+local coords = GetEntityCoords(PlayerPedId()) 
+ESX.Game.SpawnObject('prop_tool_bluepnt', coords, function() 
+    print('objekt spawnan uspješno') 
+end, true)
+```
+
+### SpawnLocalObject 
+Ova funkcija spawna objekt samo za klijenta koji izvršava funkciju.
+
+<Callout type='info'>
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebao bi koristiti `ESX.Game.SpawnObject(model, coords, cb, false)` umjesto ovog.
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'model', type: 'string | hash', description: 'Ime modela ili hash modela.' }, 
+    { arg: 'coords', type:'vector3', description: 'Kordinate za spawn.' }, 
+    { arg: 'cb', type:'function', optional: true, description: 'Callback funkcija.' }
+]} />
+
+**Primjer** 
+```lua
+local coords = GetEntityCoords(PlayerPedId()) 
+ESX.Game.SpawnObject('prop_tool_bluepnt', coords, function() 
+    print('objekt je spawnan') 
+end)
+```
+
+### DeleteVehicle 
+Ova funkcija briše zadano vozilo.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo koje hoćete obrisati' }, 
+]} />
+
+**Primjer** 
+```lua
+local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
+ESX.Game.DeleteVehicle(vehicle) 
+```
+
+### DeleteObject
+Ova funkcija briše zadan objekt.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'object', type: 'number(object handle)', description: 'Objekt koji hoćete obrisati' }, 
+]} />
+
+**Primjer** 
+```lua
+ESX.Game.DeleteObject(object) 
+```
+
+### SpawnVehicle
+Ova funkcija spawna zadano vozilo na zadanu lokaciju. Može biti networked.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'vehicleModel', type: 'string|hash', description: 'Ime modela ili hash modela.' },
+    { arg: 'coords', type: 'vector3', description: 'Lokacija spawna vozila.' }, 
+    { arg: 'heading', type: 'number', description: 'Pravac vozila' }, 
+    { arg: 'cb', type: 'function', description: 'Callback funkcija' }, 
+    { arg: 'networked', type: 'boolean', description: 'Hoće li vozilo  biti networked ili local' } 
+]} />
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+ESX.Game.SpawnVehicle('blista', coords, 0.0, function(vehicle)
+    print(vehicle) 
+end, true)  
+```
+
+### SpawnLocalVehicle
+Ova funkcija spawna vozilo samo za igraća koji izvršava funkciju.
+
+<Callout type='info'>
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebali biste koristiti `ESX.Game.SpawnVehicle(model, coords, heading, cb, false)` umjesto ovoga.
+</Callout>
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'vehicleModel', type: 'string|hash', description: 'Ime modela ili hash modela.' },
+    { arg: 'coords', type: 'vector3', description: 'Lokacija spawna vozila.' }, 
+    { arg: 'heading', type: 'number', description: 'Pravac vozila' }, 
+    { arg: 'cb', type: 'function', description: 'Callback funkcija.' }, 
+]} />
+
+**Primjer**
+```lua
+ESX.Game.SpawnLocalVehicle('blista', coords, 0.0, function(vehicle)
+    print(vehicle) 
+end)  
+```
+
+### IsVehicleEmpty
+Ova funkcija vraća `boolean` je li vozilo prazno.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo koje želite provjeriti' }, 
+]} />
+
+**Primjer**
+```lua
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), true) 
+    local isEmpty = ESX.Game.IsVehicleEmpty(vehicle)
+
+    if isEmpty then
+        print('Vozilo je prazno!')
+    end
+```
+
+### GetObjects
+Vraća sve objekte koje igrać ima učitane.
+
+<Callout type='info'>
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebali biste koristiti `GetGamePool('CObject')` umjesto ovoga.
+</Callout>
+
+**Primjer**
+```lua
+local objects = ESX.Game.GetObjects() 
+
+for i=1, #objects do 
+    local object = objects[i] 
+end 
+```
+
+
+### GetPeds
+Returna sve pedove koje igrać ima učitane.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'onlyOtherPeds', type: 'boolean', description: 'Hoće li svoj ped biti u listi?' }, 
+]} />
+
+**Primjer**
+```lua
+local objects = ESX.Game.GetPeds(true) 
+
+print('Pronašli smo ' .. #objects .. ' pedova neuključujući tvog!')
+```
+
+### GetVehicles
+Vraća sva vozila koja igrać ima učitana.
+
+<Callout type='info'>
+    Ova funkcija postoji samo za kompatibilnost unazad. Trebali biste koristiti `GetGamePool('CVehicle')` umjesto ovoga.
+</Callout>
+
+**Primjer**
+```lua
+local vehicles = ESX.Game.GetVehicles() 
+
+for i=1, #vehicles do
+    local vehicle = vehicles[i] 
+end 
+```
+
+### GetPlayers
+Vraća sve igraće koje igrać ima učitane.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'onlyOtherPlayers', type: 'boolean', description: 'Hoće li uključivati svog karaktera?' }, 
+    { arg: 'returnKeyValue', type: 'boolean', description: "Hoće li keyevi u tabli biti igraćevi ID-evi" }, 
+    { arg: 'returnPeds', type: 'boolean', optional: true, defaultValue: 'false', description: 'Hoće li value u tabli biti ped? Inaće bude ID. (Biti će uvijek ped ako je `returnKeyValue` true)' }, 
+]} />
+
+### GetClosestEntity
+Vraća najbližeg entitya i njegovu distancu od kordinata.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'entities', type: 'table', description: 'Lista entitya' }, 
+    { arg: 'isPlayerEntities', type: 'boolean', description: 'Hoće li tabla sadržavati igraće?' }, 
+    { arg: 'coords', type: 'vector', defaultValue: 'Igračeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'filter', type: 'table', description: 'Koga da ne ukljućuje (model / player id)' }, 
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'closestObject', type: 'number(object handle)', description: 'Najbliži entity.' }, 
+    { arg: 'closestObjectDistance', type: 'number', description: 'Distanca entitya.' }
+]}/>
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestObject, distance = ESX.Game.GetClosestObject(coords, {
+    ["prop_weed_01"] = true,
+    ["prop_weed_02"] = true,
+})
+```
+
+### GetClosestObject
+Vraća najbliži objekt i njegovu distancu od kordinata.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'closestObject', type: 'number(object handle)', description: 'Najbliži objekt.' }, 
+    { arg: 'closestObjectDistance', type: 'number', description: 'Distanca objekta od zadane kordinate.' }
+]}/>
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestObject, distance = ESX.Game.GetClosestObject(coords, {
+    ["prop_weed_01"] = true,
+    ["prop_weed_02"] = true,
+})
+```
+
+### GetClosestPed
+Vraća najbližeg peda i njegovu distancu od kordinata.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'closestPed', type: 'number(ped handle)', description: 'Najbliži ped.' }, 
+    { arg: 'closestPedDistance', type: 'number', description: 'Distanca peda od kordinata.' }
+]}/>
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestPed, distance = ESX.Game.GetClosestPed(coords, {
+    ["a_f_m_beach_01"] = true,
+    ["a_m_y_hipster_02"] = true,
+})
+```
+
+### GetClosestPlayer
+Vraća ID najbližeg igraća i njegovu distancu od kordinata.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'closestPed', type: 'number(ped handle)', description: 'ID najbližeg igraća.' }, 
+    { arg: 'closestPedDistance', type: 'number', description: 'Distanca do igraća.' }
+]}/>
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestPlayer, distance = ESX.Game.GetClosestPlayer(coords, {
+    [5] = true,
+    [9] = true,
+})
+```
+
+### GetClosestVehicle
+Vraća najbliže vozilo i distancu od kordinata.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'modelFilter', type: 'table', description: 'Samo traži specifične modele' }, 
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'closestVehicle', type: 'number(ped handle)', description: 'Najbliže vozilo.' }, 
+    { arg: 'closestVehicleDistance', type: 'number', description: 'Distanca do vozila' }
+]}/>
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local closestVehicle, distance = ESX.Game.GetClosestVehicle(coords, {
+    ["t20"] = true,
+    ["zentorno"] = true,
+})
+```
+
+### GetPlayersInArea
+Vraća sve igraće u određenom radiusu.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'Radius u kojem se traži.' }, 
+]} />
+
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local playersInArea = ESX.Game.GetPlayersInArea(coords, 20)
+
+print('Pronađeno ' .. #playersInArea .. ' igrača u radiusu')
+```
+
+### GetVehiclesInArea
+Vraća sva vozila u određenom radiusu.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'Radius u kojem se traži.' }, 
+]} />
+
+**Primjer**
+```lua
+local coords = GetEntityCoords(PlayerPedId())
+local vehiclesInArea = ESX.Game.GetVehiclesInArea(coords, 20)
+
+print('Pronađeno ' .. #vehiclesInArea .. ' vozila u radiusu')
+```
+
+### IsSpawnPointClear
+Vraća `boolean` koji govori je li lokacija ćista za spawn vozila, peda ili objekta.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', defaultValue: 'Igraćeve kordinate', description: 'Kordinate za tražiti.' }, 
+    { arg: 'maxDistance', type: 'table', description: 'Radius u kojem se traži.' }, 
+]} />
+
+**Primjer**
+```lua
+RegisterCommand('spawnajLudoVozilo', function()
+    local ped = PlayerPedId()
+    local coords = GetEntityCoords(ped)
+    local heading = GetEntityHeading(ped)
+
+    if ESX.Game.IsSpawnPointClear(coords, 10) then
+        ESX.Game.SpawnVehicle('t20', coords, heading, function(vehicle)
+            print(vehicle) 
+        end, true)  
+    end
+end)
+```
+
+### GetVehicleInDirection
+Vraća vozilo ispred igraća.
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo.' }, 
+    { arg: 'coords', type: 'number', description: 'Kordinate vozila.' }
+]}/>
+
+
+**Primjer**
+```lua
+local vehicle, coords = ESX.Game.GetVehicleInDirection()
+
+if vehicle then
+    print('Vozilo pronađeno!')
+    print('Ima ' .. GetEntityHealth(vehicle) .. ' healtha!')
+end
+```
+
+### GetVehicleProperties
+Vraća svojstva vozila.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo.' }, 
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'model', type: 'string', description: 'Model vozila.' }, 
+    { arg: 'doorsBroken', type: 'table', description: 'The vehicle doors and if they are broken.' },
+    { arg: 'windowsBroken', type: 'table', description: 'The vehicle windows and if they are broken.' },
+    { arg: 'tyreBurst', type: 'table', description: 'The vehicle tyres and if they are broken.' },
+    { arg: 'tyresCanBurst', type: 'boolean', description: 'Can the tyres burst?' },
+    { arg: 'plate', type: 'string', description: 'The vehicle plate.' },
+    { arg: 'plateIndex', type: 'number', description: "The vehicle's plate index/skin." },
+
+    { arg: 'bodyHealth', type: 'number', description: "The vehicle's body health." },
+    { arg: 'engineHealth', type: 'number', description: "The vehicle's engine health." },
+    { arg: 'tankHealth', type: 'number', description: "The vehicle's tank health." },
+
+    { arg: 'fuelLevel', type: 'number', description: "The vehicle's fuel." },
+    { arg: 'dirtLevel', type: 'number', description: "The vehicle's first level." },
+    { arg: 'color1', type: 'number', description: "The vehicle's primary color." },
+    { arg: 'color2', type: 'number', description: "The vehicle's secondary color." },
+    { arg: 'customPrimaryColor', type: 'number', description: "The vehicle's custom secondary color." },
+    { arg: 'customSecondaryColor', type: 'number', description: "The vehicle's custom secondary color." },
+
+    { arg: 'pearescentColor', type: 'number', description: "The vehicle's perlescent color." },
+    { arg: 'wheelColor', type: 'number', description: "The vehicle's wheel color." },
+
+    { arg: 'dashboardColor', type: 'number', description: "The vehicle's dashboard color" },
+    { arg: 'interiorColor', type: 'number', description: "The vehicle's interior color." },
+
+    { arg: 'wheels', type: 'number', description: 'The wheel type of the vehicle.' },
+    { arg: 'windowTint', type: 'number', description: 'The window tint of the vehicle.' },
+    { arg: 'xenonColor', type: 'number', description: "The vehicle's xenon lights color." },
+    { arg: 'customXeconColor', type: 'number', description: "The vehicle's custom xenon lights color." },
+
+    { arg: 'neonEnabled', type: 'boolean', description: 'Does the vehicle have neons?' },
+
+    { arg: 'neonColor', type: 'table', description: "The color of the vehicle's neons" },
+    { arg: 'extras', type: 'table', description: 'The extras of the vehicle' },
+    { arg: 'tyreSmokeColor', type: 'table', description: 'The color of the tyre smoke' },
+
+    { arg: 'modSpoilers', type: 'number', description: '' },
+    { arg: 'modFrontBumper', type: 'number', description: '' },
+    { arg: 'modRearBumper', type: 'number', description: '' },
+    { arg: 'modSideSkirt', type: 'number', description: '' },
+    { arg: 'modExhaust', type: 'number', description: '' },
+    { arg: 'modFrame', type: 'number', description: '' },
+    { arg: 'modGrille', type: 'number', description: '' },
+    { arg: 'modHood', type: 'number', description: '' },
+    { arg: 'modFender', type: 'number', description: '' },
+    { arg: 'modRightFender', type: 'number', description: '' },
+    { arg: 'modRoof', type: 'number', description: '' },
+    { arg: 'modRoofLivery', type: 'number', description: '' },
+
+    { arg: 'modEngine', type: 'number', description: '' },
+    { arg: 'modBrakes', type: 'number', description: '' },
+    { arg: 'modTransmisson', type: 'number', description: '' },
+    { arg: 'modHorns', type: 'number', description: '' },
+    { arg: 'modSuspension', type: 'number', description: '' },
+    { arg: 'modArmor', type: 'number', description: '' },
+
+    { arg: 'modTurbo', type: 'number', description: '' },
+    { arg: 'modSmokeEnabled', type: 'number', description: '' },
+    { arg: 'modXenon', type: 'number', description: '' },
+
+    { arg: 'modFrontWheels', type: 'number', description: '' },
+    { arg: 'modCustomFrontWheels', type: 'number', description: '' },
+    { arg: 'modBackWheels', type: 'number', description: '' },
+    { arg: 'modCustomBackWheels', type: 'number', description: '' },
+
+    { arg: 'modPlateHolder', type: 'number', description: '' },
+    { arg: 'modVanityPlate', type: 'number', description: '' },
+    { arg: 'modTrimA', type: 'number', description: '' },
+    { arg: 'modOrnaments', type: 'number', description: '' },
+    { arg: 'modDashboard', type: 'number', description: '' },
+    { arg: 'modDial', type: 'number', description: '' },
+    { arg: 'modDoorSpeaker', type: 'number', description: '' },
+    { arg: 'modSeats', type: 'number', description: '' },
+    { arg: 'modSteeringWheel', type: 'number', description: '' },
+    { arg: 'modShifterLeavers', type: 'number', description: '' },
+    { arg: 'modAPlate', type: 'number', description: '' },
+    { arg: 'modSpeakers', type: 'number', description: '' },
+    { arg: 'modTrunk', type: 'number', description: '' },
+    { arg: 'modHydrolic', type: 'number', description: '' },
+    { arg: 'modEngineBlock', type: 'number', description: '' },
+    { arg: 'modAirFilter', type: 'number', description: '' },
+    { arg: 'modStruts', type: 'number', description: '' },
+    { arg: 'modArchCover', type: 'number', description: '' },
+    { arg: 'modAerials', type: 'number', description: '' },
+    { arg: 'modTrimB', type: 'number', description: '' },
+    { arg: 'modTank', type: 'number', description: '' },
+    { arg: 'modWindows', type: 'number', description: '' },
+    { arg: 'modLivery', type: 'number', description: '' },
+    { arg: 'modLightbar', type: 'number', description: '' },
+]}/>
+
+**Primjer**
+```lua
+local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
+local properties = ESX.Game.GetVehicleProperties(vehicle)
+
+print("Ovo vozilo ima " .. #properties.doorsBroken .. " razbijenih vrata.")
+```
+
+### SetVehicleProperties
+Ova funkcija seta svojstva vozilu.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'vehicle', type: 'number(vehicle handle)', description: 'Vozilo.' }, 
+    { arg: 'props', type: 'table', description: "Key kao ime svojstva za mjenjati i value kao svojstvo." }, 
+]} />
+
+**Primjer**
+```lua
+local vehicle = GetVehiclePedIsIn(PlayerPedId(), false) 
+ESX.Game.SetVehicleProperties(vehicle, {
+    ["plate"] = "THEKUCHA",
+    ["fuelLevel"] = 100.0
+})
+```
+
+### DrawText3D
+Ova funkcija crta 3D tekst.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'coords', type: 'vector', description: 'Kordinate gdje bi se pokazivao 3D Text.' }, 
+    { arg: 'text', type: 'string', description: 'Tekst koji bi pisao.' }, 
+    { arg: 'size', type: 'string', optional: true, defaultValue: '1', description: 'Veličina teksta' }, 
+    { arg: 'font', type: 'string', optional: true, defaultValue: '0', description: 'ID fonta' }, 
+]} />
+
+**Primjer**
+```lua
+CreateThread(function()
+    while true do
+        local coords = GetEntityCoords(PlayerPedId())
+        ESX.Game.Utils.DrawText3D(coords, "Ova osoba smrdi")
+        Wait(0)
+    end
+end)
+```
+
+## GetAccount
+Vraća tablu određenog igraćevog računa
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'account', type: 'string', description: 'Ime računa.' }
+]} />
+
+**Primjer**
+```lua
+local account = ESX.GetAccount('money')
+
+print("Igrać ima " .. account.money .. ' u njegovom novčaniku!')
+```
+
+## ShowInventory
+Otvara igraćev inventory. (Samo za defualt es_extended inventory)
+
+## GetVehicleType
+Vraća tip vozila datog modela.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'model', type: 'string|hash', description: "Model vozila." }
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'vehicleType', type: 'string', description: 'Tip vozila.' }, 
+]}/>
+
+**Tipovi vozila**
+- bike
+- trailer
+- bike
+- boat
+- heli
+- plane
+- train

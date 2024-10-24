@@ -1,0 +1,250 @@
+import { Callout } from 'nextra/components';
+import { OutputTable } from "src/components/table";
+
+# Server side Eventi
+Ova stranica sadrži sve evente server strane koje pruža es_extended
+
+## Event Triggeri
+<Callout type="info">
+    Ovi eventi mogu biti triggerani od strane bilo koje skripte. 
+</Callout>
+
+
+
+## Event Handleri
+<Callout type="warning">
+    Ovi eventi se mogu samo slušati i **ne bi trebali** biti triggerani. Ako se to ipak učini, doći će do do **kvara** skripti
+</Callout>
+
+### esx:playerLoaded
+Ovaj event se triggera kada je igrač uspješno učitan / kada je lik odabran i učitan.
+
+**Argumenti**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "ID igrača." },
+    { arg: "xPlayer", type: "string", description: "xPlayer objekt igrača koji se povezao." },
+    { arg: "isNew", type: "boolean", description: "Je li lik igrača nov." }
+]}/>
+
+**Primjer**
+```lua
+AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
+    if isNew then
+        print("Novi lik " .. xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
+    else
+        print(xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
+    end
+end)
+```
+
+### esx:playerLogout
+Ovaj event se triggera kada se igrač odjavi. To se događa kada igrač koristi `/logout`
+
+**Argumenti**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "ID igrača." }
+]}/>
+
+**Primjer**
+```lua
+AddEventHandler('esx:playerLogout', function (playerId)
+    print(string.format("Igrač %s se odjavio.", playerId))
+end)
+```
+
+### esx:playerDropped
+Ovaj event se triggera kada se igrač odspoji.
+
+**Argumenti**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "ID igrača." }
+]}/>
+
+**Primjer**
+```lua
+AddEventHandler('esx:playerDropped', function (playerId)
+    print(string.format("Igrač %s se odspojio.", playerId))
+end)
+```
+
+### esx:playerLoaded
+Ovaj event se triggera kada je igrač uspješno učitan / kada je lik odabran i učitan.
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "playerId", type: "number", description: "ID igrača." },
+    { arg: "xPlayer", type: "string", description: "xPlayer objekt igrača koji se povezao." },
+    { arg: "isNew", type: "boolean", description: "Je li lik igrača nov." }
+]}/>
+
+```lua
+AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
+    if isNew then
+        print("Novi lik " .. xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
+    else
+        print(xPlayer.getName() .. " je uspješno učitan s ID-jem igrača: " .. playerId)
+    end
+end)
+```
+
+### esx:playerJumping
+Ovaj event se triggera kada igrač skače. *Ovo je event triggeran s klijentske strane*
+
+**Primjer**
+```lua 
+RegisterNetEvent('esx:playerJumping', function()
+    print("Igrač " .. source .. " skače")
+end)
+```
+
+### esx:enteringVehicle
+Ovaj event se triggera kada igrač ulazi u vozilo. *Ovo je event triggeran s klijentske strane*
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "plate", type: "string", description: "Registarska oznaka vozila." },
+    { arg: "seat", type: "number", description: "Sjedalo na koje igrač ulazi." },
+    { arg: "netId", type: "number", description: "Net ID vozila." }
+]}/>
+
+**Primjer**
+```lua 
+RegisterNetEvent('esx:enteringVehicle', function(plate, seat, netId)
+    print("Igrač " .. source .. " ulazi u vozilo s registarskom oznakom: " .. plate)
+end)
+```
+
+### esx:enteringVehicleAborted
+Ovaj event se triggera kada igrač prestane ulaziti u vozilo. *Ovo je event triggeran s klijentske strane*
+
+**Primjer**
+```lua 
+RegisterNetEvent('esx:enteringVehicleAborted', function()
+    print("Igrač " .. source .. " je prestao ulaziti u vozilo")
+end)
+```
+
+### esx:enteredVehicle
+Ovaj event se triggera kada je igrač uspješno ušao u vozilo. *Ovo je event triggeran s klijentske strane*
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "plate", type: "string", description: "Registarska oznaka vozila." },
+    { arg: "seat", type: "number", description: "Sjedalo na koje je igrač ušao." },
+    { arg: "displayName", type: "string", description: "Prikazno ime vozila." },
+    { arg: "netId", type: "number", description: "Net ID vozila." }
+]}/>
+
+**Primjer**
+```lua 
+RegisterNetEvent('esx:enteredVehicle', function(plate, seat, displayName, netId)
+    print("Igrač " .. source .. " je ušao u " .. displayName)
+end)
+```
+
+### esx:exitedVehicle
+Ovaj event se triggera kada igrač izađe iz vozila. *Ovo je event triggeran s klijentske strane*
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "plate", type: "string", description: "Registarska oznaka vozila." },
+    { arg: "seat", type: "number", description: "Sjedalo s kojeg je igrač izašao." },
+    { arg: "displayName", type: "string", description: "Prikazno ime vozila." },
+    { arg: "netId", type: "number", description: "Net ID vozila." }
+]}/>
+
+**Primjer**
+```lua 
+RegisterNetEvent('esx:exitedVehicle', function(plate, seat, displayName, netId)
+    print("Igrač " .. source .. " je izašao iz " .. displayName .. " s sjedala s indeksom: " .. seat)
+end)
+```
+
+### esx:updateWeaponAmmo
+Može se koristiti za ažuriranje metaka oružja ili handlanje ažuriranja metaka. *Ovo je event triggeran s klijentske strane*
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "weaponName", type: "string", description: "Ime oružja." },
+    { arg: "ammoCount", type: "number", description: "Novi broj metaka za oružje." }
+]}/>
+
+**Primjer**
+```lua 
+RegisterNetEvent('esx:updateWeaponAmmo', function(weaponName, ammoCount)
+    print("Novi broj streljiva za " .. source .. " igračev " .. weaponName .. " je: " .. ammoCount)
+end)
+```
+
+### esx:onAddInventoryItem
+Triggera se kada se doda stavka u inventar.
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "source", type: "number", description: "ID igrača." },
+    { arg: "itemName", type: "string", description: "Stavka koja je dodana." },
+    { arg: "itemCount", type: "number", description: "Količina koju igrač sada ima." }
+]}/>
+
+**Primjer**
+```lua 
+AddEventHandler('esx:onAddInventoryItem', function(source, itemName, itemCount)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    print(xPlayer.getName() .. " je dobio " .. itemName .. " i sada ima " .. itemCount)
+end)
+```
+
+### esx:onRemoveInventoryItem
+Triggera se kada se stavka ukloni iz inventara.
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "source", type: "number", description: "ID igrača." },
+    { arg: "itemName", type: "string", description: "Stavka koja je uklonjena." },
+    { arg: "itemCount", type: "number", description: "Količina koju igrač sada ima." }
+]}/>
+
+**Primjer**
+```lua 
+AddEventHandler('esx:onRemoveInventoryItem', function(source, itemName, itemCount)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    print(xPlayer.getName() .. " je izgubio " .. itemName .. " i sada ima " .. itemCount)
+end)
+```
+
+### esx:playerSaved
+Triggera se kada je jedan igrač spremljen.
+
+**Povratne vrijednosti**
+<OutputTable rows={[
+    { arg: "source", type: "number", description: "ID igrača." },
+    { arg: "xPlayer", type: "string", description: "xPlayer objekt igrača koji se povezao." }
+]}/>
+
+**Primjer**
+```lua 
+AddEventHandler('esx:playerSaved', function(source, xPlayer)
+    print(xPlayer.getName() .. " je spremljen.")
+end)
+```
+
+### esx:onPlayerDeath
+Ovaj event se triggera kada igrač umre
+
+**Podaci**
+<OutputTable isTable={true} rows={[
+    { arg: "victimCoords", type: "vector3", description: "Koordinate žrtve." },
+    { arg: "killerCoords", type: "vector3", description: "Koordinate ubojice." },
+    { arg: "distance", type: "number", description: "Udaljenost između žrtve i ubojice." },
+    { arg: "killedByPlayer", type: "boolean", description: "Je li ubojica igrač." },
+    { arg: "deathCause", type: "string", description: "Uzrok smrti." },
+    { arg: "killerServerId", type: "number", description: "Server ID ubojice." },
+    { arg: "killerClientId", type: "string", description: "Lokalni ID ubojice." },
+]}/>
+
+**Primjer**
+```lua
+RegisterNetEvent('esx:onPlayerDeath', function (data)
+    print(string.format("%s je ubijen od strane %s s udaljenosti od %s metara.", source, data.killerServerId, data.distance))
+end)
+```

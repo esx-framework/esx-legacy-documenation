@@ -1,0 +1,37 @@
+import { ArgumentsTable } from 'src/components/table';
+
+# esx_notify
+Sustav za obavijesti koji koristi `es_extended`
+**Dostupno samo na client strani**
+
+### ShowNotifation
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'message', type: 'string', description: 'Poruka obavijesti.' }, 
+    { arg: 'type', type:'string', description: 'Tip obavijesti' }, 
+    { arg: 'length', type:'number', description: 'Opcije za progress bar' } 
+]} />
+
+**Tipovi obavijesti** 
+- success 
+- error 
+- info
+
+**ESX Primjer** 
+```lua
+ESX.ShowNotification('Ovo je moj novi test.', 'error', 1500) 
+```
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'type', type:'string', description: 'Tip obavijesti' },
+    { arg: 'message', type: 'string', description: 'Poruka obavijesti.' }, 
+    { arg: 'length', type:'number', description: 'Opcije za progress bar' } 
+]} />
+
+**Export Primjer** 
+```lua
+exports['esx_notify']:Notify('error', 'Ovo je moj novi test.', 1500) 
+```
+

@@ -1,0 +1,61 @@
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# esx_skin
+Sustav za upravljanje skinovima koji koristi `es_extended`
+**Dostupno samo na client strani**
+
+### Povuci zadnji skin
+Povuci zadnji poznati skin igrača
+
+**Primjer**
+```lua
+TriggerEvent("esx_skin:getLastSkin", function(lastSkin)
+    print(json.encode(lastSkin))
+end)
+```
+
+### Otvori izbornik za skinove
+Otvori izbornik za skinove
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'submitCb', type: 'function', description: 'Callback funkcija koja se poziva prilikom spremanja skina.' }, 
+    { arg: 'cancelCb', type:'function', optional: true, description: 'Callback funkcija koja se poziva prilikom odustajanja.'}
+]} />
+
+### Povuci trenutni skin
+Povuci trenutni skin
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'cb', type: 'function', description: 'Callback funkcija koja se poziva kada se primi skin.' }
+]} />
+
+**Primjer**
+```lua
+ESX.TriggerServerCallback("esx_skin:getPlayerSkin", function(skin)
+    if skin == nil then
+        TriggerEvent("skinchanger:loadSkin", { sex = 0 }, OpenSaveableMenu)
+        Wait(100)
+    else
+        TriggerEvent("skinchanger:loadSkin", skin)
+        Wait(100)
+    end
+end)
+```
+
+### Otvori izbornik za skinove
+Otvori izbornik za skinove.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'submitCb', type: 'function', optional: true, description: 'Callback funkcija koja se poziva prilikom spremanja skina.' }, 
+    { arg: 'cancelCb', type:'function', optional: true, description: 'Callback funkcija koja se poziva prilikom odustajanja.'}
+]} />
+
+**Primjer**
+```lua
+TriggerEvent("esx_skin:openSaveableMenu", 
+    function()
+        finished = true
+    end, function()
+        finished = true
+end)

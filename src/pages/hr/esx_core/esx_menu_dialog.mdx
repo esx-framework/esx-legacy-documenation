@@ -1,0 +1,53 @@
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# esx_menu_dialog
+Izbornik koji se koristi za dobivanje unosa od igrača.
+**Dostupno samo na client strani**
+
+### ESX.UI.Menu.Open
+Otvara izbornik koji se može koristiti za unos vrijednosti
+
+```lua
+ESX.UI.Menu.Open(type, namespace, name, data, confirm, cancel )
+```
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'type', type: 'string', description: 'izbornik za otvaranje `dialog` u ovom slučaju' }, 
+    { arg: 'namespace', type: 'string', description: 'Namespace izbornika, obično se koristi ```GetResourceName()```' },
+    { arg: 'name', type: 'string', description: 'Naziv izbornika' },
+    { arg: 'data', type: 'table', description: 'Tablica s elementima za prikaz u izborniku' },
+    { arg: 'confirm', type: 'function', description: 'Funkcija koja se pokreće kada se odabere element.'},
+    { arg: 'cancel', type: 'function', description: 'Funkcija koja se pokreće kada se izbornik zatvori'},
+    
+]} /> 
+
+**Tablica podataka**
+- title: naslov izbornika
+
+
+**confirm**
+
+Funkcija koja se pokreće kada se pritisne gumb za potvrdu, vraća `data` i `menu`, `data.value` se koristi za dobivanje trenutne unesene vrijednosti
+
+**cancel**
+
+Ova funkcija se pokreće kada se pritisne gumb za otkazivanje ili se izbornik zatvori, vraća `data` i `menu`
+
+
+### Primjer izbornika
+```lua
+ESX.UI.Menu.Open("dialog", GetCurrentResourceName(), "Example_Menu", {
+    title = "Primjer izbornika", -- Naziv izbornika za prikaz korisnicima,
+  }, function(data, menu) -- funkcija za potvrdu  
+      local value = data.value
+      print(value)
+      menu.close()
+    end, 
+    function(data, menu) -- funkcija za otkazivanje
+      print("Zatvaranje izbornika")
+      menu.close() -- zatvori izbornik
+  end)
+```
+**Rezultat**
+<img src = "https://i.gyazo.com/ab9c45aa64a9e1133e66cecd21d8fab4.png"></img>

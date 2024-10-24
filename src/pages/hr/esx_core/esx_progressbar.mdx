@@ -1,0 +1,63 @@
+import { ArgumentsTable } from 'src/components/table';
+
+# esx_progressbar 
+Sustav za prikaz progress bara koji koristi `es_extended`
+**Dostupno samo na client strani**
+
+### ESX.Progressbar
+
+**Argumenti** 
+<ArgumentsTable rows={[
+    { arg: 'text', type: 'string', description: 'Tekst na progress baru.' }, 
+    { arg: 'length', type:'number', description: 'Dužina trajanja progress bara u milisekundama' }, 
+    { arg: 'Options', type:'table', description: 'Opcije za progress bar' } 
+]} />
+
+***Tablica opcija*** 
+<ArgumentsTable isTable='true' rows={[
+    { arg: 'animation', type: 'table', description: 'Tablica s podacima o animaciji' }, 
+    { arg: 'FreezePlayer', type:'boolean', description: 'Treba li igrač biti zamrznut?' }, 
+    { arg: 'onFinish', type:'function', description: 'Funkcija koja će se izvršiti kada završi' }, 
+    { arg: 'onCancel', type:'function', optional: true, description: 'Funkcija koja će se izvršiti kada se otkaže' }
+]} />
+
+***Tablica animacija***
+<ArgumentsTable isTable='true' rows={[
+    { arg: 'type', type: 'string', description: 'anim ili scenario' }, 
+    { arg: 'lib', type:'string', description: 'lib animacije' }, 
+    { arg: 'dict', type:'string', description: 'dict animacije' } 
+]} />
+
+**ESX Primjer**
+```lua
+ESX.Progressbar('test', 25000, {
+    FreezePlayer = false, 
+    animation = {
+        type = 'anim',
+        dict = 'mini@prostitutes@sexlow_veh', 
+        lib = 'low_car_sex_to_prop_p2_player' 
+    }, 
+    onFinish = function()
+        -- Kod koji će se izvršiti kada završi
+    end, onCancel = function() 
+        -- Kod koji će se izvršiti kada se progress bar otkaže
+    end
+})
+```
+
+**Export Primjer**
+```lua
+exports['esx_progressbar']:Progressbar('test', 25000, {
+    FreezePlayer = false, 
+    animation = {
+        type = 'anim',
+        dict = 'mini@prostitutes@sexlow_veh', 
+        lib = 'low_car_sex_to_prop_p2_player' 
+    }, 
+    onFinish = function()
+        -- Kod koji će se izvršiti kada završi
+    end, onCancel = function() 
+        -- Kod koji će se izvršiti kada se progress bar otkaže
+    end
+})
+```

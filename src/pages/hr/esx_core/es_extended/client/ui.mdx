@@ -1,0 +1,149 @@
+import { ArgumentsTable, OutputTable } from 'src/components/table';
+
+# UI
+Ova stranica objašnjava postojeće funkcije koje implementira esx za stvaranje različitih tipova UI-eva
+
+## Menu
+ESX nudi više menija po defaultu; `esx_menu_default`, `esx_menu_dialog` i `esx_menu_list`. Ali mi vam nudimo funkcije za kreiranje vašeg menija.
+
+### RegisterType
+Registrira custom UI tip
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'type', type: 'string', description: 'Tipka menija za vrstu.' }, 
+    { arg: 'open', type: 'function', description: 'Funkcija koja se pokreće kad otvoriš meni.' },
+    { arg: 'close', type: 'function', description: 'Funkcija koja se pokreće kad zatvoriš meni.' },
+]} /> 
+
+**Primjer**
+```lua
+ESX.UI.Menu.RegisterType("my_menu", myOpenFunction, myCloseFunction)
+```
+
+### Open
+Otvaranje menija zadane vrste i podataka.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'type', type: 'string', description: 'Tipka menija za vrstu.' }, 
+    { arg: 'namespace', type: 'string', description: 'Imenski prostor za meni. (Tipično da se stavi ime skripte)' }, 
+    { arg: 'name', type: 'string', description: 'Ime menija' }, 
+    { arg: 'data', type: 'table', description: 'Opcije za meni' }, 
+    { arg: 'submit', type: 'function', description: 'Funkcija koja se pokreće kad stisneš submit.' }, 
+    { arg: 'cancel', type: 'function', description: 'Funkcija koja se pokreće kad otkažeš meni.' }, 
+    { arg: 'change', type: 'function', description: 'Funkcija koja se pokreće kad se podatci promjene.' }, 
+    { arg: 'close', type: 'function', description: 'Funkcija koja se pokreće kad se meni zatvori.' }
+]} />
+
+**Vraća**
+<OutputTable rows={[
+    { arg: 'type', type: 'string', description: 'Tipka menija za vrstu.' }, 
+    { arg: 'namespace', type: 'string', description: 'Imenski prostor za meni. (Tipično da se stavi ime skripte)' },
+    { arg: 'resourceName', type: 'string', description: 'The script that created it or Unknown' },
+    { arg: 'name', type: 'string', description: 'Ime menija' }, 
+    { arg: 'data', type: 'table', description: 'Opcije za meni' },
+    { arg: 'submit', type: 'function', description: 'Trigger da forsira submit funkciju menija.' }, 
+    { arg: 'cancel', type: 'function', description: 'Trigger da forsira cancel funkciju menija.' }, 
+    { arg: 'change', type: 'function', description: 'Trigger da forsira change funkciju menija.' }, 
+    { arg: 'close', type: 'function', description: 'Zatvara meni.' },
+    { arg: 'update', type: 'function', description: 'Update-a meni.' },
+    { arg: 'refresh', type: 'function', description: 'Refresha meni.' },
+    { arg: 'setElement', type: 'function', description: 'Seta podatke elementa.' },
+    { arg: 'setElements', type: 'function', description: 'Seta elemente.' },
+    { arg: 'setTitle', type: 'function', description: 'Stavlja naslov menija' },
+    { arg: 'removeElement', type: 'function', description: 'Ukloni element prema zadanom queryu' }
+]}/>
+
+
+**Primjer**
+```lua
+RegisterCommand('testOpen', function()
+    -- Koristi se meni skripte `esx_menu_default`
+    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'my_default_menu', {
+        title = "My title",
+        align = 'bottom-left',
+        elements = elements
+    }, function(data, menu)
+        print("Submit data", data, menu)
+    end, function(data, menu)
+        menu.close()
+        print("Cancel data", data, menu)
+    end, function(data, menu)
+        print("Change data", data, menu)
+    end, function()
+        print("Closed menu")
+    end)
+end)
+```
+
+### Close
+Zatvara meni zadane vrste, imenskog prostora i naziva.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'menuType', type: 'string', description: 'Tip menija.' }, 
+    { arg: 'namespace', type: 'string', description: 'Imenski prostor za meni. (Tipično da se stavi ime skripte)' }, 
+    { arg: 'name', type: 'string', description: 'Ime menija' }
+]} /> 
+
+**Primjer**
+```lua
+RegisterCommand('testClose', function()
+    -- Koristi se meni skripte `esx_menu_default`
+    ESX.UI.Menu.Close('default', GetCurrentResourceName(), 'my_default_menu')
+end)
+```
+
+### CloseAll
+Zatvara sve menije.
+
+**Primjer**
+```lua
+RegisterCommand('closeAllMenus', function()
+    ESX.UI.Menu.CloseAll()
+end)
+```
+
+### GetOpened
+Geta tablu zadanog tipa, imenskog prostora i naziva menija. Pogledaj dokumentaciju `ESX.UI.Menu.Open` za detaljne informacije.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'menuType', type: 'string', description: 'Tip menija.' }, 
+    { arg: 'namespace', type: 'string', description: 'Imenski prostor za meni. (Tipično da se stavi ime skripte)' }, 
+    { arg: 'name', type: 'string', description: 'Ime menija' }
+]} /> 
+
+**Primjer**
+```lua
+RegisterCommand('closeAllMenus', function()
+    -- Koristi se meni skripte `esx_menu_default`
+    local myMenu = ESX.UI.Menu.GetOpened('default', GetCurrentResourceName(), 'my_default_menu')
+
+    myMenu.close() -- Zatvara meni
+end)
+```
+
+### GetOpenedMenus
+Geta sve otvorene menije. Pogledaj dokumentaciju `ESX.UI.Menu.Open` za detaljne informacije.
+
+### IsOpen
+Provjerava jel meni zadanog tipa, imenskog prostora i naziva otvoren.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'menuType', type: 'string', description: 'Tip menija.' }, 
+    { arg: 'namespace', type: 'string', description: 'Imenski prostor za meni. (Tipično da se stavi ime skripte)' }, 
+    { arg: 'name', type: 'string', description: 'Ime menija' }
+]} /> 
+
+**Primjer**
+```lua
+RegisterCommand('isMenuOpen', function()
+    -- Koristi se meni skripte `esx_menu_default`
+    if ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'my_default_menu') then
+        print("Moj meni je otvoren!")
+    end
+end)
+```

@@ -1,0 +1,51 @@
+import LinuxSetup from 'src/components/installation/LinuxSetup.mdx';
+import WindowsSetup from 'src/components/installation/WindowsSetup.mdx';
+import { Tabs, Steps, Callout } from 'nextra/components';
+import { DsButton } from 'src/components/button';
+import { HeadingTitle } from "src/components/utility";
+
+<HeadingTitle text="Instalacija"/>
+
+<Callout>
+  [Hostaj svoj server sa OxygenServ-om, koristi kod `ESX` za 30% popusta na prvi mjesec](https://www.oxygenserv.com/en/hosting/gta-v-server/)
+</Callout>
+
+Ova stranica pokriva tutorial za instalaciju **ESX Legacy** Framework-a
+
+Dvije metode će biti prikazane ispod, jedna za windows server i jedna za linux server.
+
+<div style={{
+  marginTop: "10px",
+  display: "flex",
+  alignItems: "center"
+}}><DsButton></DsButton> Za pomoć možeš ući u naš discord server!</div>
+
+<br />
+
+Odaberi platformu koju koristiš
+<Tabs items={['Windows', 'Linux']}>
+  <Steps>
+    <Tabs.Tab>
+      <WindowsSetup />
+    </Tabs.Tab>
+    <Tabs.Tab>
+      <LinuxSetup />
+    </Tabs.Tab>
+
+    ### Postavljanje servera
+    1. Pod pretpostavkom da ste sada na [ovom](https://prnt.sc/pvRbppA5_s7e), stisnite `Next`.
+    2. Odaberi ime servera, i klikni Next.
+    3. Za `Deployment type`, odaberi `Popular Templates`.
+    4. Odaberi ESX Legacy i stisni `Save`.
+    5. Pitat će te gdje da spremi sve skripte. Možeš promjeniti ali ostavi default ako ne znaš šta radiš.
+    6. Sad stisni `Save` i onda idi na `Go To Recipe Deployer` i onda `Next`
+    7. Unesi svoj License Key (koji dobijes na [Keymaster-u](https://keymaster.cfx.re)) i stisni na `Show/Hide Database options`.
+    8. Za parametre databaze, provjeri da su ti Host i Port na `localhost` i `3306` redom. Unesi username i password databaze koje si kreirao u sekciji 2 uz ime databaze. Kad uneseš to, stisni Run Recipe.
+    9. Kad se to završi, stisni Done.
+    10. Sad si na prozoru koji prikazuje tvoj novi `server.cfg` file. Možeš mjenjati tu šta hoćes, ali ga kopiraj i negdje spremi u slućaju da nešto sjebeš.
+    11. Stisni na `Save and Run Server` da startaš svoj novi ESX server!
+
+    Gotov si! Uspješno si instalirao i postavio svoj prvi osnovni Fivem server osnovan na ESX Frameworku. Ako susretneš greške javi se na [Discord](https://discord.esx-framework.org/) u support kanale gdje će ti neko pomoći.
+  </Steps>
+</Tabs>
+

@@ -1,0 +1,148 @@
+import { Callout } from 'nextra/components';
+
+# Najbolje prakse kodiranja
+Ova sekcija će vam pokazati najbolje prakse kodiranja za FiveM i **ESX Legacy** Framework.
+
+## Stil programiranja
+Bitno je da pratiš isti stil kodiranja tokom cijele skripte. Ovo olakšava tebi i ostalima da pročitaš i shvatiš skriptu. Ova sekcija pokazuje generalna pravila tokom kodiranja.
+
+### Načini imenovanja varijabli i funckija
+Postoje različiti načini imenovanja ali je najčešći i najkorišteniji `camelCase`. To znači da je prvo slovo uvijek malo a da na početku svake sljedeće riječi bude veliko slovo. Na primjer, `mojaVarijabla`. 
+Ovo prati za sve varijable i funkcije OSIM ako su globalne, onda stavi i prvo slovo veliko. Npr: `MojaGlobalnaVarijabla`. 
+
+### Konstante
+Koristi konstante da označiš stvari koje se nebih smijele mijenjati / Konstante su varijable koje su nepromjenjive tokom rada skripte.
+
+Konstante bih trebale biti zapisane na temelju ovog primjera. `MOJA_KONSTANTA`.
+Ako imaš [Lua 5.4 uključen](https://docs.fivem.net/docs/scripting-reference/resource-manifest/resource-manifest/#lua54) možeš koristiti `const` keyword da definiraš konstantu.
+Primjer:
+```lua
+local MOJA_KONSTANTA <const> = 42
+MOJA_KONSTANTA = 43 -- Ovo baca error
+```
+
+### Razmaci
+Razmaci su bitni za pregled koda. Preporuča se korištenje 4 razmaka.
+
+## DRY
+DRY znači "Ne Ponavljaj Se". To znači da biste trebali izbjegavati ponavljanje koda i da bih trebali napisati kod koji se može koristiti na više mjesta.
+
+## Komentari
+Komentari su bitni da objasniš šta tvoj kod radi. Preporuča se da koristiš komentare da objasniš šta i kako tvoj kod radi.
+
+Za više informacija koristi [Komentari](/hr/tutorial/coding_practices/annotations) sekciju.
+
+## Globalizacija i Lokalizacija
+```lua
+MojaGlobalnaVarijabla = 42 -- Ovo je globalna varijabla
+local mojaLokalnaVarijabla = 42 -- Ovo je lokalna varijabla
+```
+
+### Globalizacija
+**Smanji** upotrebu globalnih varijabla i funkcija. One se mogu koristiti preko tvoje cijele skripte, šta dovodi do nepredviđujućeg ponašanja, povećanog korištenja RAM-memorije, i nadzemnog pristupa. Koristi lokalne varijable i funkcije ako ti ne trebaju preko cijele skripte.
+
+### Lokalizacija
+Koristi lokalne varijable i funkcije **kad god možeš**. Lokalne varijable su brže za pristup od globalnih varijabli i samo se mogu koristiti u području skripte ili u fileu gdje su definirani.
+
+## Petlje
+Kad koristiš petlje, bitno je da koristiš dobru petlju za tvoju situaciju. Na primjer `for` petlja je korisna kad znaš koliko puta trebaš ponoviti nešto, dok `while` petlju koristiš ako znaš da se nešto treba ponavljati neodređeno dok se neka vrijednost podudara.
+
+<Callout type="warning">
+    Dok koristiš `while` petlju obavezno stavi `Wait` u nju. Inače ćeš crashati server.
+</Callout>
+
+### Beskonačne petlje
+Nemoj koristiti beskonačne petlje. Beskonačne petlje uzrokuju lag-ove serveru i igračima.
+
+**Na primjer, nemoj radit ovo**
+```lua
+CreateThread(function()
+    while true do
+        Wait(0)
+        if ESX.PlayerData.job.name == 'police' then
+            if IsControlJustPressed(0, 38) then
+                -- nešto
+            end
+        end
+    end
+end)
+```
+
+**Radi ovo**
+```lua
+AddEventHandler('esx:setJob', function(job)
+    if job.name == 'police' then
+        pokreniPetljuPandura()
+    end
+end)
+
+local function pokreniPetljuPandura()
+    CreateThread(function()
+        while ESX.PlayerData.job.name == 'police' do
+            Wait(0)
+            if IsControlJustPressed(0, 38) then
+                -- pandurčina
+            end
+        end
+    end)
+end
+
+if ESX.PlayerData.job.name == 'police' then
+    pokreniPetljuPandura()
+end
+```
+
+### Wait vrijemena
+Kad koristiš petlje bitno je da staviš Wait. Moraš stavit bar `Wait(0)` ili če klijent/server crashati. `Wait` funkcija se koristi da pauzira skriptu na određeno vrijeme.
+
+Kad praviš petlju razmisli svakih koliko vremena bih se trebala izvoditi.
+
+## Cache
+Caching je tehnika koja se koristi za nešto šta se jako često koristi. To može jako puno pomoći u performansama servera i klijenta smanjivanjem broja povlačenja podataka iz databaze, izračunavanja ili dobivanja korištenjem resursno intezivnih izvora.
+
+<Callout type="warning">
+    Nemoj koristiti cache za stvari koje se ne koriste često.
+</Callout>
+
+### Primjer
+```lua
+local localPlayerId = PlayerId()
+local serverId = GetPlayerServerId(localPlayerId)
+local ped = PlayerPedId() -- Bitno je da provjeravaš jel se mjenja ped igrača
+
+AddEventHandler('esx:playerPedChanged', function(newPed)
+    ped = newPed
+end)
+```
+
+## Generalna optimizacija
+Optimizacija je bitna za performanse. Bitno je da optimiziraš kod da smanjiš lag. Ova sekcija pokazuje neke osnovne načine optimiziranja skripti.
+
+### Zaobiđi nepotrebne ili ponavljajuće kalkulacije.
+Zaobiđi nepotrebne ili ponavljajuće kalkulacije. Ako imaš kalkulacije koje se ponavljaju, cacheaj ih.
+
+### Table
+Table su jako snažne strukture podataka u Lua jeziku, ali su resursno intezivne. Bitno je da koristiš table pametno i zaobiđeš nepotrebno kreiranje tabli.
+I u tablama imaj samo podatke koje ti trebaju. Kad ti neki podatci iz table više neće trebati, obriši ih.
+
+### Koristi najnovije metode
+Lua, FiveM i ESX se konstantno updateaju sa novim i optimiziranijim metodama za neke stv?ari.
+Provjeri da uvijek imaš sve updateano i da koristiš najnovije metode.
+
+**Popularne stare metode koje trebaš promjeniti**
+- `GetPlayerPedId(-1)` -> `PlayerPedId()`
+- `GetDistanceBetweenCoords(x1, y1, z1, x2, y2, z2, true)` -> `#(vector3(x1, y1, z1) - vector3(x2, y2, z2))`
+- `GetHashKey('adder')` -> `joaat('adder')`
+- `table.insert(table, value)` -> `table[#table + 1] = value`
+- `table.remove(table, index)` -> `table[index] = nil`
+
+## Lua 5.4
+Lua 5.4 je najnovija verzija lue koja ima dosta novih mogučnosti. Ako imaš [Lua 5.4 uključen](https://docs.fivem.net/docs/scripting-reference/resource-manifest/resource-manifest/#lua54) možeš koristiti te nove mogučnosti u svojoj skripti.
+
+### Mogučnosti
+- `const` & `close` keywordovi za definiranje konstanti i za sigurno oslobađanje iz memorije.
+- `goto` izjava.
+- Generacijski GC (Sakupljač Smeča).
+- Sveukupno brže
+- Spoj operatora (+=, -=, *=, /=, %=, ^=, ..=, &=, |=, \<\<=, >>=, >>>=).
+- I još dosta.

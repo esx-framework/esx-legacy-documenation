@@ -1,0 +1,56 @@
+import { ArgumentsTable } from 'src/components/table';
+import { Callout } from 'nextra/components';
+
+
+# esx_textui
+Sustav tekstualnog ui-a (hud) koji koristi `es_extended`
+**Dostupno samo na client strani**
+
+### TextUI
+Ova funkcija će prikazati TextUI.
+
+**Argumenti**
+<ArgumentsTable rows={[
+    { arg: 'message', type: 'string', description: 'Poruka za TextUI.' }, 
+    { arg: 'type', type:'string', defaultValue: 'info', optional: true, description: 'Tip TextUI-a'}
+]} />
+
+**Tipovi TextUI-a**
+- success 
+- error 
+- info
+
+**ESX Primjer** 
+```lua
+ESX.TextUI('Pritisnite [E] za korištenje', 'error')
+```
+
+**Export Primjer** 
+```lua
+exports['esx_textui']:TextUI('Pritisnite [E] za korištenje', 'error')
+```
+
+### HideUI 
+Ova funkcija će sakriti TextUI.
+
+<Callout type='warning'>
+    Ovo će zatvoriti svaki TextUI koji je trenutno otvoren.
+</Callout>
+
+**Primjer** 
+```lua
+local interactCoords = vector3(0, 0, 0)
+CreateThread(function()
+    local TextUI
+    while true do
+        local coords = GetEntityCoords(PlayerPedId())
+        local inDist = #(coords - interactCoords) < 2.0
+        if inDist and not TextUI then 
+            ESX.TextUI('Pritisnite [E] za interakciju')
+        elseif inDist and TextUI then 
+            ESX.HideUI() 
+        end
+        Wait(500)
+    end 
+end) 
+```
