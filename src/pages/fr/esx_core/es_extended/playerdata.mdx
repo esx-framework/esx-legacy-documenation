@@ -1,5 +1,4 @@
 import { Callout } from 'nextra/components';
-import { ArgumentsTable, OutputTable } from 'src/components/table';
 
 # PlayerData
 Different types of Player Data introduced by esx which contain information about the player and his current character.
@@ -68,12 +67,14 @@ end)
 ### coords
 The player's last known coords and heading.
 
-<OutputTable isTable={true} rows={[
-    { arg: "x", type: "number", description: "The players coords on the x axis." },
-    { arg: "y", type: "number", description: "The players coords on the y axis." },
-    { arg: "z", type: "number", description: "The players coords on the z axis." },
-    { arg: "heading", type: "number", description: "The players heading." },
-]}/>
+- x: `number`
+  - The players coords on the x axis.
+- y: `number`
+  - The players coords on the y axis.
+- z: `number`
+  - The players coords on the z axis.
+- heading: `number`
+  - The players heading.
 
 **Server Example**
 ```lua 
@@ -148,15 +149,21 @@ print("The player's identifier is: " .. ESX.PlayerData.identifier)
 The player's inventory `table`. This also includes items the player doesn't have but the item count will be 0, so make sure to always check for the count.
 
 **Values**
-<OutputTable isTable={true} rows={[
-    { arg: "name", type: "string", description: "The item name" },
-    { arg: "count", type: "number", description: "The item count" },
-    { arg: "label", type: "string", description: "The item label" },
-    { arg: "weight", type: "number", description: "The item weight" },
-    { arg: "usable", type: "boolean", description: "Does the item have a use callback?" },
-    { arg: "rare", type: "boolean", description: "Is the item rare?" },
-    { arg: "canRemove", type: "boolean", description: "Can the item be removed?" }
-]}/>
+- name: `string`
+  - The item name.
+- count: `number`
+  - The item count.
+- label: `string`
+  - The item label.
+- weight: `number`
+  - The item weight.
+- usable: `boolean`
+  - Does the item have a use callback?
+- rare: `boolean`
+  - Is the item rare?
+- canRemove: `boolean`
+  - Can the item be removed?
+
 
 **Server Example**
 ```lua 
@@ -178,17 +185,24 @@ end
 The player's job `table`.
 
 **Values**
-<OutputTable isTable={true} rows={[
-    { arg: "id", type: "number", description: "The job's id from the database" },
-    { arg: "name", type: "string", description: "The job's name" },
-    { arg: "label", type: "string", description: "The job's label" },
-    { arg: "grade", type: "string", description: "The job's grade" },
-    { arg: "grade_name", type: "string", description: "The job's grade name" },
-    { arg: "grade_label", type: "string", description: "The job's grade label" },
-    { arg: "grade_salary", type: "string", description: "The job's grade salary" },
-    { arg: "skin_male", type: "table", description: "The job's male grade skin/outfit" },
-    { arg: "skin_female", type: "table", description: "The job's female grade skin/outfit" },
-]}/>
+- id: `number`
+  - The job's id from the database.
+- name: `string`
+  - The job's name.
+- label: `string`
+  - The job's label.
+- grade: `string`
+  - The job's grade.
+- grade_name: `string`
+  - The job's grade name.
+- grade_label: `string`
+  - The job's grade label.
+- grade_salary: `string`
+  - The job's grade salary
+- skin_male: `table`
+  - The job's male grade skin/outfit
+- skin_female: `table`
+  - The job's female grade skin/outfit
 
 **Server Example**
 ```lua 
@@ -208,13 +222,17 @@ end
 The player's loadout.
 
 **Values**
-<OutputTable isTable={true} rows={[
-    { arg: "name", type: "string", description: "The weapon's name." },
-    { arg: "ammo", type: "number", description: "The weapon's ammo." },
-    { arg: "label", type: "string", description: "The weapon's label." },
-    { arg: "components", type: "table", description: "The weapon's components." },
-    { arg: "tintIndex", type: "number", description: "The weapon's tint." },
-]}/>
+- name: `string`
+  - The weapon's name.
+- ammo: `number`
+  - The weapon's ammo.
+- label: `string`
+  - The weapon's label.
+- components: `table`
+  - The weapon's components.
+- tintIndex: `number`
+  - The weapon's tint.
+
 
 **Client Example**
 ```lua
@@ -476,11 +494,13 @@ print("The player has $" .. ESX.PlayerData.money .. " cash")
 The player's accounts. A table
 
 **Values**
-<OutputTable isTable={true} rows={[
-    { arg: "name", type: "string", description: "The account name" },
-    { arg: "money", type: "number", description: "The account balance" },
-    { arg: "label", type: "string", description: "The account label" },
-]}/>
+- name: `string`
+  - The account name.
+- money: `number`
+  - The account balance.
+- label: `string`
+  - The account label.
+
 
 **Server Example**
 ```lua 

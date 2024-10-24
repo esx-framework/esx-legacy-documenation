@@ -1,5 +1,4 @@
 import { Callout } from 'nextra/components';
-import { OutputTable } from "src/components/table";
 
 # Serversided Events
 This page is dedicated to the server events introduced by the es_extended script.
@@ -20,11 +19,12 @@ This page is dedicated to the server events introduced by the es_extended script
 This event gets triggered when the player has successfully loaded / the character was chosen and loaded.
 
 **Arguments**
-<OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." },
-    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." },
-    { arg: "isNew", type: "boolean", description: "Is the player's character new." }
-]}/>
+- playerId: `number`
+  - The player's server id.
+- xPlayer: `table`
+  - The xPlayer object of the player that connected.
+- isNew: `boolean`
+  - Is the player's character new.
 
 **Example**
 ```lua
@@ -41,9 +41,8 @@ end)
 This event gets triggered when the player has logged out. This happens when a player used `/logout`
 
 **Arguments**
-<OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." }
-]}/>
+- playerId: `number`
+  - The player's server id.
 
 **Example**
 ```lua
@@ -56,9 +55,8 @@ end)
 This event gets triggered when the player disconnected.
 
 **Arguments**
-<OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." }
-]}/>
+- playerId: `number`
+  - The player's server id.
 
 **Example**
 ```lua
@@ -71,11 +69,12 @@ end)
 This event gets triggered when the player has successfully loaded / the character was chosen and loaded.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "playerId", type: "number", description: "The player's player id." },
-    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." },
-    { arg: "isNew", type: "boolean", description: "Is the player's character new." }
-]}/>
+- playerId: `number`
+  - The player's server id.
+- xPlayer: `table`
+  - The xPlayer object of the player that connected.
+- isNew: `boolean`
+  - Is the player's character new.
 
 ```lua
 AddEventHandler('esx:playerLoaded', function (playerId, xPlayer, isNew)
@@ -101,11 +100,12 @@ end)
 This event gets triggered when the player is entering a vehicle. *This is a client triggered event*
 
 **Returns**
-<OutputTable rows={[
-    { arg: "plate", type: "string", description: "The vehicle's plate." },
-    { arg: "seat", type: "number", description: "The seat the player is entering." },
-    { arg: "netId", type: "number", description: "The vehicle's net id." }
-]}/>
+- plate: `string`
+  - The vehicle's plate.
+- seat: `number`
+  - The seat index of the vehicle the player is entering.
+- netId: `number`
+  - The vehicle's network id.
 
 **Example**
 ```lua 
@@ -128,12 +128,14 @@ end)
 This event gets triggered when the player has succesfully entered a vehicle. *This is a client triggered event*
 
 **Returns**
-<OutputTable rows={[
-    { arg: "plate", type: "string", description: "The vehicle's plate." },
-    { arg: "seat", type: "number", description: "The seat the player has entered." },
-    { arg: "displayName", type: "string", description: "The vehicle's display name." },
-    { arg: "netId", type: "number", description: "The vehicle's net id." }
-]}/>
+- plate: `string`
+  - The vehicle's plate.
+- seat: `number`
+  - The seat index of the vehicle the player is entering.
+- displayName: `string`
+  - The vehicle's display name.
+- netId: `number`
+  - The vehicle's network id.
 
 **Example**
 ```lua 
@@ -146,12 +148,14 @@ end)
 This event gets triggered when the player has exited a vehicle. *This is a client triggered event*
 
 **Returns**
-<OutputTable rows={[
-    { arg: "plate", type: "string", description: "The vehicle's plate." },
-    { arg: "seat", type: "number", description: "The seat the player has exited out of." },
-    { arg: "displayName", type: "string", description: "The vehicle's display name." },
-    { arg: "netId", type: "number", description: "The vehicle's net id." }
-]}/>
+- plate: `string`
+  - The vehicle's plate.
+- seat: `number`
+  - The seat index of the vehicle the player is entering.
+- displayName: `string`
+  - The vehicle's display name.
+- netId: `number`
+  - The vehicle's network id.
 
 **Example**
 ```lua 
@@ -164,10 +168,10 @@ end)
 Can be used to update weapon ammo or listen to ammo updates. *This is a client triggered event*
 
 **Returns**
-<OutputTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." },
-    { arg: "ammoCount", type: "number", description: "The new weapon's ammo count." }
-]}/>
+- weaponName: `string`
+  - The weapon name.
+- ammoCount: `number`
+  - The new ammo count.
 
 **Example**
 ```lua 
@@ -180,11 +184,12 @@ end)
 Gets triggered when an inventory item gets added.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "source", type: "number", description: "The player's player id." },
-    { arg: "itemName", type: "string", description: "The item that got added." },
-    { arg: "itemCount", type: "number", description: "The amount the player now has." }
-]}/>
+- source: `number`
+  - The player's server id.
+- itemName: `string`
+  - The item that got added.
+- itemCount: `number`
+  - The new item count.
 
 **Example**
 ```lua 
@@ -198,11 +203,12 @@ end)
 Gets triggered when an inventory item gets removed.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "source", type: "number", description: "The player's player id." },
-    { arg: "itemName", type: "string", description: "The item that got removed." },
-    { arg: "itemCount", type: "number", description: "The amount the player now has." }
-]}/>
+- source: `number`
+  - The player's server id.
+- itemName: `string`
+  - The item that got removed.
+- itemCount: `number`
+  - The new item count.
 
 **Example**
 ```lua 
@@ -216,10 +222,10 @@ end)
 Gets triggered when a single player was saved.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "source", type: "number", description: "The player's player id." },
-    { arg: "xPlayer", type: "string", description: "The xPlayer object of the player that connected." }
-]}/>
+- source: `number`
+  - The player's server id.
+- xPlayer: `table`
+  - The xPlayer object of the player that was saved.
 
 **Example**
 ```lua 
@@ -229,22 +235,48 @@ end)
 ```
 
 ### esx:onPlayerDeath
-This event gets triggered when the player hdies
+This event gets triggered when the player dies
 
 **Data**
-<OutputTable isTable={true} rows={[
-    { arg: "victimCoords", type: "vector3", description: "The coords of the victim." },
-    { arg: "killerCoords", type: "vector3", description: "The coords of the killer." },
-    { arg: "distance", type: "number", description: "The distance between the victim and the killer." },
-    { arg: "killedByPlayer", type: "boolean", description: "Is the killer a player." },
-    { arg: "deathCause", type: "string", description: "The death cause." },
-    { arg: "killerServerId", type: "number", description: "The killer's server id." },
-    { arg: "killerClientId", type: "string", description: "The killer's local id." },
-]}/>
+- victimCoords: `vector3`
+  - The coords of the victim.
+- killerCoords: `vector3`
+  - The coords of the killer.
+- distance: `number`
+  - The distance between the victim and the killer.
+- killedByPlayer: `boolean`
+  - Is the killer a player.
+- deathCause: `string`
+  - The death cause.
+- killerServerId: `number`
+  - The killer's server id.
+- killerClientId: `string`
+  - The killer's local id.
+
 
 **Example**
 ```lua
 RegisterNetEvent('esx:onPlayerDeath', function (data)
     print(string.format("%s was killed by %s from %s meters away.", source, data.killerServerId, data.distance))
+end)
+```
+
+### esx:setJob
+This event is triggered when the player's job changes.
+
+**Returns**
+- source: `number`
+  - The player's server id.
+- job: `table`
+  - The new job table.
+- lastJob: `table`
+  - The last job table.
+
+**See more:** *[Job table structure](/en/esx_core/es_extended/playerdata/#job)*
+
+**Example**
+```lua 
+AddEventHandler('esx:setJob', function(source,job,lastJob)
+    print("Player " .. source .. " changed job! New job name: " .. job.name .. " Last job name: " .. lastJob.name)
 end)
 ```

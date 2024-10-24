@@ -1,26 +1,22 @@
-import { ArgumentsTable, OutputTable } from "src/components/table";
-
 ## Timeout
 
 ### SetTimeout
 Sets a timeout for specified millisecond, after finishing the callback gets triggered.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "msec", type: "number", description: "The milliseconds it should wait." },
-    { arg: "cb", type: "function", description: "Callback to run after finishing." },
-]}/>
+- msec: `number`
+  - The amount of milliseconds to wait.
+- cb: `function`
+  - The callback to trigger after the timeout.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "timeoutId", type: "number", description: "The timeout's id." }
-]}/>
+- timeoutId: `number`
+  - The timeout id.
 
 
 ### ClearTimeout
 Clears/Cancels the timeout. 
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "id", type: "number", description: "The timeout's id." },
-]}/>
+- timeoutId: `number`
+  - The timeout to clear.

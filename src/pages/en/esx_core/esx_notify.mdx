@@ -1,5 +1,3 @@
-import { ArgumentsTable } from 'src/components/table';
-
 # esx_notify
 The notification system used by `es_extended`
 **Only available on clientside**
@@ -7,11 +5,12 @@ The notification system used by `es_extended`
 ### ShowNotifation
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'message', type: 'string', description: 'The notification message.' }, 
-    { arg: 'type', type:'string', description: 'The notification type' }, 
-    { arg: 'length', type:'number', description: 'The progressbar options' } 
-]} />
+- message: `string`
+  - The notification message.
+- type: `string`
+  - The notification type
+- length: `number`
+  - The progressbar options
 
 **Notification Types** 
 - success 
@@ -24,14 +23,14 @@ ESX.ShowNotification('This is my new test.', 'error', 1500)
 ```
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'type', type:'string', description: 'The notification type' },
-    { arg: 'message', type: 'string', description: 'The notification message.' }, 
-    { arg: 'length', type:'number', description: 'The progressbar options' } 
-]} />
+- type: `string`
+  - The notification type
+- message: `string`
+  - The notification message.
+- length: `number`
+  - The progressbar options
 
 **Export Example** 
 ```lua
 exports['esx_notify']:Notify('error', 'This is my new test.',  1500) 
 ```
-

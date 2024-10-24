@@ -1,5 +1,3 @@
-import { ArgumentsTable, OutputTable } from 'src/components/table';
-
 # esx_skin
 The skin managing system used by `es_extended`
 **Only available on clientside**
@@ -17,17 +15,16 @@ end)
 ### Open the skin menu
 Open the skin menu
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'submitCb', type: 'function', description: 'Callback that should be triggered when saving the skin.' }, 
-    { arg: 'cancelCb', type:'function', optional: true, description: 'Callback that should be triggered when abborting.'}
-]} />
+- submitCb: `function`
+  - Callback that should be triggered when saving the skin.
+- cancelCb?: `function`
+  - Callback that should be triggered when abborting.
 
 ### Get the current skin
 Get the current skin
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'cb', type: 'function', description: 'Callback that should be triggered when the skin is received.' }
-]} />
+- cb: `function`
+  - Callback that should be triggered when the skin is received.
 
 **Example**
 ```lua
@@ -46,10 +43,10 @@ end)
 Open the skin menu.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'submitCb', type: 'function', optional: true, description: 'Callback that should be triggered when saving the skin.' }, 
-    { arg: 'cancelCb', type:'function', optional: true, description: 'Callback that should be triggered when abborting.'}
-]} />
+- submitCb?: `function`
+  - Callback that should be triggered when saving the skin.
+- cancelCb?: `function`
+  - Callback that should be triggered when abborting.
 
 **Example**
 ```lua

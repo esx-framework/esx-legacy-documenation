@@ -15,18 +15,9 @@ const withNextra = nextra({
   },
 });
 
-/**
- * @type {import('next').NextConfig}
- */
 export default withNextra({
   i18n: {
     locales: ["en", "fr"],
     defaultLocale: "en",
   },
-  images: {
-    unoptimized: true,
-  },
-  swcMinify: true,
-  trailingSlash: true,
-  distDir: "dist",
 });

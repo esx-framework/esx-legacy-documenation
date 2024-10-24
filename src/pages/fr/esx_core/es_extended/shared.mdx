@@ -1,5 +1,3 @@
-import { ArgumentsTable, OutputTable } from "src/components/table";
-
 # Shared Functions
 Functions that can be used on both server and client.
 
@@ -7,9 +5,8 @@ Functions that can be used on both server and client.
 This function returns a random string in the specified length.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "length", type: "number", description: "The length the string should be." }
-]}/>
+- length: `number`
+  - The length of the string to be generated.
 
 **Example**
 ```lua
@@ -24,15 +21,14 @@ This function returns the esx config.
 Get the weapon from the weapons config and it's index in it using the weapon name.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." }
-]}/>
+- weaponName: `string`
+  - The name of the weapon to get.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "index", type: "number", description: "The weapon's index in the config." },
-    { arg: "weapon", type: "table", description: "The weapon config." }
-]}/>
+- index: `number`
+  - The index of the weapon in the weapons config.
+- weapon: `table`
+  - The weapon data from the weapons config.
 
 **Example**
 ```lua
@@ -45,15 +41,14 @@ print("The weapon is called " .. weapon.label .. " and can have a max of " .. we
 Get the weapon from the weapons config and it's index using the weapon's hash.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." }
-]}/>
+- weaponHash: `number`
+  - The hash of the weapon to get.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "index", type: "number", description: "The weapon's index in the config." },
-    { arg: "weapon", type: "table", description: "The weapon config." }
-]}/>
+- index: `number`
+  - The index of the weapon in the weapons config.
+- weapon: `table`
+  - The weapon data from the weapons config.
 
 **Example**
 ```lua
@@ -66,22 +61,19 @@ print("The weapon is called " .. weapon.label .. " and can have a max of " .. we
 Get all weapons either with the name or hash as key.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "byHash", type: "boolean", description: "Should it use the weapon hash a the key." }
-]}/>
+- byHash: `boolean`
+  - Should it return the weapon hashes instead of the key.
 
 ## GetWeaponLabel
 Get the specified weapon's label
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." }
-]}/>
+- weaponName: `string`
+  - The name of the weapon to get the label of.
 
 **Returns**
-<OutputTable rows={[
-    { arg: "label", type: "string", description: "The weapon's label." }
-]}/>
+- label: `string`
+  - The label of the weapon.
 
 **Example**
 ```lua
@@ -94,7 +86,11 @@ print("Weapon is a: " .. weaponLabel)
 This function returns the possible data of the specified component for the specified weapon.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." },
-    { arg: "weaponComponent", type: "string", description: "The weapon component." },
-]}/>
+- weaponName: `string`
+  - The name of the weapon to get the component data for.
+- componentName: `string`
+  - The name of the component to get the data for.
+
+**Returns**
+- component: `table`
+  - The component data from the weapons config.

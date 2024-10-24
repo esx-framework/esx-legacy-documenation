@@ -1,15 +1,13 @@
-import { ArgumentsTable } from "src/components/table";
-
 ## Math
 
 ### Round
 This function rounds the number to the specified amount of decimal places.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "value", type: "number", description: "The number to manipulate." },
-    { arg: "numDecimalPlaces", type: "string", description: "The amount of decimal places to round to." },
-]}/>
+- number: `number`
+  - The number to round.
+- numDecimalPlaces: `number`
+  - The amount of decimal places to round to.
 
 **Example**
 ```lua
@@ -24,9 +22,8 @@ print('value rounded: ' .. ESX.Math.Round(value, 1)) -- returns 5.4
 This function groups numbers, making them easier to understand by humans. Used in most nofications when money is showed, for example when buying a new car at the vehicle shop.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "value", type: "number", description: "The number to group." },
-]}/>
+- number: `number`
+  - The number to group.
 
 **Example**
 ```lua
@@ -40,9 +37,8 @@ print(value, valueGrouped) -- returns 5555, 5,555
 This function trims a string, removing all trailing whitespaces. Often used when sanitizing the `GetVehicleNumberPlateText()` native.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "value", type: "number", description: "The number to group." },
-]}/>
+- value: `string`
+  - The string to trim.
 
 **Example**
 ```lua

@@ -1,14 +1,11 @@
-import { ArgumentsTable, OutputTable } from 'src/components/table';
-
 # skinchanger
 A script to get and set player clothing, accessoires and model used by `es_extended`
 **Only available on clientside**
 
 ### Load the default model
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'isMale', type: 'boolean', description: 'Should the player be set to a male ped?' }, 
-]} /> 
+- isMale: `boolean`
+  - Should the player be set to a male ped? 
 
 ***Example**
 ```lua
@@ -20,9 +17,8 @@ TriggerEvent('skinchanger:loadDefaultModel', true)
 Used to set a skin of the local player, you can also only set specific components.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'skin', type: 'table', description: 'A table containing all skin details.' }, 
-]} /> 
+- skin: `table`
+  - A table containing all skin details. 
 
 ***Example**
 ```lua
@@ -64,9 +60,8 @@ TriggerEvent('skinchanger:loadSkin', {
 
 ### Get list of existing components
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'callback', type: 'function', description: 'Callback function that will return the data' }, 
-]} /> 
+- callback: `function`
+  - Callback function that will return the data 
 
 ***Example**
 ```lua
@@ -78,9 +73,8 @@ end)
 
 ### Get list of existing components
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'callback', type: 'function', description: 'Callback function that will return the data' }, 
-]} /> 
+- callback: `function`
+  - Callback function that will return the data 
 
 ***Example**
 ```lua
@@ -88,4 +82,3 @@ TriggerEvent('skinchanger:getSkin', function(skin)
     print(('%s'):format(json.encode(skin)))
 end)
 ```
-

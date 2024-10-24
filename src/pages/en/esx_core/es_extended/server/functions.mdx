@@ -1,4 +1,3 @@
-import { ArgumentsTable, OutputTable } from "src/components/table";
 import { Callout } from 'nextra/components'; 
 
 # Serverside Functions
@@ -6,20 +5,22 @@ import { Callout } from 'nextra/components';
 ## Globals
 These global variables are saved in the ESX table. You can freely use their data.
 
-<OutputTable isTable={true} rows={[
-    { arg: "Players", type: "table", description: "All loaded players." },
-    { arg: "Jobs", type: "table", description: "All registered Jobs." },
-    { arg: "JobsPlayerCount", type: "table", description: "All registered Jobs and their player count." },
-    { arg: "Items", type: "table", description: "All registered Items." }
-]}/>
+- Players
+  - All loaded players.
+- Jobs
+  - All registered Jobs.
+- JobsPlayerCount
+  - All registered Jobs and their player count.
+- Items
+  - All registered Items.
+
 
 ## Print a Trace
 This function prints a message to the console when Debug is enabled in the ESX Config.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "msg", type: "any", description: "The message that should be printed." },
-]} />
+- msg: `string`
+  - The message to print.
 
 **Example**
 
@@ -34,14 +35,15 @@ end
 ## RegisterServerCallback
 This function registers a server callback, which is used for sending Server Data, to a client.
 
-See [*TriggerClientCallback*](../client/functions/#triggerservercallback)
+See [*TriggerServerCallback*](../client/functions/#triggerservercallback)
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "name", type: "string", description: "The server callback's name." },
-    { arg: "cb", type: "function", description: "The callback." },
-    { arg: "...", type: "arguments", description: "The callback's argument." },
-]} />
+- name: `string`
+  - The name of the callback.
+- cb: `function`
+  - The callback function.
+- ...: `any`
+  - The arguments to pass to the callback function.
 
 **Example**
 ```lua
@@ -67,12 +69,14 @@ This function triggers a client callback, which is used to get data from the cli
 </Callout>
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "player", type: "number", description: "The client to trigger the callback for." },
-    { arg: "eventName", type: "string", description: "The callback name to trigger." },
-    { arg: "cb", type: "function", description: "The callback to trigger when data get's send back." },
-    { arg: "...", type: "arguments", description: "The callback arguments that should be send to the client." },
-]} />
+- player: `number`
+  - The player source that the callback should get triggered for.
+- eventName: `string`
+  - The name of the callback.
+- cb: `function`
+  - The callback to trigger when the client responds.
+- ...: `any`
+  - The arguments that should be send to the client.
 
 **Example**
 ```lua
@@ -85,33 +89,32 @@ end, "bati")
 This function registers a command.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "name", type: "string | table", description: "The name of the command." },
-    { arg: "group", type: "string | table", description: "The groups able to run this command." },
-    { arg: "cb", type: "function", description: "The callback function that gets ran." },
-    { arg: "allowConsole", type: "boolean", optional: true, description: "Is it allowed for the command to be ran through console." },
-    { arg: "suggestion", type: "table", optional: true, description: "Chat suggestion data." }
-]} />
-
-**Callback**
-<OutputTable rows={[
-    { arg: "xPlayer", type: "table", description: "The xPlayer table of the client." },
-    { arg: "args", type: "table", description: "The arguments the player has put in." },
-    { arg: "showError", type: "function", description: "Print or show a notification." }
-]}/>
-
-**Suggestion**
-<ArgumentsTable rows={[
-    { arg: "help", type: "string", description: "The help message shown in the chat." },
-    { arg: "arguments", type: "table", description: "The arguments the player can put in." }
-]}/>
-
-**Suggestion Arguments**
-<ArgumentsTable isTable={true} rows={[
-    { arg: "name", type: "string", description: "The argument key." },
-    { arg: "help", type: "string", description: "Explanation of the argument." },
-    { arg: "type", type: "string", description: "Type of the argument. Possible Types: number, playerId, string, item, weapon, any, merge, coordinate." },
-]}/>
+- name: `string` | `table`
+  - The name of the command.
+- group: `string` | `table`
+  - The group able to run this command.
+- cb: `function`
+  - The callback function that gets ran.
+  - xPlayer: `table`
+    - The xPlayer object of the client.
+  - args: `table`
+    - The arguments the player has put in.
+  - showError: `function`
+    - The function to show an error message to the player.
+- allowConsole?: `boolean`
+  - If the command should be allowed to be run from the console?
+- suggestion?: `table`
+  - The suggestion that gets added to the chat.
+  - help: `string`
+    - The description of the command.
+  - arguments: `table`
+    - The arguments of the command.
+    - name: `string`
+      - The argument key.
+    - help: `string`
+      - Explanation of the argument.
+    - type: `string`
+      - Type of the argument. Possible Types: number, playerId, string, item, weapon, any, merge, coordinate.
 
 **Example**
 ```lua
@@ -132,13 +135,12 @@ end, false, {
 This function returns all loaded xPlayers and if a filter is applied that match the filter. 
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "key", optional: true, type: "string", description: "The key to filter players from" },
-    { arg: "val", optional: true, type: "any", description: "The value to filter from." }
-]} />
+- key?: `string`
+  - The key to filter players from.
+- value?: `any`
+  - The value to filter players from.
 
 **Returns**
-
 A table with the xPlayer objects.
 
 **Example**
@@ -154,13 +156,12 @@ end
 This function returns the amount of players online and if a filter is applied that match the filter. 
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "key", optional: true, type: "string", description: "The key to filter players from" },
-    { arg: "val", optional: true, type: "any", description: "The value to filter from." }
-]} />
+- key?: `string`
+  - The key to filter players from.
+- value?: `any`
+  - The value to filter players from.
 
 **Returns**
-
 A number with the players online matching the filter.
 
 **Example**
@@ -174,9 +175,8 @@ print("There are " .. officersOnline .. " officers online.")
 This function returns the xPlayer object of the specified playerId.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "source", type: "number", description: "The playerId of the player" }
-]} />
+- source: `number`
+  - The player's server id.
 
 **Returns**
 
@@ -193,12 +193,10 @@ print("Player 5 is called " .. xPlayer.getName())
 This function returns the xPlayer object of the specified identifier.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "identifier", type: "string", description: "The identifier of the player" }
-]} />
+- identifier: `string`
+  - The player's identifier.
 
 **Returns**
-
 The xPlayer object of the specified player.
 
 **Example**
@@ -215,12 +213,10 @@ end)
 This function returns the identifier of the specified player. If in Cfx.re Development Kit will return "ESX-DEBUG-LICENSE"
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "playerId", type: "number", description: "The playerId of the player" }
-]} />
+- playerId: `number`
+  - The player's server id.
 
 **Returns**
-
 The identifier of the specified player.
 
 **Example**
@@ -240,11 +236,12 @@ This function returns the vehicle type of the speicified vehicle.
 </Callout>
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "model", type: "string | number", description: "The vehicle model, either as string or hash" },
-    { arg: "player", type: "number", description: "The playerId of the player" },
-    { arg: "cb", type: "function", description: "The callback function that gets ran when the function finishes." },
-]} />
+- model: `string` | `number`
+  - The vehicle model as string or hash.
+- source: `number`
+  - The player's server id that should be used to check the model.
+- cb: `function`
+  - The callback function that gets ran when the function finishes.
 
 **Example**
 ```lua
@@ -257,12 +254,14 @@ end)
 This function sends a discord log.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "name", type: "string", optional: true, defaultValue: "Default", description: "Webhook Name (found in Config.logs.lua)" },
-    { arg: "title", type: "string", description: "Webhook Title" },
-    { arg: "color", type: "string", optional: true, defaultValue: "Default", description: "Webhook Colour (found in Config.logs.lua)" },
-    { arg: "message", type: "string", description: "Message To Log" },
-]} />
+- name: `string`
+  - Webhook Name (found in Config.logs.lua)
+- title: `string`
+  - The title of the message.
+- color: `string`
+  - The color of the message. (found in Config.logs.lua)
+- message: `table`
+  - The message to log.
 
 **Example**
 ```lua
@@ -278,12 +277,14 @@ ESX.DiscordLog(
 This function sends a discord log with fields.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "name", type: "string", optional: true, defaultValue: "Default", description: "Webhook Name (found in Config.logs.lua)" },
-    { arg: "title", type: "string", description: "Webhook Title" },
-    { arg: "color", type: "string", optional: true, defaultValue: "Default", description: "Webhook Colour (found in Config.logs.lua)" },
-    { arg: "fields", type: "table", description: "Fields To Log" },
-]} />
+- name: `string`
+  - Webhook Name (found in Config.logs.lua)
+- title: `string`
+  - The title of the message.
+- color: `string`
+  - The color of the message. (found in Config.logs.lua)
+- fields: `table`
+  - The fields to log.
 
 **Example**
 ```lua
@@ -298,11 +299,12 @@ ESX.DiscordLogFields("UserActions", "/car Triggered", "pink", {
 This function creates a new job and inserts it into the database.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "name", type: "string", description: "The job's name" },
-    { arg: "label", type: "string", description: "The job's label" },
-    { arg: "grades", type: "table", description: "The job's grades" },
-]} />
+- name: `string`
+  - The job's name.
+- label: `string`
+  - The job's label.
+- grades: `table`
+  - The job's grades.
 
 **Example**
 ```lua
@@ -327,10 +329,10 @@ ESX.RefreshJobs()
 This function registers a usable item.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "item", type: "string", description: "The item's name." },
-    { arg: "cb", type: "function", description: "The callback that gets triggered when used." },
-]} />
+- item: `string`
+  - The item to register.
+- cb: `function`(playerId: number)
+  - The callback function that gets ran when the item is used.
 
 **Example**
 ```lua
@@ -345,11 +347,12 @@ end)
 This function forces a player to use a item.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "source", type: "number", description: "The player's playerId" },
-    { arg: "item", type: "string", description: "The item's name that should be used." },
-    { arg: "...", type: "arguments", optional: true, description: "All arguments that you want to send." }
-]} />
+- source: `number`
+  - The player's server id.
+- item: `string`
+  - The item to use.
+- ...?
+  - The arguments to pass to the callback function of the item.
 
 **Example**
 ```lua
@@ -364,10 +367,10 @@ With this function you can override existing functions in the player object or a
 </Callout>
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "index", type: "string", description: "The overrides index." },
-    { arg: "overrides", type: "table", description: "The table with the functions to be overriden with." },
-]} />
+- index: `string`
+  - The index of the override.
+- overrides: `table`
+  - The table with the functions to be overriden with.
 
 **Example**
 ```lua
@@ -391,9 +394,8 @@ This function switches the function overrides.
 </Callout>
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "index", type: "string", description: "The overrides index." }
-]} />
+- index: `string`
+  - The index of the override.
 
 **Example**
 ```lua
@@ -404,16 +406,12 @@ ESX.SetPlayerFunctionOverride("myOverrides")
 This function returns the item label of the given item.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "item", type: "string", description: "The item." }
-]} />
+- item: `string`
+  - The item to get the label from.
 
 **Returns**
-
-The item label of the given item.
-<OutputTable rows={[
-    { arg: "label", type: "string", description: "The item label of the given item." }
-]}/>
+- label: `string`
+  - The item label of the given item.
 
 **Example**
 ```lua
@@ -428,18 +426,23 @@ This function returns all registered jobs.
 **Returns**
 
 A table of all the registered jobs.
-<OutputTable isTable={true} rows={[
-    { arg: "name", type: "string", description: "The job's name" },
-    { arg: "label", type: "string", description: "The job's label" },
-    { arg: "grades", type: "table", description: "The job's grades" },
-]}/>
+- name
+  - The job's name.
+- label
+  - The job's label.
+- grades
+  - The job's grades.
+
 Grades:
-<OutputTable isTable={true} rows={[
-    { arg: "grade", type: "number", description: "The grade index" },
-    { arg: "name", type: "string", description: "The grade's name" },
-    { arg: "label", type: "string", description: "The grade's label" },
-    { arg: "salary", type: "number", description: "The grade's salary" },
-]}/>
+- grade
+  - The grade index.
+- name
+  - The grade's name.
+- label
+  - The grade's label.
+- salary
+  - The grade's salary.
+
 
 **Example**
 ```lua
@@ -478,15 +481,20 @@ This function creates a pickup.
 </Callout>
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "itemType", type: "string", description: "The pickup type, valid inputs: item_standard for items, item_money for cash, item_account for an account and item_weapon for weapons." },
-    { arg: "name", type: "string", description: "The name of either the item, account or weapon." },
-    { arg: "count", type: "number", description: "The count of the item, cash, account or weapon ammo." },
-    { arg: "label", type: "string", description: "The pickup label drawn." },
-    { arg: "playerId", type: "number", description: "The player server id who created the pickup, used to determine pickup spawn point." },
-    { arg: "components", type: "table", optional: true, description: "Only used when type is item_weapon, an index-value table with components."},
-    { arg: "tintIndex", type: "number", optional: true, description: "Only used when type is item_weapon, a tint index."}
-]} />
+- itemType: `string`
+  - The type of the item. Valid inputs: "item_standard", "item_money", "item_account", "item_weapon"
+- name: `string`
+  - The name of either the item, account or weapon.
+- count: `number`
+  - The amount of the item, account or weapon ammo.
+- label: `string`
+  - The label of the pickup.
+- playerId: `number`
+  - The player's server that created the pickup, used to determine pickup spawn point.
+- components?: `table`
+  - Only used when itemType is "item_weapon". An index-value table with the weapon components.
+- tintIndex?: `number`
+  - Only used when itemType is "item_weapon". The tint index of the weapon.
 
 **Example**
 ```lua
@@ -499,17 +507,15 @@ end
 This function returns if the specified job and grade exist.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "job", type: "string", description: "The name of the job." },
-    { arg: "grade", type: "number", description: "The grade index of the job." }
-]} />
+- job: `string`
+  - The job to check.
+- grade: `number`
+  - The grade to check.
 
 **Returns**
+- exists: `boolean`
+  - Does the job and grade exist.
 
-Returns a boolean if the given job and grade exist.
-<OutputTable rows={[
-    { arg: "exists", type: "boolean", description: "Does the job and grade exist." },
-]}/>
 
 **Example**
 ```lua

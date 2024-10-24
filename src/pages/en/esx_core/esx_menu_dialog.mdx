@@ -1,5 +1,3 @@
-import { ArgumentsTable, OutputTable } from 'src/components/table';
-
 # esx_menu_dialog
 A menu used to get inputs from the player.
 **Only available on clientside**
@@ -12,18 +10,21 @@ ESX.UI.Menu.Open(type, namespace, name, data, confirm, cancel )
 ```
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: 'type', type: 'string', description: 'the menu to open `dialog` in this case' }, 
-    { arg: 'namespace', type: 'string', description: 'The namespace of the menu, usually ```GetResourceName()```is used' },
-    { arg: 'name', type: 'string', description: 'The name of the menu' },
-    { arg: 'data', type: 'table', description: 'The table with the elements to show in the menu' },
-    { arg: 'confirm', type: 'function', description: 'Function that gets ran when an element is selected.'},
-    { arg: 'cancel', type: 'function', description: 'Function that gets ran when the menu gets closed'},
-    
-]} /> 
+- type: `string`
+  - the menu to open `dialog` in this case
+- namespace: `string`
+  - The namespace of the menu, usually ```GetResourceName()```is used
+- name: `string`
+  - The name of the menu
+- data: `table`
+  - The table with the elements to show in the menu
+- confirm: `function`
+  - Function that gets ran when an element is selected.
+- cancel: `function`
+  - Function that gets ran when the menu gets closed 
 
 **Data table**
-- title: title of the menu
+- title: `title` of the menu
 
 
 **confirm**

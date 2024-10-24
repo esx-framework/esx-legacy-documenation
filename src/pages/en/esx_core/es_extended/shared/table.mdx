@@ -1,15 +1,13 @@
-import { ArgumentsTable } from "src/components/table";
-
 ## Table
 
 ### DumpTable
 This function dumps the given table to a readable string with a tree structure.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "weaponName", type: "string", description: "The weapon name." },
-    { arg: "weaponComponent", type: "string", description: "The weapon component." },
-]}/>
+- table: `table`
+  - The table to dump.
+- nb: `number`
+  - The number of spaces to use for indentation.
 
 **Example**
 ```lua
@@ -23,98 +21,96 @@ print(dumpedTable)
 This returns the size of a table. This is a nil proof version to #table.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-]}/>
+- table: `table`
+  - The table to get the size of.
 
 ### Set
 This function sets all values of the table to true.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-]}/>
+- table: `table`
+  - The table to set.
 
 ### IndexOf
 This function returns the index with the value that matches the supplied value in the table.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "value", type: "any", description: "Value to search for." },
-]}/>
+- table: `table`
+  - The table to search in.
+- value: `any`
+  - The value to search for.
 
 ### LastIndexOf
 This function returns the last index with the value that matches the supplied value in the table.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "value", type: "any", description: "Value to search for." },
-]}/>
+- table: `table`
+  - The table to search in.
+- value: `any`
+  - The value to search for.
 
 ### Find
 This function loops through the specified table and triggers the callback with the found item every time, if the callback returns true the item will be returned.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "cb", type: "function", description: "The callback." },
-]}/>
+- table: `table`
+  - The table to search in.
+- cb: `function`
+  - The callback to trigger on each item.
 
 ### FindIndex
 This function loops through the specified table and triggers the callback with the found item every time, if the callback returns true the index gets returned.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "cb", type: "function", description: "The callback." },
-]}/>
+- table: `table`
+  - The table to search in.
+- cb: `function`
+  - The callback to trigger on each item.
 
 ### Filter
 This function loops through the specified table and triggers the callback on each item, if the callback returns true it will be kept and later returned in the new table.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "cb", type: "function", description: "The callback." },
-]}/>
+- table: `table`
+  - The table to search in.
+- cb: `function`
+  - The callback to trigger on each item.
 
 ### Map
 This function loops through the specified table and triggers the callback on each item, the returned value of the callback will be added to a table and later returnd.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "cb", type: "function", description: "The callback." },
-]}/>
+- table: `table`
+  - The table to search in.
+- cb: `function`
+  - The callback to trigger on each item.
+
 
 
 ### Reverse
 This function loops through the specified table from the end and triggers the callback on each item, the returned value of the callback will be added to a table and later returnd.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "cb", type: "function", description: "The callback." },
-]}/>
+- table: `table`
+  - The table to search in.
+- cb: `function`
+  - The callback to trigger on each item.
 
 ### Clone
 Clones the table
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." }
-]}/>
+- table: `table`
+  - The table to clone.
 
 ### Concat
 Concats two tables, making them one table.
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table1", type: "table", description: "The first table." },
-    { arg: "table2", type: "table", description: "The second table." },
-]}/>
+- table1: `table`
+  - The first table to concat.
+- table2: `table`
+  - The second table to concat.
 
 **Example**
 ```lua
@@ -138,10 +134,10 @@ print(ESX.DumpTable(concattedTable))
 Joints the values of the tables into a string seperating them with the specified seperator
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "seperator", type: "table", optional: true, defaultValue: ",", description: "The seperator." },
-]}/>
+- table: `table`
+  - The table to join.
+- seperator: `string`
+  - The seperator to use.
 
 **Example**
 ```lua
@@ -159,12 +155,11 @@ print(ESX.Table.Join(myTable, " "))
 ### TableContains
 Returns if table contains specified value.
 
-
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "value", type: "any", description: "The value to check for." },
-]}/>
+- table: `table`
+  - The table to search in.
+- value: `any`
+  - The value to search for.
 
 **Example**
 ```lua
@@ -187,7 +182,7 @@ Sorts the table, custom sorting alogrithm can also be specified.
 [Check this for more information](https://stackoverflow.com/a/15706820)
 
 **Arguments**
-<ArgumentsTable rows={[
-    { arg: "table", type: "table", description: "The table." },
-    { arg: "order", type: "function", optional: true, description: "Function to handle the sorting." },
-]}/>
+- table: `table`
+  - The table to sort.
+- order: `function`
+  - The custom sorting function.
