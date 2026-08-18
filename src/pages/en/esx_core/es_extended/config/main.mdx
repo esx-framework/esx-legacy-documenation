@@ -36,7 +36,7 @@ With this config property you can specify how much money each account should hav
 
 **Example**
 ```lua
-Config.StartingAccountMoney = {
+StartingAccountMoney = {
     bank = 50000, -- Give the player 50 Thousand on his bank account
     money = 1500, -- Give the player 1500 cash.
     black_money = 500, -- Give the player 500 Black money,
@@ -52,7 +52,7 @@ This can be `false` if you don't want the player to receive anything. Or a table
 
 **Example**
 ```lua
-Config.StartingInventoryItems = {
+StartingInventoryItems = {
     bread = 2, -- Give the player 2 bread buns
     water = 4 -- Give the player 4 water bottles
 }
@@ -64,7 +64,7 @@ You can specify one spawn or multiple.
 
 **Example**
 ```lua
-Config.DefaultSpawns = { 
+DefaultSpawns = { 
 	{x = 222.2027, y = -864.0162, z = 30.2922, heading = 1.0},
 	{x = 224.9865, y = -865.0871, z = 30.2922, heading = 1.0},
 	{x = 227.8436, y = -866.0400, z = 30.2922, heading = 1.0},
@@ -79,7 +79,7 @@ You can also use this by using the callback `esx:isUserAdmin`.
 
 **Example**
 ```lua
-Config.AdminGroups = {
+AdminGroups = {
 	['owner'] = true,
 	['sradmin'] = true,
   ['admin'] = true,
